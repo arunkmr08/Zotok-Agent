@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en" data-loading>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Karamchari — Zotok</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body data-page="agents">
+
+  <div class="app">
+    <div id="sidebar-host"></div>
+
+    <main class="main">
+      <div class="page">
+        <div class="page-head">
+          <h1>Karamchari</h1>
+          <p class="lede">Pre-built workers that read your groups and act on the patterns you choose.</p>
+        </div>
+
+        <div class="agent-grid" id="agent-grid">
+          <!-- shimmer cards shown until JS renders real cards -->
+          <article class="agent-card shimmer-card">
+            <div class="shimmer" style="height:32px;width:32px;border-radius:8px;margin-bottom:12px;"></div>
+            <div class="shimmer" style="height:14px;width:70%;margin-bottom:8px;"></div>
+            <div class="shimmer" style="height:12px;width:90%;margin-bottom:4px;"></div>
+            <div class="shimmer" style="height:12px;width:60%;"></div>
+          </article>
+          <article class="agent-card shimmer-card">
+            <div class="shimmer" style="height:32px;width:32px;border-radius:8px;margin-bottom:12px;"></div>
+            <div class="shimmer" style="height:14px;width:60%;margin-bottom:8px;"></div>
+            <div class="shimmer" style="height:12px;width:85%;margin-bottom:4px;"></div>
+            <div class="shimmer" style="height:12px;width:50%;"></div>
+          </article>
+          <article class="agent-card shimmer-card">
+            <div class="shimmer" style="height:32px;width:32px;border-radius:8px;margin-bottom:12px;"></div>
+            <div class="shimmer" style="height:14px;width:65%;margin-bottom:8px;"></div>
+            <div class="shimmer" style="height:12px;width:80%;margin-bottom:4px;"></div>
+            <div class="shimmer" style="height:12px;width:55%;"></div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== -->
+  <!-- Categorise Modal      -->
+  <!-- ===================== -->
+  <div class="modal-backdrop" id="modal-configure-agent" role="dialog" aria-modal="true">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div>
+          <h2>Categorise message groups</h2>
+          <div style="display:flex;gap:12px;margin-top:6px;">
+            <span class="badge badge-success"><span class="dot dot-success"></span> State: Active</span>
+            <span class="badge">Runs: Every 20 Mins</span>
+          </div>
+        </div>
+        <button class="icon-btn" data-close="modal-configure-agent" aria-label="Close">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" style="background:var(--surface); padding: 24px;">
+        <p class="lede" style="margin-bottom:16px;">Messages are classified only using defined categories. Changes apply
+          in next scheduled run.</p>
+        <div id="category-list" style="display:flex; flex-direction:column; gap:16px; margin-bottom:16px;">
+          <!-- Rendered by JS -->
+        </div>
+        <button class="btn btn-ghost btn-sm" id="add-category-btn"
+          style="width:100%; border: 1px dashed var(--border); justify-content:center; background:var(--white);">
+          <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 5v14" />
+            <path d="M5 12h14" />
+          </svg>
+          Add category
+        </button>
+      </div>
+      <div class="modal-foot">
+        <span id="category-error" style="color:#d9534f; font-size:13px; margin-right:auto;"></span>
+        <button class="btn btn-ghost btn-sm" data-close="modal-configure-agent">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="save-categories-btn">Save &amp; Deploy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== -->
+  <!-- Collect Leads Modal   -->
+  <!-- ===================== -->
+  <div class="modal-backdrop" id="modal-configure-leads" role="dialog" aria-modal="true">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div>
+          <h2>Collect new leads</h2>
+          <div style="display:flex;gap:12px;margin-top:6px;">
+            <span class="badge" id="modal-leads-badge"><span class="dot dot-idle"></span> State: Not Deployed</span>
+            <span class="badge">Runs: Realtime</span>
+          </div>
+        </div>
+        <button class="icon-btn" data-close="modal-configure-leads" aria-label="Close">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" style="background:var(--surface); padding: 24px;">
+        <p class="lede" style="margin-bottom:16px;">Detect unknown contacts and extract lead information. Configure the
+          columns below.</p>
+        <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-size:15px; font-weight:600;">Columns (<span id="col-count">6</span>)</h3>
+            <button class="btn btn-ghost btn-sm" id="btn-add-col">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Add Column
+            </button>
+          </div>
+          <div id="col-error" style="color:var(--accent-warn); font-size:13px; margin-bottom:12px; display:none;">At
+            least 5 columns are required. Names must be unique.</div>
+          <div id="col-list" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- JS renders columns here -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-close="modal-configure-leads">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-leads">Save &amp; Deploy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== -->
+  <!-- Groups to Sheets Modal-->
+  <!-- ===================== -->
+  <div class="modal-backdrop" id="modal-configure-sheets" role="dialog" aria-modal="true">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div>
+          <h2>Groups to sheets</h2>
+          <div style="display:flex;gap:12px;margin-top:6px;">
+            <span class="badge" id="modal-sheets-badge"><span class="dot dot-idle"></span> State: Not Deployed</span>
+            <span class="badge">Runs: Per message</span>
+          </div>
+        </div>
+        <button class="icon-btn" data-close="modal-configure-sheets" aria-label="Close">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" style="background:var(--surface); padding: 24px;">
+        <p class="lede" style="margin-bottom:16px;">Stream structured fields from messages into a Google Sheet you
+          control. Configure the columns to extract.</p>
+        <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-size:15px; font-weight:600;">Columns (<span id="sheets-col-count">6</span>)</h3>
+            <button class="btn btn-ghost btn-sm" id="btn-add-sheets-col">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Add Column
+            </button>
+          </div>
+          <div id="sheets-col-error"
+            style="color:var(--accent-warn); font-size:13px; margin-bottom:12px; display:none;">At least 5 columns are
+            required. Names must be unique.</div>
+          <div id="sheets-col-list" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- JS renders columns here -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-close="modal-configure-sheets">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-sheets">Save &amp; Deploy</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes shimmer {
+      from {
+        background-position: -600px 0;
+      }
+
+      to {
+        background-position: 600px 0;
+      }
+    }
+
+    .shimmer {
+      background: linear-gradient(90deg, var(--border) 25%, var(--surface-2) 50%, var(--border) 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.4s infinite linear;
+      border-radius: var(--r-sm);
+    }
+
+    .shimmer-card {
+      pointer-events: none;
+      gap: 8px;
+    }
+  </style>
+  <script src="scripts/sidebar.js"></script>
+  <script src="scripts/app.js"></script>
+  <script>
+    // ====================================================
+    // UNIFIED Karamchari STATE ENGINE
+    // ====================================================
+
+    // Agent definitions
+    const AGENTS = [
+      {
+        key: 'category',
+        title: 'Categorise message groups',
+        desc: 'Sorts incoming messages into Sales, Support, Logistics and Internal so you can scan by topic.',
+        schedule: 'Every 20 mins',
+        icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>`,
+        configModal: 'modal-configure-agent',
+        defaultState: 'active'  // pre-configured out of the box
+      },
+      {
+        key: 'leads',
+        title: 'Collect new leads',
+        desc: 'Detects unfamiliar numbers and intent signals, then drops them into a leads list with their last 3 messages.',
+        schedule: 'Realtime',
+        icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6"/><path d="M19 8v6"/></svg>`,
+        configModal: 'modal-configure-leads',
+        defaultState: 'inactive'
+      },
+      {
+        key: 'sheets',
+        title: 'Groups to sheets',
+        desc: 'Streams structured fields — orders, prices, addresses — from messages into a Google Sheet you control.',
+        schedule: 'Per message',
+        icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>`,
+        configModal: 'modal-configure-sheets',
+        defaultState: 'inactive'
+      }
+    ];
+
+    window.setState = function (key, state) {
+      localStorage.setItem(`zotok_agent_${key}`, state);
+    };
+
+    window.getState = function (key) {
+      const stored = localStorage.getItem(`zotok_agent_${key}`);
+      const agent = AGENTS.find(a => a.key === key);
+      return stored || agent.defaultState;
+    }
+
+
+    // Render card footer based on state
+    function cardFootHTML(agent, state) {
+      if (state === 'active') {
+        const configBtn = agent.configModal
+          ? `<button class="icon-btn" data-open="${agent.configModal}" aria-label="Configure" title="Configure">
+           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+         </button>`
+          : '';
+        return `
+      <span class="badge">${agent.schedule}</span>
+      <div style="display:flex;gap:4px;align-items:center;">
+        ${configBtn}
+        <button class="btn btn-ghost btn-sm" style="color:#d9534f;" data-action="disconnect" data-agent="${agent.key}">Disconnect</button>
+      </div>`;
+      } else {
+        const openAttr = agent.configModal ? `data-open="${agent.configModal}"` : `data-action="deploy-no-config" data-agent="${agent.key}"`;
+        return `
+      <span class="badge">${agent.schedule}</span>
+      <button class="btn btn-primary btn-sm" ${openAttr}>Deploy</button>`;
+      }
+    }
+
+    function cardBadgeHTML(state) {
+      if (state === 'active') {
+        return `<span class="badge badge-success"><span class="dot dot-success"></span> Active</span>`;
+      }
+      return `<span class="badge"><span class="dot dot-idle"></span> Not Deployed</span>`;
+    }
+
+    // Render all cards
+    function renderCards() {
+      const grid = document.getElementById('agent-grid');
+      grid.innerHTML = '';
+      AGENTS.forEach(agent => {
+        const state = getState(agent.key);
+        const card = document.createElement('article');
+        card.className = 'agent-card';
+        card.dataset.agentCard = agent.key;
+        card.innerHTML = `
+      <div class="agent-head">
+        <div class="agent-icon">${agent.icon}</div>
+        ${cardBadgeHTML(state)}
+      </div>
+      <div>
+        <h3>${agent.title}</h3>
+        <p>${agent.desc}</p>
+      </div>
+      <div class="agent-foot" style="justify-content:space-between;width:100%;" id="foot-${agent.key}">
+        ${cardFootHTML(agent, state)}
+      </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // Update a single card's footer + badge without full re-render
+    window.updateCardUI = function (key, state) {
+      const agent = AGENTS.find(a => a.key === key);
+      if (!agent) return;
+      const card = document.querySelector(`[data-agent-card="${key}"]`);
+      if (!card) return;
+
+      // Update badge
+      const badge = card.querySelector('.agent-head .badge');
+      if (badge) badge.outerHTML = cardBadgeHTML(state);
+
+      // Update footer
+      const foot = document.getElementById(`foot-${key}`);
+      if (foot) foot.innerHTML = cardFootHTML(agent, state);
+    }
+
+    // ====================================================
+    // CONNECT / DISCONNECT + MODAL OPEN (delegated)
+    // ====================================================
+    document.addEventListener('click', e => {
+      // Open modals — app.js's querySelectorAll misses dynamically rendered card buttons,
+      // so we delegate here for any [data-open] click.
+      const openBtn = e.target.closest('[data-open]');
+      if (openBtn) {
+        const id = openBtn.dataset.open;
+        if (id === 'modal-configure-agent') {
+          document.getElementById('save-categories-btn').textContent =
+            getState('category') === 'active' ? 'Save Changes' : 'Save & Deploy';
+        }
+        if (id === 'modal-configure-leads') {
+          const leadsState = getState('leads');
+          const leadsBadge = document.getElementById('modal-leads-badge');
+          if (leadsBadge) {
+            leadsBadge.innerHTML = leadsState === 'active'
+              ? `<span class="dot dot-success"></span> State: Active`
+              : `<span class="dot dot-idle"></span> State: Not Deployed`;
+            leadsBadge.className = leadsState === 'active' ? 'badge badge-success' : 'badge';
+          }
+          document.getElementById('btn-save-leads').textContent = leadsState === 'active' ? 'Save Changes' : 'Save & Deploy';
+        }
+        if (id === 'modal-configure-sheets') {
+          const sheetsState = getState('sheets');
+          const sheetsBadge = document.getElementById('modal-sheets-badge');
+          if (sheetsBadge) {
+            sheetsBadge.innerHTML = sheetsState === 'active'
+              ? `<span class="dot dot-success"></span> State: Active`
+              : `<span class="dot dot-idle"></span> State: Not Deployed`;
+            sheetsBadge.className = sheetsState === 'active' ? 'badge badge-success' : 'badge';
+          }
+          document.getElementById('btn-save-sheets').textContent = sheetsState === 'active' ? 'Save Changes' : 'Save & Deploy';
+        }
+        window.openModal(id);
+        return;
+      }
+
+      // Disconnect
+      const disconnectBtn = e.target.closest('[data-action="disconnect"]');
+      if (disconnectBtn) {
+        const key = disconnectBtn.dataset.agent;
+        setState(key, 'inactive');
+        updateCardUI(key, 'inactive');
+        if (window.syncSidebar) window.syncSidebar();
+        return;
+      }
+
+      // Deploy with no config modal (e.g. Sheets — placeholder until modal added)
+      const noConfigBtn = e.target.closest('[data-action="deploy-no-config"]');
+      if (noConfigBtn) {
+        const key = noConfigBtn.dataset.agent;
+        setState(key, 'active');
+        updateCardUI(key, 'active');
+        if (window.syncSidebar) window.syncSidebar();
+        return;
+      }
+    });
+
+    // ====================================================
+    // LEADS MODAL — Column Configuration
+    // ====================================================
+    let columns = [
+      { id: 1, name: "Firm Name" },
+      { id: 2, name: "Phone Number" },
+      { id: 3, name: "Contact Name" },
+      { id: 4, name: "Last Message" },
+      { id: 5, name: "Timestamp" },
+      { id: 6, name: "Actions: Reply" }
+    ];
+    let nextColId = 7;
+
+    function renderColumns() {
+      const colList = document.getElementById('col-list');
+      const colCount = document.getElementById('col-count');
+      if (!colList) return;
+      colList.innerHTML = '';
+      colCount.textContent = columns.length;
+      columns.forEach((col, index) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:8px;align-items:center;';
+        row.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <button class="icon-btn-round" style="width:20px;height:20px;border-radius:4px;" title="Move Up" onclick="moveCol(${index},-1)" ${index === 0 ? 'disabled' : ''}>
+          <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <button class="icon-btn-round" style="width:20px;height:20px;border-radius:4px;" title="Move Down" onclick="moveCol(${index},1)" ${index === columns.length - 1 ? 'disabled' : ''}>
+          <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+      <input type="text" class="input" style="flex:1;" value="${col.name}" onchange="renameCol(${index},this.value)" placeholder="Column Name">
+      <button class="icon-btn" onclick="deleteCol(${index})" title="Delete" style="color:var(--accent-warn);">
+        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+      </button>`;
+        colList.appendChild(row);
+      });
+    }
+
+    window.moveCol = (index, dir) => {
+      if (index + dir < 0 || index + dir >= columns.length) return;
+      [columns[index], columns[index + dir]] = [columns[index + dir], columns[index]];
+      renderColumns();
+    };
+    window.renameCol = (index, val) => { columns[index].name = val.trim(); checkColConstraints(); };
+    window.deleteCol = (index) => { columns.splice(index, 1); renderColumns(); checkColConstraints(); };
+
+    document.getElementById('btn-add-col').addEventListener('click', () => {
+      columns.push({ id: nextColId++, name: `New Column` });
+      renderColumns(); checkColConstraints();
+    });
+
+    function checkColConstraints() {
+      const colError = document.getElementById('col-error');
+      const saveBtn = document.getElementById('btn-save-leads');
+      const names = columns.map(c => c.name.toLowerCase());
+      const valid = columns.length >= 5 && names.length === new Set(names).size;
+      if (colError) colError.style.display = valid ? 'none' : 'block';
+      if (saveBtn) saveBtn.disabled = !valid;
+      return valid;
+    }
+
+    document.getElementById('btn-save-leads').addEventListener('click', () => {
+      if (!checkColConstraints()) return;
+      localStorage.setItem('zotok_leads_columns', JSON.stringify(columns));
+      setState('leads', 'active');
+      updateCardUI('leads', 'active');
+      if (window.syncSidebar) window.syncSidebar();
+      document.getElementById('modal-configure-leads').classList.remove('open');
+    });
+
+    // ====================================================
+    // SHEETS MODAL — Column Configuration
+    // ====================================================
+    const DEFAULT_SHEETS_COLUMNS = [
+      { id: 1, name: "Group Name" },
+      { id: 2, name: "Sender" },
+      { id: 3, name: "Phone Number" },
+      { id: 4, name: "Message" },
+      { id: 5, name: "Timestamp" },
+      { id: 6, name: "Category" }
+    ];
+
+    let sheetsColumns = (() => {
+      const stored = localStorage.getItem('zotok_sheets_columns');
+      return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_SHEETS_COLUMNS));
+    })();
+    let nextSheetsColId = Math.max(...sheetsColumns.map(c => c.id)) + 1;
+
+    function renderSheetsColumns() {
+      const colList = document.getElementById('sheets-col-list');
+      const colCount = document.getElementById('sheets-col-count');
+      if (!colList) return;
+      colList.innerHTML = '';
+      colCount.textContent = sheetsColumns.length;
+      sheetsColumns.forEach((col, index) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:8px;align-items:center;';
+        row.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <button class="icon-btn-round" style="width:20px;height:20px;border-radius:4px;" title="Move Up" onclick="moveSheetsCol(${index},-1)" ${index === 0 ? 'disabled' : ''}>
+          <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <button class="icon-btn-round" style="width:20px;height:20px;border-radius:4px;" title="Move Down" onclick="moveSheetsCol(${index},1)" ${index === sheetsColumns.length - 1 ? 'disabled' : ''}>
+          <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+      <input type="text" class="input" style="flex:1;" value="${col.name}" onchange="renameSheetsCol(${index},this.value)" placeholder="Column Name">
+      <button class="icon-btn" onclick="deleteSheetsCol(${index})" title="Delete" style="color:var(--accent-warn);">
+        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+      </button>`;
+        colList.appendChild(row);
+      });
+    }
+
+    window.moveSheetsCol = (index, dir) => {
+      if (index + dir < 0 || index + dir >= sheetsColumns.length) return;
+      [sheetsColumns[index], sheetsColumns[index + dir]] = [sheetsColumns[index + dir], sheetsColumns[index]];
+      renderSheetsColumns();
+    };
+    window.renameSheetsCol = (index, val) => { sheetsColumns[index].name = val.trim(); checkSheetsConstraints(); };
+    window.deleteSheetsCol = (index) => { sheetsColumns.splice(index, 1); renderSheetsColumns(); checkSheetsConstraints(); };
+
+    document.getElementById('btn-add-sheets-col').addEventListener('click', () => {
+      sheetsColumns.push({ id: nextSheetsColId++, name: 'New Column' });
+      renderSheetsColumns(); checkSheetsConstraints();
+    });
+
+    function checkSheetsConstraints() {
+      const colError = document.getElementById('sheets-col-error');
+      const saveBtn = document.getElementById('btn-save-sheets');
+      const names = sheetsColumns.map(c => c.name.toLowerCase());
+      const valid = sheetsColumns.length >= 5 && names.length === new Set(names).size;
+      if (colError) colError.style.display = valid ? 'none' : 'block';
+      if (saveBtn) saveBtn.disabled = !valid;
+      return valid;
+    }
+
+    document.getElementById('btn-save-sheets').addEventListener('click', () => {
+      if (!checkSheetsConstraints()) return;
+      localStorage.setItem('zotok_sheets_columns', JSON.stringify(sheetsColumns));
+      setState('sheets', 'active');
+      updateCardUI('sheets', 'active');
+      if (window.syncSidebar) window.syncSidebar();
+      document.getElementById('modal-configure-sheets').classList.remove('open');
+    });
+
+    // ====================================================
+    // INIT
+    // ====================================================
+    renderColumns();
+    renderSheetsColumns();
+    renderCards();
+  </script>
+</body>
+
+</html>

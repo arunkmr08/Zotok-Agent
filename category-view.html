@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Category Results — Zotok</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body data-page="category-view">
+
+  <div class="app">
+    <div id="sidebar-host"></div>
+
+    <!-- Main area with 3 panes -->
+    <main class="main three-pane-layout">
+
+      <!-- Column 1: Category List -->
+      <div class="category-pane" id="category-pane">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span class="badge badge-success"><span class="dot dot-success"></span> Categorise groups</span>
+        </div>
+
+        <div class="category-pill active" data-cat="sales">
+          <div class="cat-dot-wrap bg-success"><span class="dot dot-success"></span></div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:15px; margin-bottom:2px;">Sales</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.3;">Inquiries, bulk pricing...</div>
+          </div>
+        </div>
+
+        <div class="category-pill" data-cat="support">
+          <div class="cat-dot-wrap bg-warn"><span class="dot dot-warn"></span></div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:15px; margin-bottom:2px;">Support</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.3;">Complaints, refund requests...</div>
+          </div>
+        </div>
+
+        <div class="category-pill" data-cat="logistics">
+          <div class="cat-dot-wrap bg-idle"><span class="dot dot-idle"></span></div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:15px; margin-bottom:2px;">Logistics</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.3;">Delivery delays, tracking...</div>
+          </div>
+        </div>
+
+        <div class="category-pill" data-cat="internal">
+          <div class="cat-dot-wrap bg-idle"><span class="dot" style="background:var(--faint);"></span></div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:15px; margin-bottom:2px;">Internal</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.3;">Team standups, policy...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Customers List -->
+      <div class="list-pane">
+        <div class="list-pane-head">
+          <h1 id="category-title" style="font-size: 20px; font-weight: 600; margin-bottom: 4px;">Sales</h1>
+          <p class="lede" id="category-desc" style="font-size: 13px; color: var(--ink-2); line-height: 1.4;">Inquiries,
+            bulk pricing requests, and leads identified from the groups.</p>
+        </div>
+
+        <div class="list-pane-item active" data-customer="vp">
+          <div class="li-icon">VP</div>
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; align-items:baseline;">
+              <span class="li-title"
+                style="font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Vikram
+                Patel</span>
+              <span class="li-sub" style="font-size:12px; color:var(--muted); flex:none; margin-left:8px;">12m
+                ago</span>
+            </div>
+            <div style="font-size:12px; color:var(--ink-2); margin-bottom:4px;"><span
+                style="color:var(--muted);">from</span> Sales – Mumbai</div>
+            <p
+              style="margin:0; font-size:13px; color:var(--ink-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              "Can you send the bulk pricing sheet for the new Diwali SKUs? We need to place an order by tomorrow."</p>
+          </div>
+        </div>
+
+        <div class="list-pane-item" data-customer="at">
+          <div class="li-icon" style="background:var(--accent-warn);">AT</div>
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; align-items:baseline;">
+              <span class="li-title"
+                style="font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Anjali
+                Traders</span>
+              <span class="li-sub" style="font-size:12px; color:var(--muted); flex:none; margin-left:8px;">1h ago</span>
+            </div>
+            <div style="font-size:12px; color:var(--ink-2); margin-bottom:4px;"><span
+                style="color:var(--muted);">from</span> Distributors – South</div>
+            <p
+              style="margin:0; font-size:13px; color:var(--ink-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              "Are there any discounts running on the 50kg bulk packs right now?"</p>
+          </div>
+        </div>
+
+        <div class="list-pane-item" data-customer="rd">
+          <div class="li-icon" style="background:var(--muted);">RD</div>
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; align-items:baseline;">
+              <span class="li-title"
+                style="font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Rahul
+                Desai</span>
+              <span class="li-sub" style="font-size:12px; color:var(--muted); flex:none; margin-left:8px;">3h ago</span>
+            </div>
+            <div style="font-size:12px; color:var(--ink-2); margin-bottom:4px;"><span
+                style="color:var(--muted);">from</span> New Leads – Trade Fair</div>
+            <p
+              style="margin:0; font-size:13px; color:var(--ink-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              "Hi, I visited your stall. I'm interested in becoming a regional distributor. Please call me."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 3: Conversation View -->
+      <div class="chat-pane chat-shell chat-active">
+        <div class="topbar"
+          style="border-bottom: 1px solid var(--border); padding: 12px 24px; position: sticky; top:0; background: var(--white); z-index: 5;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="li-icon" id="chat-header-avatar"
+              style="width:36px; height:36px; border-radius:var(--r-lg); background:var(--faint); color:var(--white); display:grid; place-items:center; font-weight:600; font-size:14px;">
+              VP</div>
+            <div>
+              <div id="chat-header-name" style="font-weight:600; font-size:15px;">Vikram Patel</div>
+              <div id="chat-header-sub" style="font-size:12px; color:var(--muted);">Sales – Mumbai</div>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-ghost btn-sm">View in WhatsApp</button>
+          </div>
+        </div>
+
+        <div class="chat-scroll" style="flex: 1; padding: 24px;">
+          <div class="chat-thread" id="chat-thread">
+            <!-- Mock messages -->
+            <div class="msg user">
+              <div class="msg-avatar" style="background:var(--faint); border:none;">VP</div>
+              <div class="msg-body">
+                <div class="msg-name">Vikram Patel <span
+                    style="font-weight:400; color:var(--muted); font-size:12px; margin-left:6px;">12:30 PM</span></div>
+                <div class="msg-text">
+                  <p>"Can you send the bulk pricing sheet for the new Diwali SKUs? We need to place an order by
+                    tomorrow."</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:center; margin:24px 0;">
+              <span class="badge" style="font-size:11px; color:var(--muted); background:var(--surface);">Classified by
+                Karamchari · 12:35 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Read-only Composer -->
+        <div class="composer-wrap" style="padding: 16px 24px; background: var(--surface);">
+          <div class="composer-container" style="max-width: none;">
+            <div class="composer"
+              style="background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-md); padding: 12px 16px; color: var(--muted); font-size: 14px; text-align: center;">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:6px;">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              This view is for reviewing categorized messages. To reply, open the group in Chat.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="scripts/sidebar.js"></script>
+  <script src="scripts/app.js"></script>
+  <script>
+    // Interactivity for selecting categories
+    const urlParams = new URLSearchParams(window.location.search);
+    const cat = urlParams.get('cat');
+
+    const catPills = document.querySelectorAll('.category-pill');
+    const catTitle = document.getElementById('category-title');
+    const catDesc = document.getElementById('category-desc');
+
+    const titles = {
+      'sales': { t: 'Sales', d: 'Inquiries, bulk pricing requests, and leads identified from the groups.', bg: 'success' },
+      'support': { t: 'Support', d: 'Complaints, refund requests, and product issues.', bg: 'warn' },
+      'logistics': { t: 'Logistics', d: 'Delivery delays, warehouse updates, and dispatch tracking.', bg: 'idle' },
+      'internal': { t: 'Internal', d: 'Team standups, policy updates, and internal coordination.', bg: 'idle' }
+    };
+
+    if (cat) {
+      if (titles[cat]) {
+        catTitle.textContent = titles[cat].t;
+        catDesc.textContent = titles[cat].d;
+        catPills.forEach(p => p.classList.remove('active'));
+        const activePill = document.querySelector(`.category-pill[data-cat="${cat}"]`);
+        if (activePill) activePill.classList.add('active');
+      }
+    }
+
+    catPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        catPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const catId = pill.dataset.cat;
+        if (titles[catId]) {
+          catTitle.textContent = titles[catId].t;
+          catDesc.textContent = titles[catId].d;
+        }
+      });
+    });
+
+    // Interactivity for selecting customers in the list
+    const customers = {
+      'vp': { name: 'Vikram Patel', sub: 'Sales – Mumbai', avatar: 'VP', bg: 'var(--faint)', msg: '"Can you send the bulk pricing sheet for the new Diwali SKUs? We need to place an order by tomorrow."', time: '12:30 PM', classTime: '12:35 PM' },
+      'at': { name: 'Anjali Traders', sub: 'Distributors – South', avatar: 'AT', bg: 'var(--accent-warn)', msg: '"Are there any discounts running on the 50kg bulk packs right now?"', time: '11:15 AM', classTime: '11:20 AM' },
+      'rd': { name: 'Rahul Desai', sub: 'New Leads – Trade Fair', avatar: 'RD', bg: 'var(--muted)', msg: '"Hi, I visited your stall. I\'m interested in becoming a regional distributor. Please call me."', time: '09:05 AM', classTime: '09:20 AM' }
+    };
+
+    const listItems = document.querySelectorAll('.list-pane-item');
+    const chatAvatar = document.getElementById('chat-header-avatar');
+    const chatName = document.getElementById('chat-header-name');
+    const chatSub = document.getElementById('chat-header-sub');
+    const chatThread = document.getElementById('chat-thread');
+
+    listItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Update active state
+        listItems.forEach(li => li.classList.remove('active'));
+        item.classList.add('active');
+
+        // Update chat pane
+        const id = item.dataset.customer;
+        if (customers[id]) {
+          const c = customers[id];
+          chatAvatar.textContent = c.avatar;
+          chatAvatar.style.background = c.bg;
+          chatName.textContent = c.name;
+          chatSub.textContent = c.sub;
+
+          chatThread.innerHTML = `
+          <div class="msg user">
+            <div class="msg-avatar" style="background:${c.bg}; border:none;">${c.avatar}</div>
+            <div class="msg-body">
+              <div class="msg-name">${c.name} <span style="font-weight:400; color:var(--muted); font-size:12px; margin-left:6px;">${c.time}</span></div>
+              <div class="msg-text">
+                <p>${c.msg}</p>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center; margin:24px 0;">
+            <span class="badge" style="font-size:11px; color:var(--muted); background:var(--surface);">Classified by Karamchari · ${c.classTime}</span>
+          </div>
+        `;
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en" data-loading>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Leads — Zotok</title>
+<link rel="stylesheet" href="styles/main.css">
+<style>
+  /* Suppress all transitions on initial load to prevent sidebar push animation */
+  [data-loading] * { transition: none !important; }
+  .leads-layout {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    flex: 1;
+  }
+  .leads-list-pane {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .leads-list-head {
+    padding: 20px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .leads-list-head h1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .leads-list-head p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .leads-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .lead-date-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .12s;
+  }
+  .lead-date-item:hover { background: var(--white); }
+  .lead-date-item.active {
+    background: var(--white);
+    border-left: 3px solid var(--ink);
+    padding-left: 13px;
+  }
+  .lead-date-item .lead-date-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .lead-date-item .lead-date-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1px 8px;
+  }
+  .lead-date-item.active .lead-date-count {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+  .leads-table-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .leads-table-head {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .leads-table-scroll {
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+  }
+  .leads-table-scroll .table-wrap {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    box-shadow: none;
+    overflow: visible; /* scroll must happen on .leads-table-scroll, not here */
+  }
+  .leads-table-scroll .table {
+    width: max-content;
+    min-width: 100%;
+  }
+  .leads-table-scroll .table th,
+  .leads-table-scroll .table td {
+    white-space: nowrap;
+  }
+  .leads-table-scroll .table th:first-child,
+  .leads-table-scroll .table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--white);
+  }
+  .leads-table-scroll .table th:first-child {
+    background: var(--surface);
+    z-index: 3;
+  }
+  .leads-table-scroll .table tbody tr:hover td:first-child {
+    background: var(--surface-2);
+  }
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    color: var(--muted);
+    text-align: center;
+    padding: 48px;
+  }
+  .empty-state svg { opacity: 0.35; }
+  .empty-state p { font-size: 14px; line-height: 1.5; }
+  .pagination-bar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--white);
+  }
+  .pagination-info {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .page-num {
+    min-width: 32px;
+    height: 32px;
+    border-radius: var(--r-sm);
+    border: 1px solid transparent;
+    background: none;
+    font-size: 13px;
+    color: var(--ink-2);
+    cursor: pointer;
+    padding: 0 6px;
+  }
+  .page-num:hover { background: var(--surface); border-color: var(--border); }
+  .page-num.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-icon {
+    position: absolute;
+    left: 9px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .search-input {
+    padding-left: 30px;
+    width: 200px;
+    height: 32px;
+    font-size: 13px;
+  }
+  /* Shimmer */
+  @keyframes shimmer {
+    from { background-position: -600px 0; }
+    to   { background-position:  600px 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, var(--border) 25%, var(--surface-2) 50%, var(--border) 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: var(--r-sm);
+  }
+  .shimmer-date-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .shimmer-row {
+    display: flex;
+    gap: 24px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body data-page="leads-view">
+
+<div class="app">
+  <div id="sidebar-host"></div>
+
+  <main class="main" style="padding: 0; overflow: hidden;">
+    <div class="leads-layout">
+
+      <!-- Column 1: Lead List by Date -->
+      <div class="leads-list-pane">
+        <div class="leads-list-head">
+          <h1>New Leads</h1>
+          <p id="leads-detected-count"></p>
+        </div>
+        <div class="leads-list-scroll" id="leads-list">
+          <!-- shimmer placeholders -->
+          <div class="shimmer-date-item"><div class="shimmer" style="width:80px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
+          <div class="shimmer-date-item"><div class="shimmer" style="width:100px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
+          <div class="shimmer-date-item"><div class="shimmer" style="width:90px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
+          <div class="shimmer-date-item"><div class="shimmer" style="width:95px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
+          <div class="shimmer-date-item"><div class="shimmer" style="width:85px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
+        </div>
+      </div>
+
+      <!-- Column 2: Full Table View -->
+      <div class="leads-table-pane">
+        <div class="leads-table-head">
+          <div>
+            <h2 style="font-size:17px; font-weight:600; margin-bottom:2px;" id="table-pane-title">All Leads</h2>
+            <p style="font-size:13px; color:var(--muted);" id="table-pane-sub">Unfamiliar numbers detected in your groups.</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="search-wrap">
+              <svg class="icon-sm search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input id="leads-search" class="input search-input" type="search" placeholder="Search leads…">
+            </div>
+            <button class="btn btn-ghost btn-sm">Export CSV</button>
+          </div>
+        </div>
+        <div class="leads-table-scroll">
+          <div id="leads-table-container">
+            <!-- shimmer rows -->
+            <div id="table-shimmer">
+              <div class="shimmer-row"><div class="shimmer" style="width:120px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:90px;height:13px;"></div><div class="shimmer" style="width:200px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+              <div class="shimmer-row"><div class="shimmer" style="width:100px;height:13px;"></div><div class="shimmer" style="width:115px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div><div class="shimmer" style="width:180px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+              <div class="shimmer-row"><div class="shimmer" style="width:130px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:95px;height:13px;"></div><div class="shimmer" style="width:220px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+              <div class="shimmer-row"><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:115px;height:13px;"></div><div class="shimmer" style="width:85px;height:13px;"></div><div class="shimmer" style="width:190px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+              <div class="shimmer-row"><div class="shimmer" style="width:125px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:90px;height:13px;"></div><div class="shimmer" style="width:210px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+              <div class="shimmer-row"><div class="shimmer" style="width:105px;height:13px;"></div><div class="shimmer" style="width:115px;height:13px;"></div><div class="shimmer" style="width:88px;height:13px;"></div><div class="shimmer" style="width:175px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+              <div class="shimmer-row"><div class="shimmer" style="width:118px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:92px;height:13px;"></div><div class="shimmer" style="width:200px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-bar" id="pagination-bar">
+          <span class="pagination-info" id="pagination-info"></span>
+          <div class="pagination-controls">
+            <button class="btn btn-ghost btn-sm" id="page-prev" disabled>
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              Prev
+            </button>
+            <div id="page-numbers" style="display:flex;gap:4px;"></div>
+            <button class="btn btn-ghost btn-sm" id="page-next">
+              Next
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="scripts/sidebar.js"></script>
+<script src="scripts/app.js"></script>
+<script>
+  // Retrieve column config from localStorage or use defaults
+  const storedCols = localStorage.getItem('zotok_leads_columns');
+  let columns = [
+    { id: 1, name: "Firm Name" },
+    { id: 2, name: "Phone Number" },
+    { id: 3, name: "Contact Name" },
+    { id: 4, name: "Last Message" },
+    { id: 5, name: "Timestamp" },
+    { id: 6, name: "Actions: Reply" }
+  ];
+  if (storedCols) {
+    try { columns = JSON.parse(storedCols); } catch (e) {}
+  }
+
+  const mockLeads = [
+    // Today — 10 leads
+    { id:1,  date:'Today', "Firm Name":"Gupta Enterprises",      "Phone Number":"+91 98765 43210", "Contact Name":"Raj Gupta",      "Last Message":"Hello, do you supply bulk orders to Pune?",              "Timestamp":"Today, 11:48 AM", "Actions: Reply":"" },
+    { id:2,  date:'Today', "Firm Name":"Unknown",                 "Phone Number":"+91 88888 77777", "Contact Name":"Amit",           "Last Message":"Please send me the pricing sheet.",                    "Timestamp":"Today, 11:15 AM", "Actions: Reply":"" },
+    { id:3,  date:'Today', "Firm Name":"Patel Trading Co.",       "Phone Number":"+91 97531 86420", "Contact Name":"Suresh Patel",   "Last Message":"We need 500 units by end of month. Is that possible?", "Timestamp":"Today, 10:52 AM", "Actions: Reply":"" },
+    { id:4,  date:'Today', "Firm Name":"Mehta Bros.",             "Phone Number":"+91 90909 12345", "Contact Name":"Vishal Mehta",   "Last Message":"What's your MOQ for wholesale?",                       "Timestamp":"Today, 10:30 AM", "Actions: Reply":"" },
+    { id:5,  date:'Today', "Firm Name":"Sunrise Retailers",       "Phone Number":"+91 91234 56789", "Contact Name":"Priya Shah",     "Last Message":"Can I get a catalogue with current prices?",           "Timestamp":"Today, 09:58 AM", "Actions: Reply":"" },
+    { id:6,  date:'Today', "Firm Name":"Unknown",                 "Phone Number":"+91 87654 32109", "Contact Name":"Unknown",        "Last Message":"Hi, saw your ad. Interested in your products.",        "Timestamp":"Today, 09:40 AM", "Actions: Reply":"" },
+    { id:7,  date:'Today', "Firm Name":"Joshi Distributors",      "Phone Number":"+91 93333 44444", "Contact Name":"Nikhil Joshi",   "Last Message":"Looking to become a distributor in Nagpur region.",   "Timestamp":"Today, 09:18 AM", "Actions: Reply":"" },
+    { id:8,  date:'Today', "Firm Name":"Kapoor Stores",           "Phone Number":"+91 82222 55555", "Contact Name":"Anita Kapoor",   "Last Message":"Do you offer credit terms for new buyers?",           "Timestamp":"Today, 08:55 AM", "Actions: Reply":"" },
+    { id:9,  date:'Today', "Firm Name":"Unknown",                 "Phone Number":"+91 99001 23456", "Contact Name":"Rohit",          "Last Message":"Rate list please.",                                    "Timestamp":"Today, 08:30 AM", "Actions: Reply":"" },
+    { id:10, date:'Today', "Firm Name":"Bharat Wholesale",        "Phone Number":"+91 77889 90011", "Contact Name":"Dinesh Kumar",   "Last Message":"We buy 2000+ units monthly. Let's discuss terms.",    "Timestamp":"Today, 08:10 AM", "Actions: Reply":"" },
+
+    // Yesterday — 8 leads
+    { id:11, date:'Yesterday', "Firm Name":"Shreeji Logistics",       "Phone Number":"+91 99999 11111", "Contact Name":"Unknown",        "Last Message":"Can we partner for last-mile delivery in Gujarat?",   "Timestamp":"Yesterday, 06:45 PM", "Actions: Reply":"" },
+    { id:12, date:'Yesterday', "Firm Name":"Verma General Store",     "Phone Number":"+91 84444 66666", "Contact Name":"Ramesh Verma",   "Last Message":"Do you have stock of SKU #4421 right now?",           "Timestamp":"Yesterday, 05:30 PM", "Actions: Reply":"" },
+    { id:13, date:'Yesterday', "Firm Name":"Unknown",                 "Phone Number":"+91 76543 21098", "Contact Name":"Deepak",         "Last Message":"Interested in your Diwali offer. Still on?",          "Timestamp":"Yesterday, 04:55 PM", "Actions: Reply":"" },
+    { id:14, date:'Yesterday', "Firm Name":"Rajlakshmi Traders",      "Phone Number":"+91 95678 12345", "Contact Name":"Kavya Rao",      "Last Message":"Can you deliver to Hyderabad? What are freight costs?","Timestamp":"Yesterday, 03:20 PM", "Actions: Reply":"" },
+    { id:15, date:'Yesterday', "Firm Name":"Modi Retail Chain",       "Phone Number":"+91 88001 77002", "Contact Name":"Hitesh Modi",    "Last Message":"We run 12 stores. Interested in exclusive deal.",      "Timestamp":"Yesterday, 02:40 PM", "Actions: Reply":"" },
+    { id:16, date:'Yesterday', "Firm Name":"Unknown",                 "Phone Number":"+91 91111 33333", "Contact Name":"Sunita",         "Last Message":"Hello, how do I place a first order?",                "Timestamp":"Yesterday, 01:15 PM", "Actions: Reply":"" },
+    { id:17, date:'Yesterday', "Firm Name":"Chandra Enterprises",     "Phone Number":"+91 98001 45678", "Contact Name":"Arun Chandra",   "Last Message":"Saw your product demo. Want to set up a call.",       "Timestamp":"Yesterday, 11:30 AM", "Actions: Reply":"" },
+    { id:18, date:'Yesterday', "Firm Name":"Delta Supplies",          "Phone Number":"+91 80000 12345", "Contact Name":"Farhan Sheikh",  "Last Message":"Need 300 units urgent for a client order.",           "Timestamp":"Yesterday, 09:50 AM", "Actions: Reply":"" },
+
+    // 02 May 2026 — 7 leads
+    { id:19, date:'02 May 2026', "Firm Name":"Agarwal & Sons",          "Phone Number":"+91 99887 76655", "Contact Name":"Mohan Agarwal",  "Last Message":"Please share your best price for 1000 units.",        "Timestamp":"02 May 2026, 05:20 PM", "Actions: Reply":"" },
+    { id:20, date:'02 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 87001 23400", "Contact Name":"Pooja",          "Last Message":"Your number was shared by a colleague. Following up.", "Timestamp":"02 May 2026, 04:10 PM", "Actions: Reply":"" },
+    { id:21, date:'02 May 2026', "Firm Name":"Sunrise Exports",          "Phone Number":"+91 94321 09876", "Contact Name":"Arjun Pillai",   "Last Message":"We export FMCG. Can we discuss white-labelling?",     "Timestamp":"02 May 2026, 03:30 PM", "Actions: Reply":"" },
+    { id:22, date:'02 May 2026', "Firm Name":"Lotus General Merchants",  "Phone Number":"+91 78990 11223", "Contact Name":"Rekha Iyer",     "Last Message":"Do you have a minimum order for first-time buyers?",  "Timestamp":"02 May 2026, 02:00 PM", "Actions: Reply":"" },
+    { id:23, date:'02 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 91000 55555", "Contact Name":"Manish",         "Last Message":"Rate? Need by Tuesday.",                              "Timestamp":"02 May 2026, 12:45 PM", "Actions: Reply":"" },
+    { id:24, date:'02 May 2026', "Firm Name":"Yadav Brothers",           "Phone Number":"+91 83456 78901", "Contact Name":"Sanjay Yadav",   "Last Message":"Referred by Ramesh. Looking for quarterly contract.",  "Timestamp":"02 May 2026, 11:10 AM", "Actions: Reply":"" },
+    { id:25, date:'02 May 2026', "Firm Name":"Fortune Retail",           "Phone Number":"+91 96543 21000", "Contact Name":"Neha Tiwari",    "Last Message":"Can I visit your warehouse this week?",               "Timestamp":"02 May 2026, 09:30 AM", "Actions: Reply":"" },
+
+    // 01 May 2026 — 6 leads
+    { id:26, date:'01 May 2026', "Firm Name":"Ratan Hardware",           "Phone Number":"+91 77001 88002", "Contact Name":"Ratan Singh",    "Last Message":"Need bulk hardware fittings. Minimum 5000 units.",    "Timestamp":"01 May 2026, 06:10 PM", "Actions: Reply":"" },
+    { id:27, date:'01 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 90011 22033", "Contact Name":"Geeta",          "Last Message":"Saw you in the distributor group. Interested.",        "Timestamp":"01 May 2026, 04:45 PM", "Actions: Reply":"" },
+    { id:28, date:'01 May 2026', "Firm Name":"Sai Distributors",         "Phone Number":"+91 85432 10987", "Contact Name":"Prasad Kulkarni","Last Message":"We cover Pune and surrounding areas. Let's talk.",    "Timestamp":"01 May 2026, 03:00 PM", "Actions: Reply":"" },
+    { id:29, date:'01 May 2026', "Firm Name":"Apex Wholesale",           "Phone Number":"+91 92222 33444", "Contact Name":"Sumit Jain",     "Last Message":"Do you have GST invoice facility?",                   "Timestamp":"01 May 2026, 01:20 PM", "Actions: Reply":"" },
+    { id:30, date:'01 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 78111 99000", "Contact Name":"Vijay",          "Last Message":"Catalogue?",                                          "Timestamp":"01 May 2026, 11:50 AM", "Actions: Reply":"" },
+    { id:31, date:'01 May 2026', "Firm Name":"Nirmala Enterprises",      "Phone Number":"+91 99234 56780", "Contact Name":"Nirmala Devi",   "Last Message":"Running a new store in Nashik. Can you supply?",      "Timestamp":"01 May 2026, 09:15 AM", "Actions: Reply":"" },
+
+    // 30 Apr 2026 — 6 leads
+    { id:32, date:'30 Apr 2026', "Firm Name":"Prime Retailers",          "Phone Number":"+91 86789 01234", "Contact Name":"Tarun Malhotra", "Last Message":"What's the shelf life of your products?",             "Timestamp":"30 Apr 2026, 05:50 PM", "Actions: Reply":"" },
+    { id:33, date:'30 Apr 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 93010 20030", "Contact Name":"Karan",          "Last Message":"Price list for Apr–Jun quarter please.",              "Timestamp":"30 Apr 2026, 04:00 PM", "Actions: Reply":"" },
+    { id:34, date:'30 Apr 2026', "Firm Name":"Srinivasan & Co.",         "Phone Number":"+91 79000 56789", "Contact Name":"T. Srinivasan",  "Last Message":"We are expanding to Tamil Nadu. Need a supplier.",    "Timestamp":"30 Apr 2026, 02:30 PM", "Actions: Reply":"" },
+    { id:35, date:'30 Apr 2026', "Firm Name":"Balaji Stores",            "Phone Number":"+91 84000 33221", "Contact Name":"Balaji Reddy",   "Last Message":"Do you offer consignment model?",                     "Timestamp":"30 Apr 2026, 01:10 PM", "Actions: Reply":"" },
+    { id:36, date:'30 Apr 2026', "Firm Name":"Triveni Wholesale",        "Phone Number":"+91 97777 44444", "Contact Name":"Geeta Sharma",   "Last Message":"My previous supplier raised rates. Looking for better.","Timestamp":"30 Apr 2026, 11:30 AM", "Actions: Reply":"" },
+    { id:37, date:'30 Apr 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 82000 10101", "Contact Name":"Unknown",        "Last Message":"Quantity pricing available?",                         "Timestamp":"30 Apr 2026, 09:00 AM", "Actions: Reply":"" },
+
+    // 29 Apr 2026 — 5 leads
+    { id:38, date:'29 Apr 2026', "Firm Name":"Anand Pharma Dist.",       "Phone Number":"+91 95000 11223", "Contact Name":"Anand Bhatt",    "Last Message":"We distribute pharma. Can we cross-sell?",            "Timestamp":"29 Apr 2026, 06:30 PM", "Actions: Reply":"" },
+    { id:39, date:'29 Apr 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 78456 32100", "Contact Name":"Harish",         "Last Message":"Interested. Call me after 6 PM.",                     "Timestamp":"29 Apr 2026, 04:45 PM", "Actions: Reply":"" },
+    { id:40, date:'29 Apr 2026', "Firm Name":"Omkar Trading",            "Phone Number":"+91 99100 22300", "Contact Name":"Omkar Desai",    "Last Message":"Need samples before placing bulk order.",             "Timestamp":"29 Apr 2026, 02:20 PM", "Actions: Reply":"" },
+    { id:41, date:'29 Apr 2026', "Firm Name":"Krishna Super Market",     "Phone Number":"+91 83001 45600", "Contact Name":"Lata Krishna",   "Last Message":"Do you deliver to Kolhapur?",                         "Timestamp":"29 Apr 2026, 12:00 PM", "Actions: Reply":"" },
+    { id:42, date:'29 Apr 2026', "Firm Name":"Supreme Distributors",     "Phone Number":"+91 91500 67890", "Contact Name":"Rahul Joshi",    "Last Message":"Looking for a long-term supply agreement.",           "Timestamp":"29 Apr 2026, 10:10 AM", "Actions: Reply":"" },
+  ];
+
+  document.getElementById('leads-detected-count').textContent = `${mockLeads.length} leads detected`;
+
+  // --- Build date groups ---
+  const dateGroups = [];
+  mockLeads.forEach(lead => {
+    let group = dateGroups.find(g => g.date === lead.date);
+    if (!group) { group = { date: lead.date, leads: [] }; dateGroups.push(group); }
+    group.leads.push(lead);
+  });
+
+  // --- Render date list (Column 1) ---
+  const leadsList = document.getElementById('leads-list');
+  leadsList.innerHTML = dateGroups.map(g => `
+    <div class="lead-date-item" data-date="${g.date}">
+      <span class="lead-date-label">${g.date}</span>
+      <span class="lead-date-count">${g.leads.length}</span>
+    </div>`).join('');
+
+  // --- Render Table (Column 2) ---
+  function renderTable(leads) {
+    let html = '<div class="table-wrap"><table class="table"><thead><tr>';
+    columns.forEach(col => { html += `<th>${col.name}</th>`; });
+    html += '</tr></thead><tbody>';
+    leads.forEach(lead => {
+      html += '<tr>';
+      columns.forEach(col => {
+        if (col.name === 'Actions: Reply') {
+          html += `<td><button class="btn btn-ghost btn-sm">Reply in WhatsApp</button></td>`;
+        } else {
+          const val = lead[col.name] || '<span style="color:var(--faint)">—</span>';
+          html += col.name === 'Last Message'
+            ? `<td><div class="table-message-preview" style="max-width:280px;">${val}</div></td>`
+            : `<td>${val}</td>`;
+        }
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    return html;
+  }
+
+  const tableTitle  = document.getElementById('table-pane-title');
+  const tableSub    = document.getElementById('table-pane-sub');
+  const pageInfo    = document.getElementById('pagination-info');
+  const pageNums    = document.getElementById('page-numbers');
+  const prevBtn     = document.getElementById('page-prev');
+  const nextBtn     = document.getElementById('page-next');
+  const searchInput = document.getElementById('leads-search');
+  const PAGE_SIZE   = 10;
+
+  let activeleads = [];
+  let currentPage = 1;
+
+  function filteredLeads() {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) return activeleads;
+    return activeleads.filter(lead =>
+      Object.values(lead).some(v => String(v).toLowerCase().includes(q))
+    );
+  }
+
+  function renderPage() {
+    const leads = filteredLeads();
+    const total = leads.length;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    currentPage = Math.min(currentPage, totalPages);
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const slice = leads.slice(start, start + PAGE_SIZE);
+
+    document.getElementById('leads-table-container').innerHTML = renderTable(slice);
+
+    // Info
+    const from = total === 0 ? 0 : start + 1;
+    const to   = Math.min(start + PAGE_SIZE, total);
+    pageInfo.textContent = `${from}–${to} of ${total}`;
+
+    // Prev / Next
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
+
+    // Page number buttons (show up to 7, with ellipsis logic)
+    pageNums.innerHTML = '';
+    const range = buildPageRange(currentPage, totalPages);
+    range.forEach(p => {
+      if (p === '…') {
+        const el = document.createElement('span');
+        el.textContent = '…';
+        el.style.cssText = 'padding:0 4px;color:var(--muted);font-size:13px;align-self:center;';
+        pageNums.appendChild(el);
+      } else {
+        const btn = document.createElement('button');
+        btn.className = 'page-num' + (p === currentPage ? ' active' : '');
+        btn.textContent = p;
+        btn.addEventListener('click', () => { currentPage = p; renderPage(); });
+        pageNums.appendChild(btn);
+      }
+    });
+  }
+
+  function buildPageRange(cur, total) {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    if (cur <= 4) return [1, 2, 3, 4, 5, '…', total];
+    if (cur >= total - 3) return [1, '…', total-4, total-3, total-2, total-1, total];
+    return [1, '…', cur-1, cur, cur+1, '…', total];
+  }
+
+  function selectDate(dateEl) {
+    document.querySelectorAll('.lead-date-item').forEach(el => el.classList.remove('active'));
+    dateEl.classList.add('active');
+    const group = dateGroups.find(g => g.date === dateEl.dataset.date);
+    tableTitle.textContent = dateEl.dataset.date;
+    tableSub.textContent = `${group.leads.length} lead${group.leads.length !== 1 ? 's' : ''} detected`;
+    activeleads = group.leads;
+    currentPage = 1;
+    searchInput.value = '';
+    renderPage();
+  }
+
+  prevBtn.addEventListener('click', () => { currentPage--; renderPage(); });
+  nextBtn.addEventListener('click', () => { currentPage++; renderPage(); });
+  searchInput.addEventListener('input', () => { currentPage = 1; renderPage(); });
+
+  // Select Today by default
+  selectDate(leadsList.querySelector('.lead-date-item'));
+
+  // --- Date item click ---
+  leadsList.addEventListener('click', e => {
+    const item = e.target.closest('.lead-date-item');
+    if (item) selectDate(item);
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en" data-loading>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat — Zotok</title>
+<link rel="stylesheet" href="styles/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body data-page="chat">
+
+<div class="app">
+
+  <div id="sidebar-host"></div>
+
+  <!-- Main -->
+  <main class="main" style="position: relative; z-index: 1;">
+    <div class="bg-gradient" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: -10; background-color: var(--white); background: radial-gradient(125% 125% at 50% 10%, var(--white) 40%, #63e 100%);"></div>
+
+
+    <div class="chat-shell">
+      <div class="chat-scroll" id="chat-scroll">
+
+        <!-- Empty state with prompts -->
+        <div class="chat-empty" id="chat-empty">
+          <div class="chat-empty-inner">
+            <div class="hero-badge">Free plan <span class="divider">|</span> <span class="upgrade">Upgrade</span></div>
+            <h1 class="hero-title">What can I do for you?</h1>
+          </div>
+        </div>
+
+        <div class="chat-thread" id="chat-thread"></div>
+      </div>
+
+      <!-- Composer -->
+      <div class="composer-wrap" id="composer-wrap">
+        <div class="composer-container">
+          <form class="composer" id="composer" onsubmit="event.preventDefault()">
+            <textarea id="composer-input" rows="1" placeholder="Assign a task or ask anything"></textarea>
+            <div class="composer-actions">
+              <div class="action-group">
+                <button type="button" class="icon-btn-round" aria-label="Add"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+                <button type="button" class="icon-btn-round" aria-label="Attach"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+                <button type="button" class="icon-btn-round" aria-label="Computer"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8m-4-4v4"/></svg></button>
+              </div>
+              <div class="action-group">
+                <button type="button" class="icon-btn-round" aria-label="Voice"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></button>
+                <button type="button" class="send-btn" id="send-btn" aria-label="Send" disabled>
+                  <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="prompt-pills" id="prompt-pills">
+            <button class="prompt-pill" data-prompt="summarize"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg> Summarize</button>
+            <button class="prompt-pill" data-prompt="decisions"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg> Key decisions</button>
+            <button class="prompt-pill" data-prompt="urgent"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg> Urgent</button>
+            <button class="prompt-pill" data-prompt="more">More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Connect modal -->
+<div class="modal-backdrop" id="modal-connect" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2>Connect WhatsApp</h2>
+        <p class="lede">Link your number so Zotok can read the groups you choose.</p>
+      </div>
+      <button class="icon-btn" data-close="modal-connect" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="tabs" data-tabs="connect">
+        <div class="tab active" data-tab="qr">QR scan</div>
+        <div class="tab" data-tab="code">Pairing code</div>
+      </div>
+
+      <div data-tab-panels="connect">
+        <div class="tab-panel active" data-panel="qr">
+          <div class="qr-frame">
+            <div class="qr-cells">
+              <!-- decorative QR pattern -->
+              <span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
+              <span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
+              <span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
+              <span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span>
+              <span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span>
+              <span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
+              <span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span>
+              <span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span>
+              <span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span>
+              <span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
+              <span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span>
+              <span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span></span><span class="off"></span>
+            </div>
+            <div class="qr-corner-bl"></div>
+          </div>
+          <ol class="steps">
+            <li><span>Open WhatsApp on your phone, then tap <strong>Settings → Linked devices</strong>.</span></li>
+            <li><span>Tap <strong>Link a device</strong> and point your camera at this code.</span></li>
+          </ol>
+        </div>
+
+        <div class="tab-panel" data-panel="code">
+          <div class="code-box">
+            <div class="code-cell">7</div>
+            <div class="code-cell">K</div>
+            <div class="code-cell">9</div>
+            <div class="code-cell">M</div>
+            <div class="code-cell">2</div>
+            <div class="code-cell">B</div>
+            <div class="code-cell">4</div>
+            <div class="code-cell">F</div>
+          </div>
+          <ol class="steps">
+            <li><span>On your phone, open WhatsApp and go to <strong>Linked devices → Link with phone number</strong>.</span></li>
+            <li><span>Enter the 8-character code shown above. The code refreshes every minute.</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="connect-state" id="connect-state" style="margin-top:18px">
+        <span class="dot dot-warn"></span> Waiting for WhatsApp…
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" data-close="modal-connect">Cancel</button>
+      <button class="btn btn-primary btn-sm" data-fake-connect>Simulate connection</button>
+    </div>
+  </div>
+</div>
+
+<!-- Group selection modal -->
+<div class="modal-backdrop" id="modal-groups" role="dialog" aria-modal="true">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <div>
+        <h2>Choose groups to sync</h2>
+        <p class="lede">On the Free plan you can sync up to 10 groups. Locked groups unlock with Pro.</p>
+      </div>
+      <button class="icon-btn" data-close="modal-groups" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="group-counter" id="group-counter">
+        <span>Selected groups</span>
+        <span><strong>0/10</strong> on Free plan</span>
+      </div>
+      <div class="group-list" id="group-list"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" data-close="modal-groups">Maybe later</button>
+      <button id="sync-btn" class="btn btn-primary btn-sm" data-mark-connected disabled>
+        Sync messages
+        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.6-7.2"/><path d="M21 3v6h-6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Populate 20 mock groups; first 10 selectable, rest locked.
+(function () {
+  const groups = [
+    ["Sales – Mumbai", "32 members · 84 msgs/day"],
+    ["Distributors – South", "21 members · 41 msgs/day"],
+    ["Retail Partners – Pune", "18 members · 28 msgs/day"],
+    ["Founders Roundtable", "9 members · 12 msgs/day"],
+    ["Marketing Sprint Q2", "14 members · 36 msgs/day"],
+    ["Customer Support Escalations", "7 members · 19 msgs/day"],
+    ["Logistics – North Zone", "23 members · 53 msgs/day"],
+    ["New Leads – Trade Fair", "62 members · 109 msgs/day"],
+    ["Field Reps – West", "16 members · 22 msgs/day"],
+    ["Brand Ambassadors", "44 members · 8 msgs/day"],
+    ["Diwali Campaign Crew", "11 members · 6 msgs/day"],
+    ["Vendor Onboarding 2026", "19 members · 14 msgs/day"],
+    ["Internal Eng Standup", "6 members · 3 msgs/day"],
+    ["Channel Partners – East", "27 members · 31 msgs/day"],
+    ["Distributor Margin Review", "12 members · 7 msgs/day"],
+    ["Returns & Refunds", "9 members · 18 msgs/day"],
+    ["Wholesale Buyers – Delhi", "33 members · 47 msgs/day"],
+    ["Pop-up Store Coordinators", "15 members · 11 msgs/day"],
+    ["Press & PR Contacts", "21 members · 4 msgs/day"],
+    ["Investor Updates", "5 members · 2 msgs/day"]
+  ];
+  const list = document.getElementById('group-list');
+  groups.forEach(([name, sub], i) => {
+    const locked = i >= 10;
+    const initials = name.split(/\s|-/).filter(Boolean).slice(0,2).map(s => s[0]).join('').toUpperCase();
+    const row = document.createElement('div');
+    row.className = 'group-row' + (locked ? ' locked' : '');
+    row.innerHTML = `
+      <div class="li-icon">${initials}</div>
+      <div class="group-meta">
+        <div class="group-name">${name}</div>
+        <div class="group-sub">${sub}</div>
+      </div>
+      <div class="checkbox">
+        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      ${locked ? `<div class="lock-overlay"><span class="lock-pill"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Upgrade</span></div>` : ''}
+    `;
+    list.appendChild(row);
+  });
+})();
+</script>
+<script src="scripts/sidebar.js"></script>
+<script src="scripts/app.js"></script>
+</body>
+</html>
