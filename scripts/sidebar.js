@@ -2,101 +2,127 @@
 (function () {
   const host = document.getElementById('sidebar-host');
   if (!host) return;
+
+  // Figma icon assets (expires 7 days from fetch)
+  const IC = {
+    brand:      'https://www.figma.com/api/mcp/asset/8874ab92-d105-471b-b17d-1b1bc10b9cb4',
+    toggle:     'https://www.figma.com/api/mcp/asset/0f7fdc6d-8914-4969-aa66-7e5c12ade250',
+    newChat:    'https://www.figma.com/api/mcp/asset/1d40fffc-2ed9-4139-9ff0-81d744269bc0',
+    category:   'https://www.figma.com/api/mcp/asset/821e14c3-be0d-452b-80e7-d802808a46c0',
+    leads:      'https://www.figma.com/api/mcp/asset/986fd26d-33b3-4060-bf93-895bc187711c',
+    sheets:     'https://www.figma.com/api/mcp/asset/f8e44bf2-b953-4629-9dc2-12d048e4e5fc',
+    karamchari: 'https://www.figma.com/api/mcp/asset/8680c74b-81c4-4478-ada7-b57d06d9e878',
+    connectors: 'https://www.figma.com/api/mcp/asset/764702f4-710d-4920-a8a3-3159d452c3f6',
+    whatsapp:   'https://www.figma.com/api/mcp/asset/e7fdb246-50b1-49a6-942f-ecb4efd714da',
+    search:     'https://www.figma.com/api/mcp/asset/be06c1cb-d4f8-4c95-9213-4024c26cdb9d',
+    settings:   'https://www.figma.com/api/mcp/asset/0f75a375-65ea-4195-934a-b83df91870fe',
+    theme:      'https://www.figma.com/api/mcp/asset/7f9db0b2-a260-4926-b10c-25f80ef6d34c',
+  };
+
+  const img = (src, alt = '') =>
+    `<img src="${src}" alt="${alt}" class="nav-img-icon">`;
+
   host.outerHTML = `
   <aside class="sidebar" data-screen-label="Sidebar">
     <div class="sidebar-head">
       <a href="dashboard.html" class="brand">
-        <div class="brand-mark">Z</div>
+        <div class="brand-mark">${img(IC.brand, 'Zotok')}</div>
         <span class="brand-text">Zotok</span>
       </a>
       <button class="icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+        ${img(IC.toggle, 'Toggle')}
       </button>
     </div>
 
-
     <nav class="nav">
-      <div class="nav-section-label">Workspace</div>
-      <a href="dashboard.html" class="nav-item" data-nav="chat" data-tooltip="Chat">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
-        <span class="nav-label">Chat</span>
-      </a>
-      <a href="agents.html" class="nav-item" data-nav="agents" data-tooltip="Karamchari">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><path d="M8 16h.01"/><path d="M16 16h.01"/></svg>
-        <span class="nav-label">Karamchari</span>
-      </a>
-      <a href="connecters.html" class="nav-item" data-nav="connecters" data-tooltip="Connecters">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6"/><path d="M15 2v6"/><path d="M12 17v5"/><path d="M5 8h14"/><path d="M6 11V8h12v3a6 6 0 1 1-12 0Z"/></svg>
-        <span class="nav-label">Connecters</span>
-      </a>
-      <a href="whatsapp.html" class="nav-item" data-nav="whatsapp" data-tooltip="WhatsApp Sync">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.6-7.2"/><path d="M21 3v6h-6"/></svg>
-        <span class="nav-label">WhatsApp Sync</span>
-      </a>
-      <div class="nav-section-label" id="label-deployed-Karamchari">Deployed Karamchari</div>
-      <div id="deployed-Karamcharis-list">
-        <!-- Rendered via JS -->
+      <div class="nav-group">
+        <a href="dashboard.html" class="new-chat" data-nav="chat" data-tooltip="New Chat">
+          <span class="nav-icon">${img(IC.newChat)}</span>
+          <span class="nav-label">New Chat</span>
+        </a>
       </div>
 
+      <div class="nav-group" id="deployed-group">
+        <div class="nav-section-label" id="label-deployed-kamdaris">Deployed Kamdaris</div>
+        <div id="deployed-kamdaris-list"></div>
+      </div>
 
-      <div class="nav-section-label">Recent</div>
-      <a href="dashboard.html?chat=mumbai" class="nav-recent"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="truncate">Sales – Mumbai weekly</span></a>
-      <a href="dashboard.html?chat=margin" class="nav-recent"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="truncate">Distributor margin call</span></a>
-      <a href="dashboard.html?chat=pune" class="nav-recent"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="truncate">Pune delivery delays</span></a>
+      <div class="nav-group">
+        <div class="nav-section-label">Workspace</div>
+        <a href="agents.html" class="nav-item" data-nav="agents" data-tooltip="Karamcharis">
+          <span class="nav-icon">${img(IC.karamchari)}</span>
+          <span class="nav-label">Karamcharis</span>
+        </a>
+        <a href="connecters.html" class="nav-item" data-nav="connecters" data-tooltip="Connectors">
+          <span class="nav-icon">${img(IC.connectors)}</span>
+          <span class="nav-label">Connectors</span>
+        </a>
+        <a href="whatsapp.html" class="nav-item" data-nav="whatsapp" data-tooltip="WhatsApp Sync">
+          <span class="nav-icon">${img(IC.whatsapp)}</span>
+          <span class="nav-label">WhatsApp Sync</span>
+        </a>
+        <a href="#" class="nav-item" data-nav="search" data-tooltip="Search">
+          <span class="nav-icon">${img(IC.search)}</span>
+          <span class="nav-label">Search</span>
+        </a>
+      </div>
     </nav>
 
     <div class="sidebar-footer">
-      <a href="profile.html" class="footer-item" data-nav="profile" data-tooltip="Profile">
-        <div class="avatar">RP</div>
-        <span class="footer-label">Ravi Patel</span>
+      <a href="profile.html" class="sidebar-user" data-nav="profile" data-tooltip="Profile">
+        <div class="avatar">P</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Prathik Rati</span>
+          <span class="sidebar-user-phone">+91 93883 22332</span>
+        </div>
       </a>
-      <button class="footer-item" type="button" data-theme-toggle data-tooltip="Switch theme">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-        <span class="footer-label">Switch theme</span>
-      </button>
-      <button class="footer-item" type="button" data-action="logout" data-tooltip="Log out">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        <span class="footer-label">Log out</span>
-      </button>
+      <div class="sidebar-footer-actions">
+        <button class="footer-icon-btn" type="button" data-theme-toggle data-tooltip="Switch theme" aria-label="Switch theme">
+          ${img(IC.theme)}
+        </button>
+        <button class="footer-icon-btn" type="button" data-action="logout" data-tooltip="Log out" aria-label="Log out">
+          ${img(IC.settings)}
+        </button>
+      </div>
     </div>
   </aside>
   `;
 
   window.syncSidebar = function () {
-    const list = document.getElementById('deployed-Karamcharis-list');
-    const label = document.getElementById('label-deployed-Karamchari');
+    const list = document.getElementById('deployed-kamdaris-list');
+    const deployedGroup = document.getElementById('deployed-group');
     if (!list) return;
 
-    const Karamcharis = [
+    const kamdaris = [
       {
         key: 'category', defaultActive: true,
         href: 'category-view.html', nav: 'category-view',
-        tooltip: 'Categorise message groups', label: 'Categorise messages',
-        icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>`
+        tooltip: 'Category Messages', label: 'Category Messages',
+        icon: img(IC.category),
       },
       {
         key: 'leads', defaultActive: false,
         href: 'leads-view.html', nav: 'leads-view',
-        tooltip: 'Collect new leads', label: 'New leads',
-        icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6"/><path d="M19 8v6"/></svg>`
+        tooltip: 'New Leads', label: 'New Leads',
+        icon: img(IC.leads),
       },
       {
         key: 'sheets', defaultActive: false,
         href: 'groups-to-sheets.html', nav: 'groups-to-sheets',
-        tooltip: 'Groups to sheets', label: 'Groups to sheets',
-        icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>`
-      }
+        tooltip: 'Groups to Sheets', label: 'Groups to Sheets',
+        icon: img(IC.sheets),
+      },
     ];
 
     let html = '';
     let count = 0;
-    Karamcharis.forEach(k => {
+    kamdaris.forEach(k => {
       const stored = localStorage.getItem(`zotok_agent_${k.key}`);
       const isActive = stored !== null ? stored === 'active' : k.defaultActive;
       if (isActive) {
         html += `
           <a href="${k.href}" class="nav-item" data-nav="${k.nav}" data-tooltip="${k.tooltip}">
-            ${k.icon}
+            <span class="nav-icon">${k.icon}</span>
             <span class="nav-label">${k.label}</span>
           </a>`;
         count++;
@@ -104,7 +130,8 @@
     });
 
     list.innerHTML = html;
-    if (label) label.style.display = count > 0 ? 'block' : 'none';
+    // Show/hide whole group via hidden attribute (not inline style) so CSS can override cleanly
+    if (deployedGroup) deployedGroup.hidden = count === 0;
 
     const page = document.body.dataset.page;
     if (page) {
@@ -116,4 +143,3 @@
 
   window.syncSidebar();
 })();
-

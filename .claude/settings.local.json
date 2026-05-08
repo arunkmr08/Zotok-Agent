@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "mcp__claude_ai_Figma__get_design_context",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s \"https://www.figma.com/api/mcp/asset/a863f379-145e-4dab-8be8-83b96b8ea95a\" -o img_category)",
+      "Bash(curl -s \"https://www.figma.com/api/mcp/asset/5ed1ca0d-60c6-46e4-b7ed-5b3c17d23834\" -o img_leads)",
+      "Bash(curl -s \"https://www.figma.com/api/mcp/asset/ccca3514-a441-44ba-9856-52ecfb32341b\" -o img_sheets)",
+      "Bash(curl -s \"https://www.figma.com/api/mcp/asset/abe2bd1f-4439-4c1c-b40f-4b04657c6f79\" -o img_deploy)",
+      "Bash(python3 *)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/4777faff-f38f-412f-91a6-4357b44324a5\" -o cat_panel_icon.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/87bd891c-aa8e-4854-b9d0-e2225f0f1013\" -o cat_search.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/f9f0d97b-123a-4754-8124-7ae00e6bb8c1\" -o cat_export.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/c5344f92-1bbb-497a-925f-e940e8516900\" -o cat_details.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/2e65b22e-49f6-49a0-a078-f3415f692bc6\" -o cat_avatars.png)",
+      "Bash(git -C \"/Users/zono/Desktop/Zotok Agent v2\" log --all --oneline --stat)",
+      "Bash(git *)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/6f539d70-4a98-4642-8c3f-5a8684ecbf2e\" -o fi_search.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/aab464af-9c7c-4387-8eea-790e3bef8a62\" -o fi_export.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/4450e142-f5bb-401c-bc8f-19f258520b26\" -o fi_details.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/a576fbc9-18aa-42d3-a434-2961bda77932\" -o av_rajesh.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/0426e412-95ce-4713-bdb1-a4aaf9c83871\" -o av_kumar.png)"
+    ]
+  }
+}
