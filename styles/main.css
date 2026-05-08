@@ -216,7 +216,7 @@ h3 { font-size: var(--text-subheading); letter-spacing: -0.2px; }
   flex: none;
   overflow: hidden;
 }
-.brand-mark .nav-img-icon { width: 20px; height: 20px; }
+.brand-mark .nav-img-icon { width: 22px; height: 16px; }
 
 .nav-img-icon { width: 18px; height: 18px; display: block; flex: none; }
 .icon-btn .nav-img-icon { width: 18px; height: 18px; }
@@ -362,6 +362,32 @@ h3 { font-size: var(--text-subheading); letter-spacing: -0.2px; }
 @keyframes tooltip-fade-in {
   from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
   to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+@keyframes tooltip-fade-in-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Footer action button tooltips — always visible, appear above */
+.sidebar-footer-actions [data-tooltip] { position: relative; }
+.sidebar-footer-actions [data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--white);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  animation: tooltip-fade-in-up 0.15s ease-in-out 0.1s forwards;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .nav-recent {

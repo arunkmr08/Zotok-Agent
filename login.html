@@ -13,7 +13,7 @@
 
 <main class="login-card">
   <div class="login-brand">
-    <div class="brand-mark">Z</div>
+    <div class="brand-mark"><img src="assets/icons/8874ab92-d105-471b-b17d-1b1bc10b9cb4.svg" alt="Zotok" class="nav-img-icon" style="width:22px;height:16px;"></div>
     <div class="login-brand-text">Zotok</div>
   </div>
 
@@ -41,7 +41,7 @@
   <!-- Step 2: OTP -->
   <section id="otp-step" style="display:none">
     <h1>Enter the code</h1>
-    <p class="lede">We sent a 4-digit code to <strong id="phone-echo">+91 …</strong></p>
+    <p class="lede">We sent a 4-digit code to <strong id="phone-echo">+91 …</strong> <button id="otp-back" class="tiny-link" type="button">Change</button></p>
 
     <div class="otp-row" style="margin-bottom:24px">
       <input class="otp-cell" inputmode="numeric" maxlength="1" autocomplete="one-time-code" value="1">
@@ -53,8 +53,7 @@
     <button id="otp-verify" class="btn btn-primary btn-block">Verify and continue</button>
 
     <p class="login-foot">
-      Didn't get it? <button class="tiny-link" type="button">Resend in 30s</button> ·
-      <button id="otp-back" class="tiny-link" type="button">Change number</button>
+      Didn't get it? <button class="tiny-link" type="button">Resend in 30s</button>
     </p>
   </section>
 </main>

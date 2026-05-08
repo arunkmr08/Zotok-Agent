@@ -5,18 +5,19 @@
 
   // Figma icon assets (expires 7 days from fetch)
   const IC = {
-    brand:      'assets/icons/8874ab92-d105-471b-b17d-1b1bc10b9cb4.svg',
-    toggle:     'assets/icons/0f7fdc6d-8914-4969-aa66-7e5c12ade250.svg',
-    newChat:    'assets/icons/1d40fffc-2ed9-4139-9ff0-81d744269bc0.svg',
-    category:   'assets/icons/821e14c3-be0d-452b-80e7-d802808a46c0.svg',
-    leads:      'assets/icons/986fd26d-33b3-4060-bf93-895bc187711c.svg',
-    sheets:     'assets/icons/f8e44bf2-b953-4629-9dc2-12d048e4e5fc.svg',
+    brand: 'assets/icons/8874ab92-d105-471b-b17d-1b1bc10b9cb4.svg',
+    toggle: 'assets/icons/0f7fdc6d-8914-4969-aa66-7e5c12ade250.svg',
+    newChat: 'assets/icons/1d40fffc-2ed9-4139-9ff0-81d744269bc0.svg',
+    category: 'assets/icons/821e14c3-be0d-452b-80e7-d802808a46c0.svg',
+    leads: 'assets/icons/986fd26d-33b3-4060-bf93-895bc187711c.svg',
+    sheets: 'assets/icons/f8e44bf2-b953-4629-9dc2-12d048e4e5fc.svg',
     karamchari: 'assets/icons/8680c74b-81c4-4478-ada7-b57d06d9e878.svg',
     connectors: 'assets/icons/764702f4-710d-4920-a8a3-3159d452c3f6.svg',
-    whatsapp:   'assets/icons/e7fdb246-50b1-49a6-942f-ecb4efd714da.svg',
-    search:     'assets/icons/be06c1cb-d4f8-4c95-9213-4024c26cdb9d.svg',
-    settings:   'assets/icons/0f75a375-65ea-4195-934a-b83df91870fe.svg',
-    theme:      'assets/icons/7f9db0b2-a260-4926-b10c-25f80ef6d34c.svg',
+    whatsapp: 'assets/icons/e7fdb246-50b1-49a6-942f-ecb4efd714da.svg',
+    search: 'assets/icons/be06c1cb-d4f8-4c95-9213-4024c26cdb9d.svg',
+    settings: 'assets/icons/0f75a375-65ea-4195-934a-b83df91870fe.svg',
+    theme: 'assets/icons/d90f2275-bb5c-435b-a89c-ba1e0566e322.svg',
+    logout: 'assets/icons/1849420d-5c1d-470d-8e5e-8e0f1bc9a5b5.svg',
   };
 
   const img = (src, alt = '') =>
@@ -43,12 +44,12 @@
       </div>
 
       <div class="nav-group" id="deployed-group">
-        <div class="nav-section-label" id="label-deployed-kamdaris">Deployed Kamdaris</div>
-        <div id="deployed-kamdaris-list"></div>
+        <div class="nav-section-label" id="label-deployed-Karmacharis">Deployed Karmacharis</div>
+        <div id="deployed-Karmacharis-list"></div>
       </div>
 
       <div class="nav-group">
-        <div class="nav-section-label">Workspace</div>
+        <div class="nav-section-label">Modules</div>
         <a href="agents.html" class="nav-item" data-nav="agents" data-tooltip="Karamcharis">
           <span class="nav-icon">${img(IC.karamchari)}</span>
           <span class="nav-label">Karamcharis</span>
@@ -80,8 +81,8 @@
         <button class="footer-icon-btn" type="button" data-theme-toggle data-tooltip="Switch theme" aria-label="Switch theme">
           ${img(IC.theme)}
         </button>
-        <button class="footer-icon-btn" type="button" data-action="logout" data-tooltip="Log out" aria-label="Log out">
-          ${img(IC.settings)}
+        <button class="footer-icon-btn" type="button" data-logout data-tooltip="Log out" aria-label="Log out">
+          ${img(IC.logout)}
         </button>
       </div>
     </div>
@@ -89,7 +90,7 @@
   `;
 
   window.syncSidebar = function () {
-    const list = document.getElementById('deployed-kamdaris-list');
+    const list = document.getElementById('deployed-Karmacharis-list');
     const deployedGroup = document.getElementById('deployed-group');
     if (!list) return;
 
