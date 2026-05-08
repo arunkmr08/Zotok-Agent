@@ -17,7 +17,7 @@
       height: 100vh;
     }
     .cat-panel {
-      width: 300px;
+      width: 260px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
@@ -85,10 +85,10 @@
       box-shadow: 0px 8px 16px rgba(0,0,0,0.06);
       flex: 1;
       min-height: 0;
-      padding: 20px;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0;
       overflow: hidden;
     }
     .cat-card-head {
@@ -96,8 +96,9 @@
       align-items: flex-start;
       justify-content: space-between;
       flex-shrink: 0;
+      padding: 20px 20px 14px;
     }
-    .cat-card-title { font-weight: 600; font-size: 20px; color: #34322d; line-height: normal; letter-spacing: -0.33px; }
+    .cat-card-title { font-weight: 600; font-size: 18px; color: #34322d; line-height: normal; letter-spacing: -0.33px; }
     .cat-card-sub { font-size: 14px; color: #858481; line-height: 18px; margin-top: 3px; letter-spacing: -0.09px; }
     .cat-card-actions { display: flex; gap: 12px; align-items: center; }
     .cat-btn {
@@ -120,8 +121,7 @@
     .cat-table {
       flex: 1;
       min-height: 0;
-      border: 1px solid rgba(0,0,0,0.06);
-      border-radius: 14px;
+      border-top: 1px solid rgba(0,0,0,0.06);
       overflow: auto;
       display: flex;
       flex-direction: column;
@@ -131,14 +131,15 @@
       border-bottom: 1px solid rgba(0,0,0,0.06);
       flex-shrink: 0;
     }
+    .cat-row:last-child { border-bottom: none; }
     .cat-row:not(.cat-row--head) {
       transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
       transition-timing-function: cubic-bezier(.4, 0, .2, 1);
       transition-duration: .15s;
     }
     .cat-row:not(.cat-row--head):hover { background: #37352f0a; cursor: pointer; }
-    .cat-row--head { font-size: 14px; color: #858481; font-weight: 400; letter-spacing: -0.09px; }
-    .cat-row--head .cat-cell { padding: 16px 12px; align-items: center; font-weight: 400; color: #858481; }
+    .cat-row--head { font-size: 14px; color: #858481; font-weight: 400; letter-spacing: -0.09px; position: sticky; top: 0; background: white; z-index: 2; }
+    .cat-row--head .cat-cell { padding: 12px 12px; align-items: center; font-weight: 500; color: #858481; }
     .cat-row--head .cat-cell--time { padding-left: 24px; }
     .cat-cell {
       font-size: 14px;
@@ -179,7 +180,7 @@
       <div class="cat-panel">
         <div class="cat-panel-head">
           <div class="cat-panel-icon">
-            <img src="https://www.figma.com/api/mcp/asset/4777faff-f38f-412f-91a6-4357b44324a5" alt="">
+            <img src="assets/icons/4777faff-f38f-412f-91a6-4357b44324a5.svg" alt="">
           </div>
           <span class="cat-panel-title">Category Messages</span>
         </div>
@@ -206,11 +207,11 @@
             </div>
             <div class="cat-card-actions">
               <button class="cat-btn">
-                <img src="https://www.figma.com/api/mcp/asset/aab464af-9c7c-4387-8eea-790e3bef8a62" alt="">
+                <img src="assets/icons/aab464af-9c7c-4387-8eea-790e3bef8a62.svg" alt="">
                 Export
               </button>
               <button class="cat-btn">
-                <img src="https://www.figma.com/api/mcp/asset/4450e142-f5bb-401c-bc8f-19f258520b26" alt="">
+                <img src="assets/icons/4450e142-f5bb-401c-bc8f-19f258520b26.svg" alt="">
                 Details
               </button>
             </div>
@@ -232,7 +233,7 @@
               <div class="cat-cell cat-cell--time">02:01 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/a576fbc9-18aa-42d3-a434-2961bda77932" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/a576fbc9-18aa-42d3-a434-2961bda77932.svg" alt=""></div>
                   <span>Rajesh Traders</span>
                 </div>
               </div>
@@ -245,7 +246,7 @@
               <div class="cat-cell cat-cell--time">01:42 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/0426e412-95ce-4713-bdb1-a4aaf9c83871" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/0426e412-95ce-4713-bdb1-a4aaf9c83871.svg" alt=""></div>
                   <span>Kumar Enterprises</span>
                 </div>
               </div>
@@ -258,7 +259,7 @@
               <div class="cat-cell cat-cell--time">01:12 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/4b98d069-5697-4d3e-8c58-24d83897fd22" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/4b98d069-5697-4d3e-8c58-24d83897fd22.svg" alt=""></div>
                   <span>Sundar Exports</span>
                 </div>
               </div>
@@ -271,7 +272,7 @@
               <div class="cat-cell cat-cell--time">01:01 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/b5248b5d-b25f-480a-b1fb-394d4f6e3a1a" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/b5248b5d-b25f-480a-b1fb-394d4f6e3a1a.svg" alt=""></div>
                   <span>Lakshmi Supplies</span>
                 </div>
               </div>
@@ -284,7 +285,7 @@
               <div class="cat-cell cat-cell--time">12:58 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/813af8fc-6a41-4d5c-88ba-13a06822ecda" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/813af8fc-6a41-4d5c-88ba-13a06822ecda.svg" alt=""></div>
                   <span>Vijay &amp; Sons</span>
                 </div>
               </div>
@@ -297,7 +298,7 @@
               <div class="cat-cell cat-cell--time">12:31 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/b4416ba0-03f1-458c-838a-38e94d17c6a4" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/b4416ba0-03f1-458c-838a-38e94d17c6a4.svg" alt=""></div>
                   <span>Hariharan Associates</span>
                 </div>
               </div>
@@ -310,7 +311,7 @@
               <div class="cat-cell cat-cell--time">12:29 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/83021361-1e71-438f-94dd-a41cfb8af14d" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/83021361-1e71-438f-94dd-a41cfb8af14d.svg" alt=""></div>
                   <span>Nirmal Fabrics</span>
                 </div>
               </div>
@@ -323,7 +324,7 @@
               <div class="cat-cell cat-cell--time">12:11 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/0426e412-95ce-4713-bdb1-a4aaf9c83871" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/0426e412-95ce-4713-bdb1-a4aaf9c83871.svg" alt=""></div>
                   <span>Asha Agro</span>
                 </div>
               </div>
@@ -336,7 +337,7 @@
               <div class="cat-cell cat-cell--time">12:04 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/4b98d069-5697-4d3e-8c58-24d83897fd22" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/4b98d069-5697-4d3e-8c58-24d83897fd22.svg" alt=""></div>
                   <span>Shree Chemicals</span>
                 </div>
               </div>
@@ -349,7 +350,7 @@
               <div class="cat-cell cat-cell--time">11:58 AM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="https://www.figma.com/api/mcp/asset/b5248b5d-b25f-480a-b1fb-394d4f6e3a1a" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/b5248b5d-b25f-480a-b1fb-394d4f6e3a1a.svg" alt=""></div>
                   <span>Ganesh Motors</span>
                 </div>
               </div>

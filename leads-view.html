@@ -6,215 +6,219 @@
 <title>New Leads — Zotok</title>
 <link rel="stylesheet" href="styles/main.css">
 <style>
-  /* Suppress all transitions on initial load to prevent sidebar push animation */
-  [data-loading] * { transition: none !important; }
-  .leads-layout {
+  /* ── Full-height chain ── */
+  html, body { height: 100%; overflow: hidden; }
+  .app { height: 100vh; overflow: hidden; min-height: unset; }
+  /* ── Layout ── */
+  .nlv-main {
     display: flex;
+    flex-direction: column;
     height: 100%;
-    min-height: 0;
-    flex: 1;
-  }
-  .leads-list-pane {
-    width: 280px;
-    flex: none;
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
+    background: #f8f8f7;
     overflow: hidden;
-    background: var(--surface);
-  }
-  .leads-list-head {
-    padding: 20px 16px 12px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 5;
-  }
-  .leads-list-head h1 {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  .leads-list-head p {
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .leads-list-scroll {
-    flex: 1;
-    overflow-y: auto;
-  }
-  .lead-date-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: background .12s;
-  }
-  .lead-date-item:hover { background: var(--white); }
-  .lead-date-item.active {
-    background: var(--white);
-    border-left: 3px solid var(--ink);
-    padding-left: 13px;
-  }
-  .lead-date-item .lead-date-label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-  .lead-date-item .lead-date-count {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1px 8px;
-  }
-  .lead-date-item.active .lead-date-count {
-    background: var(--ink);
-    color: var(--white);
-    border-color: var(--ink);
-  }
-  .leads-table-pane {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: var(--white);
-  }
-  .leads-table-head {
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: var(--white);
-    position: sticky;
-    top: 0;
-    z-index: 5;
-  }
-  .leads-table-scroll {
-    flex: 1;
-    overflow: auto;
     padding: 0;
   }
-  .leads-table-scroll .table-wrap {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    box-shadow: none;
-    overflow: visible; /* scroll must happen on .leads-table-scroll, not here */
+  /* ── Top bar ── */
+  .nlv-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 12px;
+    flex-shrink: 0;
   }
-  .leads-table-scroll .table {
-    width: max-content;
-    min-width: 100%;
+  .nlv-topbar-icon {
+    width: 40px; height: 40px;
+    background: rgba(0,221,255,0.18);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
-  .leads-table-scroll .table th,
-  .leads-table-scroll .table td {
-    white-space: nowrap;
+  .nlv-topbar-title {
+    font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.26px;
   }
-  .leads-table-scroll .table th:first-child,
-  .leads-table-scroll .table td:first-child {
-    position: sticky;
-    left: 0;
-    z-index: 2;
-    background: var(--white);
-  }
-  .leads-table-scroll .table th:first-child {
-    background: var(--surface);
-    z-index: 3;
-  }
-  .leads-table-scroll .table tbody tr:hover td:first-child {
-    background: var(--surface-2);
-  }
-  .empty-state {
+  /* ── Body ── */
+  .nlv-body {
+    flex: 1; min-height: 0;
+    height: 100%;
+    padding: 0 12px 12px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    gap: 12px;
-    color: var(--muted);
-    text-align: center;
-    padding: 48px;
   }
-  .empty-state svg { opacity: 0.35; }
-  .empty-state p { font-size: 14px; line-height: 1.5; }
-  .pagination-bar {
-    flex: none;
+  /* ── Card ── */
+  .nlv-card {
+    flex: 1; min-height: 0;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 18px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+  /* ── Card header ── */
+  .nlv-card-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
-    border-top: 1px solid var(--border);
-    background: var(--white);
+    flex-shrink: 0;
+    padding: 20px 20px 12px;
   }
-  .pagination-info {
-    font-size: 13px;
-    color: var(--muted);
+  .nlv-head-left { display: flex; flex-direction: column; gap: 3px; }
+  .nlv-date-row  { display: flex; align-items: center; gap: 4px; position: relative; }
+  .nlv-date-trigger {
+    display: flex; align-items: center; gap: 4px;
+    cursor: pointer; user-select: none;
+    border-radius: 8px; transition: background 0.15s;
+    margin: -4px -6px; padding: 4px 6px;
   }
-  .pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  .nlv-date-trigger:hover { background: #37352f0f; }
+  .nlv-date-title {
+    font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.33px;
   }
-  .page-num {
-    min-width: 32px;
-    height: 32px;
-    border-radius: var(--r-sm);
-    border: 1px solid transparent;
-    background: none;
-    font-size: 13px;
-    color: var(--ink-2);
+  .nlv-date-chevron { transition: transform 0.18s ease; flex-shrink: 0; }
+  .nlv-date-row.open .nlv-date-chevron { transform: rotate(180deg); }
+  .nlv-count-sub {
+    font-size: 14px; font-weight: 400; color: #858481;
+    line-height: 18px; letter-spacing: -0.09px;
+  }
+  /* Date dropdown */
+  .nlv-date-dropdown {
+    position: fixed;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    min-width: 220px;
+    padding: 6px;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .nlv-date-dropdown.open { display: flex; }
+  .nlv-date-opt {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 10px;
+    border-radius: 8px;
     cursor: pointer;
-    padding: 0 6px;
+    font-size: 14px; font-weight: 500; color: #34322d;
+    letter-spacing: -0.09px;
+    gap: 12px;
   }
-  .page-num:hover { background: var(--surface); border-color: var(--border); }
-  .page-num.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
-  .search-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
+  .nlv-date-opt:hover { background: #37352f0f; }
+  .nlv-date-opt.active { background: #37352f0f; }
+  .nlv-date-badge {
+    background: #f0efeb; color: #858481;
+    font-size: 12px; font-weight: 500;
+    border-radius: 20px; padding: 2px 8px;
+    white-space: nowrap;
   }
-  .search-icon {
-    position: absolute;
-    left: 9px;
-    color: var(--muted);
-    pointer-events: none;
+  .nlv-date-opt.active .nlv-date-badge { background: #e6e4de; color: #34322d; }
+  .nlv-head-right { display: flex; align-items: center; gap: 12px; }
+  /* Search */
+  .nlv-search {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid #e8e6e0;
+    border-radius: 10px; padding: 9px 13px;
+    width: 300px;
   }
-  .search-input {
-    padding-left: 30px;
-    width: 200px;
-    height: 32px;
-    font-size: 13px;
+  .nlv-search-input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-size: 14px; color: #34322d; font-family: inherit; letter-spacing: -0.09px;
   }
-  /* Shimmer */
-  @keyframes shimmer {
+  .nlv-search-input::placeholder { color: #858481; }
+  /* Toolbar buttons */
+  .nlv-tool-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid #e8e6e0;
+    border-radius: 10px; padding: 9px 13px;
+    font-size: 14px; font-weight: 500; color: #34322d;
+    letter-spacing: -0.09px; cursor: pointer; white-space: nowrap;
+  }
+  .nlv-tool-btn:hover { background: #f8f8f7; }
+  /* ── Table container ── */
+  .nlv-table-wrap {
+    flex: 1; min-height: 0;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    overflow: auto;
+  }
+  /* ── Table ── */
+  .nlv-table {
+    width: 100%;
+    border-collapse: collapse;
+    flex: 1;
+  }
+  .nlv-table th {
+    font-size: 14px; font-weight: 500; color: #858481;
+    letter-spacing: -0.09px; text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    white-space: nowrap;
+    position: sticky; top: 0;
+    background: white;
+    z-index: 2;
+  }
+  .nlv-table td {
+    font-size: 14px; color: #34322d;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    line-height: 20px; letter-spacing: -0.09px;
+    vertical-align: middle;
+  }
+  .nlv-table tbody tr:last-child td { border-bottom: none; }
+  .nlv-table tbody tr:hover td { background: #fafafa; }
+  /* Customer name cell */
+  .nlv-name-cell {
+    display: flex; align-items: center; gap: 8px;
+    white-space: nowrap; font-weight: 500;
+  }
+  .nlv-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden;
+  }
+  .nlv-avatar img { width: 14px; height: 14px; display: block; }
+  /* Mobile — nowrap */
+  .nlv-table td.nlv-td-phone { white-space: nowrap; }
+  .nlv-table td.nlv-td-location { white-space: nowrap; }
+  /* Summary wraps */
+  .nlv-table td.nlv-td-summary { min-width: 200px; }
+  /* ── Pagination ── */
+  .nlv-pagination {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 20px 12px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .nlv-page-info { font-size: 13px; color: #858481; }
+  .nlv-page-controls { display: flex; align-items: center; gap: 4px; }
+  .nlv-page-btn {
+    min-width: 32px; height: 32px; border-radius: 8px;
+    border: 1px solid transparent; background: none;
+    font-size: 13px; color: #34322d; cursor: pointer; padding: 0 8px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .nlv-page-btn:hover:not(:disabled) { background: #f8f8f7; border-color: #e8e6e0; }
+  .nlv-page-btn.active { background: #34322d; color: white; border-color: #34322d; }
+  .nlv-page-btn:disabled { opacity: 0.4; cursor: default; }
+  /* ── Empty state ── */
+  .nlv-empty {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; color: #858481; padding: 48px;
+    font-size: 14px; text-align: center;
+  }
+  /* ── Shimmer ── */
+  @keyframes nlv-shimmer {
     from { background-position: -600px 0; }
     to   { background-position:  600px 0; }
   }
-  .shimmer {
-    background: linear-gradient(90deg, var(--border) 25%, var(--surface-2) 50%, var(--border) 75%);
+  .nlv-shimmer {
+    background: linear-gradient(90deg, #ebe9e4 25%, #f4f2ed 50%, #ebe9e4 75%);
     background-size: 600px 100%;
-    animation: shimmer 1.4s infinite linear;
-    border-radius: var(--r-sm);
-  }
-  .shimmer-date-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .shimmer-row {
-    display: flex;
-    gap: 24px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
+    animation: nlv-shimmer 1.4s infinite linear;
+    border-radius: 4px;
   }
 </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -226,239 +230,237 @@
 <div class="app">
   <div id="sidebar-host"></div>
 
-  <main class="main" style="padding: 0; overflow: hidden;">
-    <div class="leads-layout">
+  <main class="main nlv-main">
 
-      <!-- Column 1: Lead List by Date -->
-      <div class="leads-list-pane">
-        <div class="leads-list-head">
-          <h1>New Leads</h1>
-          <p id="leads-detected-count"></p>
-        </div>
-        <div class="leads-list-scroll" id="leads-list">
-          <!-- shimmer placeholders -->
-          <div class="shimmer-date-item"><div class="shimmer" style="width:80px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
-          <div class="shimmer-date-item"><div class="shimmer" style="width:100px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
-          <div class="shimmer-date-item"><div class="shimmer" style="width:90px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
-          <div class="shimmer-date-item"><div class="shimmer" style="width:95px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
-          <div class="shimmer-date-item"><div class="shimmer" style="width:85px;height:14px;"></div><div class="shimmer" style="width:24px;height:18px;border-radius:10px;"></div></div>
-        </div>
+    <!-- Top bar -->
+    <div class="nlv-topbar">
+      <div class="nlv-topbar-icon">
+        <img src="assets/icons/a958801e-3e68-4f2f-8ab3-18cf2e4e3171.svg" width="20" height="20" alt="">
       </div>
+      <span class="nlv-topbar-title">New Leads</span>
+    </div>
 
-      <!-- Column 2: Full Table View -->
-      <div class="leads-table-pane">
-        <div class="leads-table-head">
-          <div>
-            <h2 style="font-size:17px; font-weight:600; margin-bottom:2px;" id="table-pane-title">All Leads</h2>
-            <p style="font-size:13px; color:var(--muted);" id="table-pane-sub">Unfamiliar numbers detected in your groups.</p>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <div class="search-wrap">
-              <svg class="icon-sm search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <input id="leads-search" class="input search-input" type="search" placeholder="Search leads…">
+    <!-- Body -->
+    <div class="nlv-body">
+      <div class="nlv-card">
+
+        <!-- Card header -->
+        <div class="nlv-card-head">
+          <div class="nlv-head-left">
+            <div class="nlv-date-row" id="nlv-date-row">
+              <div class="nlv-date-trigger" id="nlv-date-trigger">
+                <span class="nlv-date-title" id="nlv-date-title">Today</span>
+                <img class="nlv-date-chevron" src="assets/icons/fdd0b5f6-7c81-4bfc-a203-cfb3b9f1707c.svg" width="16" height="16" alt="">
+              </div>
             </div>
-            <button class="btn btn-ghost btn-sm">Export CSV</button>
+            <div class="nlv-date-dropdown" id="nlv-date-dropdown"></div>
+            <span class="nlv-count-sub" id="nlv-count-sub">0 New Leads</span>
+          </div>
+          <div class="nlv-head-right">
+            <div class="nlv-search">
+              <img src="assets/icons/a2d9a7f4-238f-497e-977b-0f2438de7cd1.svg" width="18" height="18" alt="">
+              <input id="nlv-search" class="nlv-search-input" type="search" placeholder="Search Customer">
+            </div>
+            <button class="nlv-tool-btn" type="button">
+              <img src="assets/icons/8c6024f8-c8ef-43f7-ab39-7b944c6a1443.svg" width="18" height="18" alt="">
+              Filters
+            </button>
+            <button class="nlv-tool-btn" type="button">
+              <img src="assets/icons/d8d17a5d-d134-4090-a882-4023011db481.svg" width="18" height="18" alt="">
+              Export
+            </button>
           </div>
         </div>
-        <div class="leads-table-scroll">
-          <div id="leads-table-container">
-            <!-- shimmer rows -->
-            <div id="table-shimmer">
-              <div class="shimmer-row"><div class="shimmer" style="width:120px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:90px;height:13px;"></div><div class="shimmer" style="width:200px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-              <div class="shimmer-row"><div class="shimmer" style="width:100px;height:13px;"></div><div class="shimmer" style="width:115px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div><div class="shimmer" style="width:180px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-              <div class="shimmer-row"><div class="shimmer" style="width:130px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:95px;height:13px;"></div><div class="shimmer" style="width:220px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-              <div class="shimmer-row"><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:115px;height:13px;"></div><div class="shimmer" style="width:85px;height:13px;"></div><div class="shimmer" style="width:190px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-              <div class="shimmer-row"><div class="shimmer" style="width:125px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:90px;height:13px;"></div><div class="shimmer" style="width:210px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-              <div class="shimmer-row"><div class="shimmer" style="width:105px;height:13px;"></div><div class="shimmer" style="width:115px;height:13px;"></div><div class="shimmer" style="width:88px;height:13px;"></div><div class="shimmer" style="width:175px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-              <div class="shimmer-row"><div class="shimmer" style="width:118px;height:13px;"></div><div class="shimmer" style="width:110px;height:13px;"></div><div class="shimmer" style="width:92px;height:13px;"></div><div class="shimmer" style="width:200px;height:13px;"></div><div class="shimmer" style="width:80px;height:13px;"></div></div>
-            </div>
-          </div>
+
+        <!-- Table -->
+        <div class="nlv-table-wrap" id="nlv-table-wrap">
+          <!-- shimmer placeholder -->
+          <table class="nlv-table" id="nlv-shimmer-table">
+            <thead><tr>
+              <th style="width:228px;">Customer Name</th>
+              <th style="width:174px;">Mobile Number</th>
+              <th style="width:201px;">Location</th>
+              <th>Summary</th>
+            </tr></thead>
+            <tbody id="nlv-shimmer-body">
+              <!-- filled by shimmer JS -->
+            </tbody>
+          </table>
         </div>
-        <div class="pagination-bar" id="pagination-bar">
-          <span class="pagination-info" id="pagination-info"></span>
-          <div class="pagination-controls">
-            <button class="btn btn-ghost btn-sm" id="page-prev" disabled>
-              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+
+        <!-- Pagination -->
+        <div class="nlv-pagination" id="nlv-pagination">
+          <span class="nlv-page-info" id="nlv-page-info"></span>
+          <div class="nlv-page-controls">
+            <button class="nlv-page-btn" id="nlv-prev" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               Prev
             </button>
-            <div id="page-numbers" style="display:flex;gap:4px;"></div>
-            <button class="btn btn-ghost btn-sm" id="page-next">
+            <div id="nlv-page-nums" style="display:flex;gap:4px;"></div>
+            <button class="nlv-page-btn" id="nlv-next">
               Next
-              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </button>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
+
   </main>
 </div>
 
 <script src="scripts/sidebar.js"></script>
 <script src="scripts/app.js"></script>
 <script>
-  // Retrieve column config from localStorage or use defaults
-  const storedCols = localStorage.getItem('zotok_leads_columns');
-  let columns = [
-    { id: 1, name: "Firm Name" },
-    { id: 2, name: "Phone Number" },
-    { id: 3, name: "Contact Name" },
-    { id: 4, name: "Last Message" },
-    { id: 5, name: "Timestamp" },
-    { id: 6, name: "Actions: Reply" }
-  ];
-  if (storedCols) {
-    try { columns = JSON.parse(storedCols); } catch (e) {}
-  }
+  const AVATAR_ICON = 'assets/icons/536e13b8-adad-48f2-a3e5-ce27db2e0d52.svg';
+  const AVATAR_COLORS = ['#b879ff','#ffae4c','#537ff1','#b6ca00','#3cc3df','#50c796','#57b7ec','#e16540','#47d096','#328efa','#ff6b6b','#ffd93d'];
 
   const mockLeads = [
-    // Today — 10 leads
-    { id:1,  date:'Today', "Firm Name":"Gupta Enterprises",      "Phone Number":"+91 98765 43210", "Contact Name":"Raj Gupta",      "Last Message":"Hello, do you supply bulk orders to Pune?",              "Timestamp":"Today, 11:48 AM", "Actions: Reply":"" },
-    { id:2,  date:'Today', "Firm Name":"Unknown",                 "Phone Number":"+91 88888 77777", "Contact Name":"Amit",           "Last Message":"Please send me the pricing sheet.",                    "Timestamp":"Today, 11:15 AM", "Actions: Reply":"" },
-    { id:3,  date:'Today', "Firm Name":"Patel Trading Co.",       "Phone Number":"+91 97531 86420", "Contact Name":"Suresh Patel",   "Last Message":"We need 500 units by end of month. Is that possible?", "Timestamp":"Today, 10:52 AM", "Actions: Reply":"" },
-    { id:4,  date:'Today', "Firm Name":"Mehta Bros.",             "Phone Number":"+91 90909 12345", "Contact Name":"Vishal Mehta",   "Last Message":"What's your MOQ for wholesale?",                       "Timestamp":"Today, 10:30 AM", "Actions: Reply":"" },
-    { id:5,  date:'Today', "Firm Name":"Sunrise Retailers",       "Phone Number":"+91 91234 56789", "Contact Name":"Priya Shah",     "Last Message":"Can I get a catalogue with current prices?",           "Timestamp":"Today, 09:58 AM", "Actions: Reply":"" },
-    { id:6,  date:'Today', "Firm Name":"Unknown",                 "Phone Number":"+91 87654 32109", "Contact Name":"Unknown",        "Last Message":"Hi, saw your ad. Interested in your products.",        "Timestamp":"Today, 09:40 AM", "Actions: Reply":"" },
-    { id:7,  date:'Today', "Firm Name":"Joshi Distributors",      "Phone Number":"+91 93333 44444", "Contact Name":"Nikhil Joshi",   "Last Message":"Looking to become a distributor in Nagpur region.",   "Timestamp":"Today, 09:18 AM", "Actions: Reply":"" },
-    { id:8,  date:'Today', "Firm Name":"Kapoor Stores",           "Phone Number":"+91 82222 55555", "Contact Name":"Anita Kapoor",   "Last Message":"Do you offer credit terms for new buyers?",           "Timestamp":"Today, 08:55 AM", "Actions: Reply":"" },
-    { id:9,  date:'Today', "Firm Name":"Unknown",                 "Phone Number":"+91 99001 23456", "Contact Name":"Rohit",          "Last Message":"Rate list please.",                                    "Timestamp":"Today, 08:30 AM", "Actions: Reply":"" },
-    { id:10, date:'Today', "Firm Name":"Bharat Wholesale",        "Phone Number":"+91 77889 90011", "Contact Name":"Dinesh Kumar",   "Last Message":"We buy 2000+ units monthly. Let's discuss terms.",    "Timestamp":"Today, 08:10 AM", "Actions: Reply":"" },
+    // Today — 10
+    { date:'Today', name:'Rajesh Traders',       phone:'+91 77354 90194', location:'Bhopal, Madhya Pradesh',    summary:'Need 50 boxes of SKU-4421 for Friday delivery. Same billing as last time. Urgent please confirm.' },
+    { date:'Today', name:'Kumar Enterprises',    phone:'+91 84975 73535', location:'Bhubaneswar, Odisha',        summary:'Bhai 100 units SKU-2200 aur 30 units SKU-3310 chahiye. Kal subah tak de dena. Price same rahega?' },
+    { date:'Today', name:'Sundar Exports',        phone:'+91 91371 47247', location:'Coimbatore, Tamil Nadu',    summary:'Please send order confirmation for order #ORD-8821. We need it for our accounts team today.' },
+    { date:'Today', name:'Lakshmi Supplies',      phone:'+91 92000 62586', location:'Delhi, Delhi',              summary:'Can you deliver 40 cartons of product A to our Secunderabad warehouse?' },
+    { date:'Today', name:'Vijay & Sons',          phone:'+91 99930 89772', location:'Chandigarh, Punjab',        summary:'What is the current rate for SKU-1100? We plan to order 200 units next week.' },
+    { date:'Today', name:'Hariharan Associates',  phone:'+91 89277 09198', location:'Pune, Maharashtra',         summary:'Mujhe 500 kg maida chahiye aur 300 kg sugar. Kal tak pohunchao. Same address hai.' },
+    { date:'Today', name:'Nirmal Fabrics',        phone:'+91 92571 49018', location:'Dehradun, Uttarakhand',     summary:'Reorder same as last month — SKU-3310 x 150, SKU-4421 x 80. Urgent shipment required.' },
+    { date:'Today', name:'Asha Agro',             phone:'+91 75605 48603', location:'Guwahati, Assam',           summary:'Bhaiya ek baar aur 60 pieces SKU-9910 bhejo. Last wali quality achhi thi. COD rahega.' },
+    { date:'Today', name:'Shree Chemicals',       phone:'+91 98399 99824', location:'Ahmedabad, Gujarat',        summary:'Urgent order — 25 bags cement grade packing material SKU-0012. Deliver to plot 44, IDA Nacharam.' },
+    { date:'Today', name:'Ganesh Motors',         phone:'+91 88922 62591', location:'Mysuru, Karnataka',         summary:'Hamara monthly standing order process karo — same as PO-7712. Any changes call karo.' },
 
-    // Yesterday — 8 leads
-    { id:11, date:'Yesterday', "Firm Name":"Shreeji Logistics",       "Phone Number":"+91 99999 11111", "Contact Name":"Unknown",        "Last Message":"Can we partner for last-mile delivery in Gujarat?",   "Timestamp":"Yesterday, 06:45 PM", "Actions: Reply":"" },
-    { id:12, date:'Yesterday', "Firm Name":"Verma General Store",     "Phone Number":"+91 84444 66666", "Contact Name":"Ramesh Verma",   "Last Message":"Do you have stock of SKU #4421 right now?",           "Timestamp":"Yesterday, 05:30 PM", "Actions: Reply":"" },
-    { id:13, date:'Yesterday', "Firm Name":"Unknown",                 "Phone Number":"+91 76543 21098", "Contact Name":"Deepak",         "Last Message":"Interested in your Diwali offer. Still on?",          "Timestamp":"Yesterday, 04:55 PM", "Actions: Reply":"" },
-    { id:14, date:'Yesterday', "Firm Name":"Rajlakshmi Traders",      "Phone Number":"+91 95678 12345", "Contact Name":"Kavya Rao",      "Last Message":"Can you deliver to Hyderabad? What are freight costs?","Timestamp":"Yesterday, 03:20 PM", "Actions: Reply":"" },
-    { id:15, date:'Yesterday', "Firm Name":"Modi Retail Chain",       "Phone Number":"+91 88001 77002", "Contact Name":"Hitesh Modi",    "Last Message":"We run 12 stores. Interested in exclusive deal.",      "Timestamp":"Yesterday, 02:40 PM", "Actions: Reply":"" },
-    { id:16, date:'Yesterday', "Firm Name":"Unknown",                 "Phone Number":"+91 91111 33333", "Contact Name":"Sunita",         "Last Message":"Hello, how do I place a first order?",                "Timestamp":"Yesterday, 01:15 PM", "Actions: Reply":"" },
-    { id:17, date:'Yesterday', "Firm Name":"Chandra Enterprises",     "Phone Number":"+91 98001 45678", "Contact Name":"Arun Chandra",   "Last Message":"Saw your product demo. Want to set up a call.",       "Timestamp":"Yesterday, 11:30 AM", "Actions: Reply":"" },
-    { id:18, date:'Yesterday', "Firm Name":"Delta Supplies",          "Phone Number":"+91 80000 12345", "Contact Name":"Farhan Sheikh",  "Last Message":"Need 300 units urgent for a client order.",           "Timestamp":"Yesterday, 09:50 AM", "Actions: Reply":"" },
+    // Yesterday — 8
+    { date:'Yesterday', name:'Shreeji Logistics',    phone:'+91 99999 11111', location:'Surat, Gujarat',         summary:'Can we partner for last-mile delivery in Gujarat?' },
+    { date:'Yesterday', name:'Verma General Store',  phone:'+91 84444 66666', location:'Jaipur, Rajasthan',      summary:'Do you have stock of SKU #4421 right now?' },
+    { date:'Yesterday', name:'Rajlakshmi Traders',   phone:'+91 95678 12345', location:'Hyderabad, Telangana',   summary:'Can you deliver to Hyderabad? What are freight costs?' },
+    { date:'Yesterday', name:'Modi Retail Chain',    phone:'+91 88001 77002', location:'Mumbai, Maharashtra',    summary:'We run 12 stores. Interested in exclusive deal.' },
+    { date:'Yesterday', name:'Chandra Enterprises',  phone:'+91 98001 45678', location:'Lucknow, Uttar Pradesh', summary:'Saw your product demo. Want to set up a call.' },
+    { date:'Yesterday', name:'Delta Supplies',       phone:'+91 80000 12345', location:'Chennai, Tamil Nadu',    summary:'Need 300 units urgent for a client order.' },
+    { date:'Yesterday', name:'Apex Wholesale',       phone:'+91 92222 33444', location:'Indore, Madhya Pradesh', summary:'Do you have GST invoice facility?' },
+    { date:'Yesterday', name:'Sunrise Retailers',    phone:'+91 91234 56789', location:'Nagpur, Maharashtra',    summary:'Can I get a catalogue with current prices?' },
 
-    // 02 May 2026 — 7 leads
-    { id:19, date:'02 May 2026', "Firm Name":"Agarwal & Sons",          "Phone Number":"+91 99887 76655", "Contact Name":"Mohan Agarwal",  "Last Message":"Please share your best price for 1000 units.",        "Timestamp":"02 May 2026, 05:20 PM", "Actions: Reply":"" },
-    { id:20, date:'02 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 87001 23400", "Contact Name":"Pooja",          "Last Message":"Your number was shared by a colleague. Following up.", "Timestamp":"02 May 2026, 04:10 PM", "Actions: Reply":"" },
-    { id:21, date:'02 May 2026', "Firm Name":"Sunrise Exports",          "Phone Number":"+91 94321 09876", "Contact Name":"Arjun Pillai",   "Last Message":"We export FMCG. Can we discuss white-labelling?",     "Timestamp":"02 May 2026, 03:30 PM", "Actions: Reply":"" },
-    { id:22, date:'02 May 2026', "Firm Name":"Lotus General Merchants",  "Phone Number":"+91 78990 11223", "Contact Name":"Rekha Iyer",     "Last Message":"Do you have a minimum order for first-time buyers?",  "Timestamp":"02 May 2026, 02:00 PM", "Actions: Reply":"" },
-    { id:23, date:'02 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 91000 55555", "Contact Name":"Manish",         "Last Message":"Rate? Need by Tuesday.",                              "Timestamp":"02 May 2026, 12:45 PM", "Actions: Reply":"" },
-    { id:24, date:'02 May 2026', "Firm Name":"Yadav Brothers",           "Phone Number":"+91 83456 78901", "Contact Name":"Sanjay Yadav",   "Last Message":"Referred by Ramesh. Looking for quarterly contract.",  "Timestamp":"02 May 2026, 11:10 AM", "Actions: Reply":"" },
-    { id:25, date:'02 May 2026', "Firm Name":"Fortune Retail",           "Phone Number":"+91 96543 21000", "Contact Name":"Neha Tiwari",    "Last Message":"Can I visit your warehouse this week?",               "Timestamp":"02 May 2026, 09:30 AM", "Actions: Reply":"" },
+    // 02 May 2026 — 7
+    { date:'02 May 2026', name:'Agarwal & Sons',         phone:'+91 99887 76655', location:'Patna, Bihar',           summary:'Please share your best price for 1000 units.' },
+    { date:'02 May 2026', name:'Sunrise Exports',         phone:'+91 94321 09876', location:'Kochi, Kerala',          summary:'We export FMCG. Can we discuss white-labelling?' },
+    { date:'02 May 2026', name:'Lotus General Merchants', phone:'+91 78990 11223', location:'Nashik, Maharashtra',    summary:'Do you have a minimum order for first-time buyers?' },
+    { date:'02 May 2026', name:'Yadav Brothers',          phone:'+91 83456 78901', location:'Varanasi, Uttar Pradesh',summary:'Referred by Ramesh. Looking for quarterly contract.' },
+    { date:'02 May 2026', name:'Fortune Retail',          phone:'+91 96543 21000', location:'Visakhapatnam, AP',      summary:'Can I visit your warehouse this week?' },
+    { date:'02 May 2026', name:'Patel Trading Co.',       phone:'+91 97531 86420', location:'Vadodara, Gujarat',      summary:'We need 500 units by end of month. Is that possible?' },
+    { date:'02 May 2026', name:'Mehta Bros.',             phone:'+91 90909 12345', location:'Amritsar, Punjab',       summary:"What's your MOQ for wholesale?" },
 
-    // 01 May 2026 — 6 leads
-    { id:26, date:'01 May 2026', "Firm Name":"Ratan Hardware",           "Phone Number":"+91 77001 88002", "Contact Name":"Ratan Singh",    "Last Message":"Need bulk hardware fittings. Minimum 5000 units.",    "Timestamp":"01 May 2026, 06:10 PM", "Actions: Reply":"" },
-    { id:27, date:'01 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 90011 22033", "Contact Name":"Geeta",          "Last Message":"Saw you in the distributor group. Interested.",        "Timestamp":"01 May 2026, 04:45 PM", "Actions: Reply":"" },
-    { id:28, date:'01 May 2026', "Firm Name":"Sai Distributors",         "Phone Number":"+91 85432 10987", "Contact Name":"Prasad Kulkarni","Last Message":"We cover Pune and surrounding areas. Let's talk.",    "Timestamp":"01 May 2026, 03:00 PM", "Actions: Reply":"" },
-    { id:29, date:'01 May 2026', "Firm Name":"Apex Wholesale",           "Phone Number":"+91 92222 33444", "Contact Name":"Sumit Jain",     "Last Message":"Do you have GST invoice facility?",                   "Timestamp":"01 May 2026, 01:20 PM", "Actions: Reply":"" },
-    { id:30, date:'01 May 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 78111 99000", "Contact Name":"Vijay",          "Last Message":"Catalogue?",                                          "Timestamp":"01 May 2026, 11:50 AM", "Actions: Reply":"" },
-    { id:31, date:'01 May 2026', "Firm Name":"Nirmala Enterprises",      "Phone Number":"+91 99234 56780", "Contact Name":"Nirmala Devi",   "Last Message":"Running a new store in Nashik. Can you supply?",      "Timestamp":"01 May 2026, 09:15 AM", "Actions: Reply":"" },
+    // 01 May 2026 — 6
+    { date:'01 May 2026', name:'Ratan Hardware',     phone:'+91 77001 88002', location:'Bhopal, Madhya Pradesh', summary:'Need bulk hardware fittings. Minimum 5000 units.' },
+    { date:'01 May 2026', name:'Sai Distributors',   phone:'+91 85432 10987', location:'Pune, Maharashtra',      summary:'We cover Pune and surrounding areas. Let\'s talk.' },
+    { date:'01 May 2026', name:'Apex Wholesale',     phone:'+91 92222 33444', location:'Indore, Madhya Pradesh', summary:'Do you have GST invoice facility?' },
+    { date:'01 May 2026', name:'Nirmala Enterprises',phone:'+91 99234 56780', location:'Nashik, Maharashtra',    summary:'Running a new store in Nashik. Can you supply?' },
+    { date:'01 May 2026', name:'Balaji Stores',      phone:'+91 84000 33221', location:'Vijayawada, AP',         summary:'Do you offer consignment model?' },
+    { date:'01 May 2026', name:'Triveni Wholesale',  phone:'+91 97777 44444', location:'Jodhpur, Rajasthan',     summary:'My previous supplier raised rates. Looking for better.' },
 
-    // 30 Apr 2026 — 6 leads
-    { id:32, date:'30 Apr 2026', "Firm Name":"Prime Retailers",          "Phone Number":"+91 86789 01234", "Contact Name":"Tarun Malhotra", "Last Message":"What's the shelf life of your products?",             "Timestamp":"30 Apr 2026, 05:50 PM", "Actions: Reply":"" },
-    { id:33, date:'30 Apr 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 93010 20030", "Contact Name":"Karan",          "Last Message":"Price list for Apr–Jun quarter please.",              "Timestamp":"30 Apr 2026, 04:00 PM", "Actions: Reply":"" },
-    { id:34, date:'30 Apr 2026', "Firm Name":"Srinivasan & Co.",         "Phone Number":"+91 79000 56789", "Contact Name":"T. Srinivasan",  "Last Message":"We are expanding to Tamil Nadu. Need a supplier.",    "Timestamp":"30 Apr 2026, 02:30 PM", "Actions: Reply":"" },
-    { id:35, date:'30 Apr 2026', "Firm Name":"Balaji Stores",            "Phone Number":"+91 84000 33221", "Contact Name":"Balaji Reddy",   "Last Message":"Do you offer consignment model?",                     "Timestamp":"30 Apr 2026, 01:10 PM", "Actions: Reply":"" },
-    { id:36, date:'30 Apr 2026', "Firm Name":"Triveni Wholesale",        "Phone Number":"+91 97777 44444", "Contact Name":"Geeta Sharma",   "Last Message":"My previous supplier raised rates. Looking for better.","Timestamp":"30 Apr 2026, 11:30 AM", "Actions: Reply":"" },
-    { id:37, date:'30 Apr 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 82000 10101", "Contact Name":"Unknown",        "Last Message":"Quantity pricing available?",                         "Timestamp":"30 Apr 2026, 09:00 AM", "Actions: Reply":"" },
+    // 30 Apr 2026 — 6
+    { date:'30 Apr 2026', name:'Prime Retailers',    phone:'+91 86789 01234', location:'Chandigarh, Punjab',     summary:"What's the shelf life of your products?" },
+    { date:'30 Apr 2026', name:'Srinivasan & Co.',   phone:'+91 79000 56789', location:'Chennai, Tamil Nadu',    summary:'We are expanding to Tamil Nadu. Need a supplier.' },
+    { date:'30 Apr 2026', name:'Balaji Reddy Stores',phone:'+91 84000 33221', location:'Hyderabad, Telangana',   summary:'Do you offer consignment model?' },
+    { date:'30 Apr 2026', name:'Triveni Wholesale',  phone:'+91 97777 44444', location:'Jaipur, Rajasthan',      summary:'My previous supplier raised rates. Looking for better.' },
+    { date:'30 Apr 2026', name:'Omkar Trading',      phone:'+91 99100 22300', location:'Kolhapur, Maharashtra',  summary:'Need samples before placing bulk order.' },
+    { date:'30 Apr 2026', name:'Anand Pharma Dist.', phone:'+91 95000 11223', location:'Ahmedabad, Gujarat',     summary:'We distribute pharma. Can we cross-sell?' },
 
-    // 29 Apr 2026 — 5 leads
-    { id:38, date:'29 Apr 2026', "Firm Name":"Anand Pharma Dist.",       "Phone Number":"+91 95000 11223", "Contact Name":"Anand Bhatt",    "Last Message":"We distribute pharma. Can we cross-sell?",            "Timestamp":"29 Apr 2026, 06:30 PM", "Actions: Reply":"" },
-    { id:39, date:'29 Apr 2026', "Firm Name":"Unknown",                  "Phone Number":"+91 78456 32100", "Contact Name":"Harish",         "Last Message":"Interested. Call me after 6 PM.",                     "Timestamp":"29 Apr 2026, 04:45 PM", "Actions: Reply":"" },
-    { id:40, date:'29 Apr 2026', "Firm Name":"Omkar Trading",            "Phone Number":"+91 99100 22300", "Contact Name":"Omkar Desai",    "Last Message":"Need samples before placing bulk order.",             "Timestamp":"29 Apr 2026, 02:20 PM", "Actions: Reply":"" },
-    { id:41, date:'29 Apr 2026', "Firm Name":"Krishna Super Market",     "Phone Number":"+91 83001 45600", "Contact Name":"Lata Krishna",   "Last Message":"Do you deliver to Kolhapur?",                         "Timestamp":"29 Apr 2026, 12:00 PM", "Actions: Reply":"" },
-    { id:42, date:'29 Apr 2026', "Firm Name":"Supreme Distributors",     "Phone Number":"+91 91500 67890", "Contact Name":"Rahul Joshi",    "Last Message":"Looking for a long-term supply agreement.",           "Timestamp":"29 Apr 2026, 10:10 AM", "Actions: Reply":"" },
+    // 29 Apr 2026 — 5
+    { date:'29 Apr 2026', name:'Anand Pharma Dist.', phone:'+91 95000 11223', location:'Ahmedabad, Gujarat',     summary:'We distribute pharma. Can we cross-sell?' },
+    { date:'29 Apr 2026', name:'Omkar Trading',      phone:'+91 99100 22300', location:'Kolhapur, Maharashtra',  summary:'Need samples before placing bulk order.' },
+    { date:'29 Apr 2026', name:'Krishna Super Market',phone:'+91 83001 45600', location:'Kolhapur, Maharashtra', summary:'Do you deliver to Kolhapur?' },
+    { date:'29 Apr 2026', name:'Supreme Distributors',phone:'+91 91500 67890', location:'Pune, Maharashtra',     summary:'Looking for a long-term supply agreement.' },
+    { date:'29 Apr 2026', name:'Kapoor Stores',      phone:'+91 82222 55555', location:'Delhi, Delhi',           summary:'Do you offer credit terms for new buyers?' },
   ];
 
-  document.getElementById('leads-detected-count').textContent = `${mockLeads.length} leads detected`;
-
-  // --- Build date groups ---
+  // Build date groups
   const dateGroups = [];
   mockLeads.forEach(lead => {
-    let group = dateGroups.find(g => g.date === lead.date);
-    if (!group) { group = { date: lead.date, leads: [] }; dateGroups.push(group); }
-    group.leads.push(lead);
+    let g = dateGroups.find(x => x.date === lead.date);
+    if (!g) { g = { date: lead.date, leads: [] }; dateGroups.push(g); }
+    g.leads.push(lead);
   });
 
-  // --- Render date list (Column 1) ---
-  const leadsList = document.getElementById('leads-list');
-  leadsList.innerHTML = dateGroups.map(g => `
-    <div class="lead-date-item" data-date="${g.date}">
-      <span class="lead-date-label">${g.date}</span>
-      <span class="lead-date-count">${g.leads.length}</span>
-    </div>`).join('');
+  // State
+  let activeLeads = dateGroups[0].leads;
+  let currentPage = 1;
+  const PAGE_SIZE = 50;
 
-  // --- Render Table (Column 2) ---
-  function renderTable(leads) {
-    let html = '<div class="table-wrap"><table class="table"><thead><tr>';
-    columns.forEach(col => { html += `<th>${col.name}</th>`; });
-    html += '</tr></thead><tbody>';
-    leads.forEach(lead => {
-      html += '<tr>';
-      columns.forEach(col => {
-        if (col.name === 'Actions: Reply') {
-          html += `<td><button class="btn btn-ghost btn-sm">Reply in WhatsApp</button></td>`;
-        } else {
-          const val = lead[col.name] || '<span style="color:var(--faint)">—</span>';
-          html += col.name === 'Last Message'
-            ? `<td><div class="table-message-preview" style="max-width:280px;">${val}</div></td>`
-            : `<td>${val}</td>`;
-        }
-      });
-      html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-    return html;
+  const searchInput  = document.getElementById('nlv-search');
+  const dateTitle    = document.getElementById('nlv-date-title');
+  const countSub     = document.getElementById('nlv-count-sub');
+  const tableWrap    = document.getElementById('nlv-table-wrap');
+  const pageInfo     = document.getElementById('nlv-page-info');
+  const pageNums     = document.getElementById('nlv-page-nums');
+  const prevBtn      = document.getElementById('nlv-prev');
+  const nextBtn      = document.getElementById('nlv-next');
+
+  function avatar(idx) {
+    const color = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+    return `<div class="nlv-avatar" style="background:${color}"><img src="${AVATAR_ICON}" alt=""></div>`;
   }
 
-  const tableTitle  = document.getElementById('table-pane-title');
-  const tableSub    = document.getElementById('table-pane-sub');
-  const pageInfo    = document.getElementById('pagination-info');
-  const pageNums    = document.getElementById('page-numbers');
-  const prevBtn     = document.getElementById('page-prev');
-  const nextBtn     = document.getElementById('page-next');
-  const searchInput = document.getElementById('leads-search');
-  const PAGE_SIZE   = 10;
-
-  let activeleads = [];
-  let currentPage = 1;
-
-  function filteredLeads() {
+  function filtered() {
     const q = searchInput.value.trim().toLowerCase();
-    if (!q) return activeleads;
-    return activeleads.filter(lead =>
-      Object.values(lead).some(v => String(v).toLowerCase().includes(q))
+    if (!q) return activeLeads;
+    return activeLeads.filter(l =>
+      [l.name, l.phone, l.location, l.summary].some(v => v.toLowerCase().includes(q))
     );
   }
 
   function renderPage() {
-    const leads = filteredLeads();
-    const total = leads.length;
-    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    currentPage = Math.min(currentPage, totalPages);
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const slice = leads.slice(start, start + PAGE_SIZE);
+    const leads     = filtered();
+    const total     = leads.length;
+    const totalPages= Math.max(1, Math.ceil(total / PAGE_SIZE));
+    currentPage     = Math.min(currentPage, totalPages);
+    const start     = (currentPage - 1) * PAGE_SIZE;
+    const slice     = leads.slice(start, start + PAGE_SIZE);
 
-    document.getElementById('leads-table-container').innerHTML = renderTable(slice);
+    let html = `<table class="nlv-table"><thead><tr>
+      <th style="width:228px;">Customer Name</th>
+      <th style="width:174px;">Mobile Number</th>
+      <th style="width:201px;">Location</th>
+      <th>Summary</th>
+    </tr></thead><tbody>`;
 
-    // Info
+    if (slice.length === 0) {
+      html += `<tr><td colspan="4"><div class="nlv-empty">No leads found</div></td></tr>`;
+    } else {
+      slice.forEach((lead, i) => {
+        const globalIdx = start + i;
+        html += `<tr>
+          <td><div class="nlv-name-cell">${avatar(globalIdx)}<span>${lead.name}</span></div></td>
+          <td class="nlv-td-phone">${lead.phone}</td>
+          <td class="nlv-td-location">${lead.location}</td>
+          <td class="nlv-td-summary">${lead.summary}</td>
+        </tr>`;
+      });
+    }
+    html += `</tbody></table>`;
+    tableWrap.innerHTML = html;
+
+    // Hide pagination when everything fits on one page
+    const paginationEl = document.getElementById('nlv-pagination');
+    if (paginationEl) paginationEl.style.display = totalPages <= 1 ? 'none' : 'flex';
+
+    // Pagination info
     const from = total === 0 ? 0 : start + 1;
     const to   = Math.min(start + PAGE_SIZE, total);
     pageInfo.textContent = `${from}–${to} of ${total}`;
 
-    // Prev / Next
     prevBtn.disabled = currentPage === 1;
     nextBtn.disabled = currentPage === totalPages;
 
-    // Page number buttons (show up to 7, with ellipsis logic)
+    // Page numbers
     pageNums.innerHTML = '';
-    const range = buildPageRange(currentPage, totalPages);
-    range.forEach(p => {
+    buildPageRange(currentPage, totalPages).forEach(p => {
       if (p === '…') {
         const el = document.createElement('span');
         el.textContent = '…';
-        el.style.cssText = 'padding:0 4px;color:var(--muted);font-size:13px;align-self:center;';
+        el.style.cssText = 'padding:0 4px;color:#858481;font-size:13px;align-self:center;';
         pageNums.appendChild(el);
       } else {
         const btn = document.createElement('button');
-        btn.className = 'page-num' + (p === currentPage ? ' active' : '');
+        btn.className = 'nlv-page-btn' + (p === currentPage ? ' active' : '');
         btn.textContent = p;
         btn.addEventListener('click', () => { currentPage = p; renderPage(); });
         pageNums.appendChild(btn);
@@ -468,20 +470,17 @@
 
   function buildPageRange(cur, total) {
     if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
-    if (cur <= 4) return [1, 2, 3, 4, 5, '…', total];
-    if (cur >= total - 3) return [1, '…', total-4, total-3, total-2, total-1, total];
-    return [1, '…', cur-1, cur, cur+1, '…', total];
+    if (cur <= 4)           return [1,2,3,4,5,'…',total];
+    if (cur >= total - 3)   return [1,'…',total-4,total-3,total-2,total-1,total];
+    return [1,'…',cur-1,cur,cur+1,'…',total];
   }
 
-  function selectDate(dateEl) {
-    document.querySelectorAll('.lead-date-item').forEach(el => el.classList.remove('active'));
-    dateEl.classList.add('active');
-    const group = dateGroups.find(g => g.date === dateEl.dataset.date);
-    tableTitle.textContent = dateEl.dataset.date;
-    tableSub.textContent = `${group.leads.length} lead${group.leads.length !== 1 ? 's' : ''} detected`;
-    activeleads = group.leads;
-    currentPage = 1;
+  function selectGroup(group) {
+    activeLeads  = group.leads;
+    currentPage  = 1;
     searchInput.value = '';
+    dateTitle.textContent = group.date;
+    countSub.textContent  = `${group.leads.length} New Lead${group.leads.length !== 1 ? 's' : ''}`;
     renderPage();
   }
 
@@ -489,15 +488,51 @@
   nextBtn.addEventListener('click', () => { currentPage++; renderPage(); });
   searchInput.addEventListener('input', () => { currentPage = 1; renderPage(); });
 
-  // Select Today by default
-  selectDate(leadsList.querySelector('.lead-date-item'));
+  // Date dropdown — portaled to body to escape overflow:hidden on .nlv-card
+  const dateRow      = document.getElementById('nlv-date-row');
+  const dateTrigger  = document.getElementById('nlv-date-trigger');
+  const dateDropdown = document.getElementById('nlv-date-dropdown');
+  document.body.appendChild(dateDropdown);
+  let ddOpen = false;
 
-  // --- Date item click ---
-  leadsList.addEventListener('click', e => {
-    const item = e.target.closest('.lead-date-item');
-    if (item) selectDate(item);
+  function closeDateDropdown() {
+    ddOpen = false;
+    dateDropdown.classList.remove('open');
+    dateRow.classList.remove('open');
+  }
+
+  function renderDateDropdown(activeGroup) {
+    dateDropdown.innerHTML = dateGroups.map(g => `
+      <div class="nlv-date-opt${g === activeGroup ? ' active' : ''}" data-date="${g.date}">
+        <span>${g.date}</span>
+        <span class="nlv-date-badge">${g.leads.length} lead${g.leads.length !== 1 ? 's' : ''}</span>
+      </div>`).join('');
+    dateDropdown.querySelectorAll('.nlv-date-opt').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = dateGroups.find(g => g.date === opt.dataset.date);
+        if (group) selectGroup(group);
+        closeDateDropdown();
+      });
+    });
+  }
+
+  dateTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (ddOpen) { closeDateDropdown(); return; }
+    renderDateDropdown(dateGroups.find(g => g.date === dateTitle.textContent));
+    const rect = dateTrigger.getBoundingClientRect();
+    dateDropdown.style.top  = (rect.bottom - 4 + 6) + 'px';
+    dateDropdown.style.left = (rect.left + 6) + 'px';
+    dateDropdown.classList.add('open');
+    dateRow.classList.add('open');
+    ddOpen = true;
   });
 
+  document.addEventListener('click', () => { if (ddOpen) closeDateDropdown(); });
+
+  // Init with Today
+  selectGroup(dateGroups[0]);
 </script>
 </body>
 </html>
