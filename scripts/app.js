@@ -370,6 +370,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     otpVerify.addEventListener('click', e => {
       e.preventDefault();
       localStorage.setItem('zotok_auth', '1');
+      localStorage.setItem('zotok_fresh_login', '1');
       window.location.href = 'dashboard.html';
     });
   }
@@ -385,8 +386,14 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   });
 
   // ---------- First-load connect modal on dashboard ----------
-  if (page === 'chat' && !localStorage.getItem('zotok_connected') && !localStorage.getItem('zotok_connect_dismissed')) {
-    setTimeout(() => openModal('modal-connect'), 400);
+  if (page === 'chat') {
+    const freshLogin = localStorage.getItem('zotok_fresh_login');
+    if (freshLogin) {
+      localStorage.removeItem('zotok_fresh_login');
+      setTimeout(() => openModal('modal-connect'), 300);
+    } else if (!localStorage.getItem('zotok_connected') && !localStorage.getItem('zotok_connect_dismissed')) {
+      setTimeout(() => openModal('modal-connect'), 400);
+    }
   }
   document.querySelectorAll('[data-mark-connected]').forEach(b =>
     b.addEventListener('click', () => {
