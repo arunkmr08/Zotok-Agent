@@ -64,7 +64,10 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   // ---------- Logout ----------
   document.querySelectorAll('[data-logout]').forEach(b =>
     b.addEventListener('click', () => {
-      localStorage.removeItem('zotok_auth');
+      const keep = new Set(['zotok_theme', 'zotok_sidebar']);
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('zotok_') && !keep.has(k))
+        .forEach(k => localStorage.removeItem(k));
       window.location.href = 'login.html';
     })
   );
@@ -78,6 +81,8 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     const m = document.getElementById(id);
     if (m) {
       m.classList.remove('open');
+      const card = m.querySelector('.modal, .mgc');
+      if (card) card.classList.remove('syncing');
       if (id === 'modal-connect' || id === 'modal-groups') {
         localStorage.setItem('zotok_connect_dismissed', '1');
       }
@@ -86,6 +91,45 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   window.openModal = openModal;
   window.closeModal = closeModal;
 
+  // ---------- Slide transition between flow modals ----------
+  let inConnectFlow = false;
+
+  function transitionTo(fromId, toId, direction, onBefore) {
+    const fromEl = document.getElementById(fromId);
+    const toEl   = document.getElementById(toId);
+    if (!fromEl || !toEl) return;
+    const fromCard = fromEl.querySelector('.modal, .mgc');
+    const toCard   = toEl.querySelector('.modal, .mgc');
+    const outX = direction === 'back' ? '32px' : '-32px';
+    const inX  = direction === 'back' ? '-32px' : '32px';
+    if (fromCard) {
+      fromCard.style.transition = 'transform 0.22s ease, opacity 0.22s ease';
+      fromCard.style.transform  = `translateX(${outX})`;
+      fromCard.style.opacity    = '0';
+      fromCard.style.pointerEvents = 'none';
+    }
+    if (toCard) {
+      toCard.style.transition = 'none';
+      toCard.style.transform  = `translateX(${inX})`;
+      toCard.style.opacity    = '0';
+    }
+    toEl.classList.add('open', 'modal-no-bg');
+    if (onBefore) onBefore();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (toCard) {
+        toCard.style.transition = 'transform 0.32s cubic-bezier(0.16,1,0.3,1), opacity 0.28s ease';
+        toCard.style.transform  = '';
+        toCard.style.opacity    = '';
+      }
+      setTimeout(() => {
+        fromEl.classList.remove('open');
+        toEl.classList.remove('modal-no-bg');
+        if (fromCard) fromCard.style.cssText = '';
+        if (toCard)   { toCard.style.transition = ''; toCard.style.transform = ''; toCard.style.opacity = ''; }
+      }, 230);
+    }));
+  }
+
   document.querySelectorAll('[data-open]').forEach(b =>
     b.addEventListener('click', () => openModal(b.dataset.open))
   );
@@ -93,8 +137,13 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     b.addEventListener('click', () => closeModal(b.dataset.close))
   );
   document.querySelectorAll('.modal-backdrop').forEach(b => {
-    b.addEventListener('click', e => { 
+    b.addEventListener('click', e => {
       if (e.target === b) {
+        if (b.id === 'modal-history') {
+          inConnectFlow = false;
+          closeModal('modal-history');
+          return;
+        }
         b.classList.remove('open');
         if (b.id === 'modal-connect' || b.id === 'modal-groups') {
           localStorage.setItem('zotok_connect_dismissed', '1');
@@ -119,16 +168,83 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   // ---------- WhatsApp connect: fake "waiting → connected" ----------
   const stateEl = document.getElementById('connect-state');
   if (stateEl) {
-    // visual only — sit on "waiting" until user clicks "Simulate connect"
     document.querySelectorAll('[data-fake-connect]').forEach(b => {
       b.addEventListener('click', () => {
-        stateEl.innerHTML = '<span class="dot dot-success"></span> Connected — opening group selection…';
+        inConnectFlow = true;
+        stateEl.innerHTML = '<span class="dot dot-success"></span> Connected!';
         setTimeout(() => {
-          closeModal('modal-connect');
-          openModal('modal-groups');
+          transitionTo('modal-connect', 'modal-history', 'forward', () => initHistoryModal());
           if (stateEl) stateEl.innerHTML = '<span class="dot dot-warn"></span> Waiting for WhatsApp…';
-        }, 700);
+        }, 500);
       });
+    });
+  }
+
+  // ---------- Chat history sync modal ----------
+  function initHistoryModal() {
+    const optionList  = document.getElementById('history-option-list');
+    const customRange = document.getElementById('custom-range');
+    const fromInput   = document.getElementById('history-from');
+    const toInput     = document.getElementById('history-to');
+    const fetchBtn    = document.getElementById('history-fetch-btn');
+    const skipBtn     = document.getElementById('history-skip-btn');
+    const closeBtn    = document.getElementById('history-close-btn');
+
+    if (!optionList) return;
+
+    // Reset to default (Last 7 Days)
+    optionList.querySelectorAll('.history-option-row').forEach(r => r.classList.remove('selected'));
+    const defaultRow = optionList.querySelector('[data-days="7"]');
+    if (defaultRow) defaultRow.classList.add('selected');
+    if (customRange) customRange.style.display = 'none';
+
+    const today = new Date();
+    const fmt = d => d.toISOString().slice(0, 10);
+    if (toInput) { toInput.value = fmt(today); toInput.max = fmt(today); }
+    const d7 = new Date(today); d7.setDate(today.getDate() - 7);
+    if (fromInput) fromInput.value = fmt(d7);
+
+    let activeDays = 7;
+
+    optionList.querySelectorAll('.history-option-row').forEach(row => {
+      row.onclick = () => {
+        optionList.querySelectorAll('.history-option-row').forEach(r => r.classList.remove('selected'));
+        row.classList.add('selected');
+        const days = row.dataset.days;
+        if (days === 'custom') {
+          activeDays = 'custom';
+          if (customRange) customRange.style.display = 'flex';
+        } else {
+          activeDays = parseInt(days, 10);
+          if (customRange) customRange.style.display = 'none';
+          const from = new Date(today); from.setDate(today.getDate() - activeDays);
+          if (fromInput) fromInput.value = fmt(from);
+          if (toInput)   toInput.value   = fmt(today);
+        }
+      };
+    });
+
+    if (fromInput) fromInput.onchange = () => {
+      if (toInput && fromInput.value > toInput.value) toInput.value = fromInput.value;
+    };
+
+    function goToGroups() {
+      const backBtn = document.getElementById('groups-back-btn');
+      if (backBtn) backBtn.style.display = inConnectFlow ? '' : 'none';
+      transitionTo('modal-history', 'modal-groups', 'forward');
+    }
+
+    if (fetchBtn) { fetchBtn.onclick = null; fetchBtn.addEventListener('click', goToGroups); }
+    if (skipBtn)  { skipBtn.onclick  = null; skipBtn.addEventListener('click', goToGroups); }
+    if (closeBtn) { closeBtn.onclick = null; closeBtn.addEventListener('click', () => { inConnectFlow = false; closeModal('modal-history'); }); }
+  }
+
+  // ---------- Groups → history back button ----------
+  const groupsBackBtn = document.getElementById('groups-back-btn');
+  if (groupsBackBtn) {
+    groupsBackBtn.addEventListener('click', () => {
+      groupsBackBtn.style.display = 'none';
+      transitionTo('modal-groups', 'modal-history', 'back', () => initHistoryModal());
     });
   }
 
@@ -141,7 +257,8 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   if (groupList && counterEl) {
     const update = () => {
       const n = groupList.querySelectorAll('.group-row.selected').length;
-      counterEl.querySelector('strong').textContent = `${n}/${LIMIT}`;
+      const strong = counterEl.querySelector('strong');
+      if (strong) strong.textContent = `${n}/${LIMIT}`;
       if (syncBtn) syncBtn.disabled = n === 0;
     };
     groupList.querySelectorAll('.group-row:not(.locked)').forEach(row => {
@@ -210,7 +327,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     msg.className = 'msg ai';
     msg.id = '__typing';
     msg.innerHTML = `
-      <div class="msg-avatar">Z</div>
+      <div class="msg-avatar"><img src="assets/icons/zotok-logo.svg" alt="Zotok" class="msg-avatar-img"></div>
       <div class="msg-body">
         <div class="msg-name">Zotok</div>
         <div class="msg-text"><div class="typing"><span></span><span></span><span></span></div></div>
@@ -226,7 +343,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     const msg = document.createElement('div');
     msg.className = 'msg ai';
     msg.innerHTML = `
-      <div class="msg-avatar">Z</div>
+      <div class="msg-avatar"><img src="assets/icons/zotok-logo.svg" alt="Zotok" class="msg-avatar-img"></div>
       <div class="msg-body">
         <div class="msg-name">Zotok</div>
         <div class="msg-text">${html}</div>
@@ -370,8 +487,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     otpVerify.addEventListener('click', e => {
       e.preventDefault();
       localStorage.setItem('zotok_auth', '1');
-      localStorage.setItem('zotok_fresh_login', '1');
-      window.location.href = 'dashboard.html';
+      window.location.href = 'dashboard.html?connect=1';
     });
   }
   // OTP cell auto-advance
@@ -387,9 +503,8 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
 
   // ---------- First-load connect modal on dashboard ----------
   if (page === 'chat') {
-    const freshLogin = localStorage.getItem('zotok_fresh_login');
-    if (freshLogin) {
-      localStorage.removeItem('zotok_fresh_login');
+    if (new URLSearchParams(window.location.search).get('connect') === '1') {
+      try { history.replaceState(null, '', 'dashboard.html'); } catch(e) {}
       setTimeout(() => openModal('modal-connect'), 300);
     } else if (!localStorage.getItem('zotok_connected') && !localStorage.getItem('zotok_connect_dismissed')) {
       setTimeout(() => openModal('modal-connect'), 400);
@@ -397,8 +512,12 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   }
   document.querySelectorAll('[data-mark-connected]').forEach(b =>
     b.addEventListener('click', () => {
+      inConnectFlow = false;
+      const backBtn = document.getElementById('groups-back-btn');
+      if (backBtn) backBtn.style.display = 'none';
       localStorage.setItem('zotok_connected', '1');
-      closeModal('modal-groups');
+      const card = b.closest('.modal, .mgc');
+      if (card) card.classList.add('syncing');
     })
   );
   // ---------- Categorise message groups modal logic ----------

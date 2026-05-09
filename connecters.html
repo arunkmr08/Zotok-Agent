@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Connecters — Zotok</title>
+<title>Connecters — Group Sense</title>
 <link rel="stylesheet" href="styles/main.css">
 <style>
   .agent-icon.brand { background: none; border: none; overflow: hidden; padding: 0; }
@@ -94,6 +94,36 @@
           </div>
         </article>
 
+        <!-- SAP B1 -->
+        <article class="agent-card">
+          <div class="agent-head">
+            <div class="agent-icon brand">
+              <img src="https://cdn.shopaccino.com/igmguru/products/sap-business-one-training-online-2390474615788753_l.jpg?v=547" alt="SAP B1">
+            </div>
+          </div>
+          <div>
+            <h3>SAP Business One</h3>
+            <p>Sync leads, orders, and customer data from WhatsApp groups directly into SAP Business One for streamlined ERP workflows.</p>
+          </div>
+          <div class="agent-foot">
+            <button class="btn btn-primary btn-sm">Connect</button>
+          </div>
+        </article>
+
+        <!-- Zotok -->
+        <article class="agent-card">
+          <div class="agent-head">
+            <div class="agent-icon brand" style="background:#589981;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+              <img src="https://www.figma.com/api/mcp/asset/53abfcbc-7378-4f37-a349-43e04a8cec2c" alt="Zotok" style="width:24px;height:18px;object-fit:contain;">
+            </div>
+          </div>
+          <div>
+            <h3>Zotok</h3>
+            <p>Add leads directly into Zotok campaigns for automated follow-ups and lead nurturing workflows.</p>
+          </div>
+          <div class="agent-foot" id="zotok-foot"></div>
+        </article>
+
       </div>
     </div>
   </main>
@@ -123,6 +153,28 @@
     }
   }
   renderGsheetsCard();
+
+  function renderZotokCard() {
+    const foot = document.getElementById('zotok-foot');
+    if (!foot) return;
+    const connected = localStorage.getItem('zotok_atc_connected') === 'true';
+    if (connected) {
+      foot.innerHTML = `
+        <span class="connector-connected-badge">Connected</span>
+        <button class="btn-disconnect-sm" id="zotok-disconnect-btn">Disconnect</button>`;
+      document.getElementById('zotok-disconnect-btn').addEventListener('click', () => {
+        localStorage.removeItem('zotok_atc_connected');
+        renderZotokCard();
+      });
+    } else {
+      foot.innerHTML = `<button class="btn btn-primary btn-sm" id="zotok-connect-btn">Connect</button>`;
+      document.getElementById('zotok-connect-btn').addEventListener('click', () => {
+        localStorage.setItem('zotok_atc_connected', 'true');
+        renderZotokCard();
+      });
+    }
+  }
+  renderZotokCard();
 </script>
 </body>
 </html>

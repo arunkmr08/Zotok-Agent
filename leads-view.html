@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Leads — Zotok</title>
+<title>New Leads — Group Sense</title>
 <link rel="stylesheet" href="styles/main.css">
 <style>
   /* ── Full-height chain ── */
@@ -137,6 +137,53 @@
     letter-spacing: -0.09px; cursor: pointer; white-space: nowrap;
   }
   .nlv-tool-btn:hover { background: #f8f8f7; }
+  /* ── Action button ── */
+  .nlv-action-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid #e8e6e0; border-radius: 10px;
+    padding: 9px 13px; font-size: 14px; font-weight: 500; color: #34322d;
+    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
+    white-space: nowrap; transition: background 0.15s;
+  }
+  .nlv-action-btn:hover { background: #f8f8f7; }
+  .nlv-action-btn img { width: 18px; height: 18px; display: block; }
+  .nlv-table td.nlv-td-action { white-space: nowrap; }
+  .nlv-td-action-wrap { display: flex; align-items: center; gap: 6px; }
+  /* ── Checkboxes ── */
+  .nlv-cb-cell { width: 40px; padding: 12px 8px 12px 16px !important; }
+  .nlv-cb {
+    width: 16px; height: 16px; border-radius: 4px;
+    border: 1.5px solid rgba(0,0,0,0.2); cursor: pointer;
+    appearance: none; -webkit-appearance: none;
+    background: white; display: block; flex-shrink: 0;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .nlv-cb:checked {
+    background: #0067ff; border-color: #0067ff;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center;
+  }
+  .nlv-cb:indeterminate {
+    background: #0067ff; border-color: #0067ff;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='2' viewBox='0 0 10 2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1' y='0.5' width='8' height='1' rx='0.5' fill='white'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center;
+  }
+  /* ── Selection bar ── */
+  .nlv-selection-bar {
+    display: none; align-items: center; justify-content: space-between;
+    padding: 10px 20px; flex-shrink: 0;
+    background: #f0f6ff; border-bottom: 1px solid rgba(0,103,255,0.12);
+  }
+  .nlv-selection-bar.show { display: flex; }
+  .nlv-selection-count { font-size: 14px; font-weight: 500; color: #0067ff; letter-spacing: -0.09px; }
+  .nlv-selection-atc {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #0067ff; border: none; border-radius: 8px;
+    padding: 8px 14px; font-size: 13px; font-weight: 600; color: white;
+    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
+    transition: background 0.15s;
+  }
+  .nlv-selection-atc:hover { background: #0055d4; }
   /* ── Table container ── */
   .nlv-table-wrap {
     flex: 1; min-height: 0;
@@ -202,6 +249,258 @@
   .nlv-page-btn:hover:not(:disabled) { background: #f8f8f7; border-color: #e8e6e0; }
   .nlv-page-btn.active { background: #34322d; color: white; border-color: #34322d; }
   .nlv-page-btn:disabled { opacity: 0.4; cursor: default; }
+  /* ── Chat flyout ── */
+  .nlv-flyout {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 460px;
+    background: #f8f8f7;
+    border-left: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0px 8px 32px rgba(0,0,0,0.16);
+    border-radius: 18px 0 0 18px;
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+    z-index: 300;
+  }
+  .nlv-flyout.open { transform: translateX(0); }
+  .nlv-flyout-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px; flex-shrink: 0;
+    background: #ffffff;
+    border-radius: 18px 0 0 0;
+  }
+  .nlv-flyout-avatar {
+    width: 40px; height: 40px; border-radius: 100px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden;
+    border: 0.5px solid rgba(0,0,0,0.16);
+  }
+  .nlv-flyout-avatar img { width: 20px; height: 20px; display: block; filter: brightness(0) invert(1); }
+  .nlv-flyout-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .nlv-flyout-name { font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.33px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nlv-flyout-sub  { font-size: 14px; color: #858481; line-height: 18px; letter-spacing: -0.09px; }
+  .nlv-flyout-head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nlv-flyout-icon-btn {
+    display: flex; align-items: center; justify-content: center;
+    background: white; border: 1px solid #e8e6e0; border-radius: 10px;
+    padding: 9px; cursor: pointer; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .nlv-flyout-icon-btn:hover { background: #f4f3ef; }
+  .nlv-flyout-icon-btn img { width: 18px; height: 18px; display: block; }
+  .nlv-flyout-messages {
+    flex: 1; min-height: 0; overflow-y: auto;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding: 20px; display: flex; flex-direction: column; gap: 20px;
+  }
+  .nlv-flyout-msg-in { display: flex; flex-direction: column; gap: 2px; padding-right: 100px; }
+  .nlv-flyout-msg-meta { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .nlv-flyout-msg-sender { font-size: 14px; font-weight: 500; color: #34322d; line-height: 20px; letter-spacing: -0.09px; }
+  .nlv-flyout-msg-dot { font-size: 12px; color: #34322d; line-height: 20px; }
+  .nlv-flyout-msg-time { font-size: 12px; color: #858481; line-height: 16px; }
+  .nlv-flyout-msg-text { font-size: 14px; color: #34322d; line-height: 20px; letter-spacing: -0.09px; }
+  .nlv-flyout-msg-out { display: flex; flex-direction: column; align-items: flex-end; padding-left: 100px; }
+  .nlv-flyout-msg-bubble {
+    background: white; border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 8px; padding: 12px; max-width: 360px;
+    font-size: 14px; color: #34322d; line-height: 20px; letter-spacing: -0.09px;
+  }
+  .nlv-flyout-composer { flex-shrink: 0; padding: 0 12px 12px; }
+  .nlv-flyout-input-wrap {
+    background: white; border: 1px solid #e8e6e0; border-radius: 22px;
+    padding: 19px 19px 13px; display: flex; flex-direction: column; gap: 60px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .nlv-flyout-input-wrap:focus-within {
+    border-color: rgba(0,0,0,0.18);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+  }
+  .nlv-flyout-textarea {
+    width: 100%; border: none; outline: none; background: transparent;
+    font-family: inherit; font-size: 14px; font-weight: 500; color: #34322d;
+    letter-spacing: -0.18px; resize: none; line-height: 1.4;
+    min-height: 20px; max-height: 120px; overflow-y: auto;
+  }
+  .nlv-flyout-textarea::placeholder { color: #b9b9b7; }
+  .nlv-flyout-toolbar { display: flex; align-items: center; justify-content: space-between; }
+  .nlv-flyout-toolbar-side { display: flex; align-items: center; gap: 8px; }
+  .nlv-flyout-tool-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.06); background: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .nlv-flyout-tool-btn:hover { background: #f4f3ef; }
+  .nlv-flyout-tool-btn.no-border { border: none; }
+  .nlv-flyout-tool-btn img { width: 20px; height: 20px; display: block; }
+  .nlv-flyout-send-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(55,53,47,0.08); border: 1px solid rgba(229,231,235,0.06);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .nlv-flyout-send-btn:hover { background: rgba(55,53,47,0.16); }
+  .nlv-flyout-send-btn img { width: 20px; height: 20px; display: block; transition: filter 0.15s; }
+  .nlv-flyout-send-btn.active { background: #0067ff; border-color: transparent; }
+  .nlv-flyout-send-btn.active:hover { background: #0055d4; }
+  .nlv-flyout-send-btn.active img { filter: brightness(0) invert(1); }
+
+  /* ── Add-to-Campaign modal ── */
+  .atc-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    z-index: 500;
+    align-items: center; justify-content: center;
+  }
+  .atc-overlay.open { display: flex; }
+  .atc-modal {
+    background: #f8f8f7;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 18px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    width: 480px;
+    padding: 21px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .atc-modal-head {
+    display: flex; gap: 12px;
+    align-items: flex-start; justify-content: space-between;
+  }
+  .atc-modal-title {
+    font-size: 20px; font-weight: 600; color: #34322d;
+    letter-spacing: -0.33px; line-height: normal;
+  }
+  .atc-modal-sub {
+    font-size: 14px; color: #858481;
+    letter-spacing: -0.09px; line-height: 22px; margin-top: 2px;
+  }
+  .atc-close-btn {
+    background: none; border: none; cursor: pointer;
+    width: 24px; height: 24px; flex-shrink: 0; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #858481; border-radius: 6px; transition: background 0.15s;
+  }
+  .atc-close-btn:hover { background: rgba(0,0,0,0.06); }
+  .atc-connect-box {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 18px;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 44px;
+  }
+  .atc-icons-row { display: flex; align-items: center; gap: 22px; }
+  .atc-icon-left {
+    width: 60px; height: 60px; background: white;
+    border: 1px solid rgba(0,0,0,0.12); border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; padding: 1px;
+  }
+  .atc-icon-left img { width: 43px; height: 43px; object-fit: contain; }
+  .atc-icon-right {
+    width: 60px; height: 60px; background: #589981;
+    border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .atc-icon-right img { width: 36px; height: 27px; object-fit: contain; }
+  .atc-connect-text { text-align: center; }
+  .atc-connect-title {
+    font-size: 16px; font-weight: 600; color: #34322d;
+    letter-spacing: -0.18px; line-height: 20px;
+  }
+  .atc-connect-desc {
+    font-size: 14px; color: #858481;
+    letter-spacing: -0.09px; line-height: 22px; margin-top: 2px;
+  }
+  .atc-footer { display: flex; gap: 12px; align-items: center; }
+  .atc-cancel-btn {
+    flex: 1; background: white; border: 1px solid #e8e6e0;
+    border-radius: 10px; padding: 12px 15px;
+    font-size: 14px; font-weight: 600; color: #34322d;
+    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
+    line-height: 16px; transition: background 0.15s;
+  }
+  .atc-cancel-btn:hover { background: #f8f8f7; }
+  .atc-continue-btn {
+    flex: 1; background: #0067ff; border: none;
+    border-radius: 10px; padding: 12px 14px;
+    font-size: 14px; font-weight: 600; color: white;
+    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
+    line-height: 16px; transition: background 0.15s;
+  }
+  .atc-continue-btn:hover { background: #0055d4; }
+  .atc-continue-btn:disabled { background: #0067ff; cursor: not-allowed; opacity: 0.85; display: flex; align-items: center; justify-content: center; }
+  @keyframes atc-spin { to { transform: rotate(360deg); } }
+  .atc-spin { animation: atc-spin 0.8s linear infinite; display: block; }
+  /* ── Campaign list view ── */
+  .atc-view { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+  .atc-camp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .atc-camp-label { font-size: 14px; font-weight: 600; color: #34322d; letter-spacing: -0.09px; line-height: 20px; }
+  .atc-camp-connected { font-size: 14px; color: #858481; letter-spacing: -0.09px; line-height: 22px; white-space: nowrap; flex-shrink: 0; }
+  .atc-search {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 8px; padding: 0 12px; height: 40px;
+  }
+  .atc-search img { width: 18px; height: 18px; flex-shrink: 0; }
+  .atc-search-input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-size: 14px; color: #34322d; font-family: inherit; letter-spacing: -0.09px;
+  }
+  .atc-search-input::placeholder { color: #858481; }
+  .atc-camp-list {
+    background: white; border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 12px; overflow: hidden;
+    max-height: 300px; overflow-y: auto;
+  }
+  .atc-camp-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px; cursor: pointer;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    transition: background 0.12s;
+  }
+  .atc-camp-item:last-child { border-bottom: none; }
+  .atc-camp-item:hover { background: #fafafa; }
+  .atc-camp-icon { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50px; overflow: hidden; }
+  .atc-camp-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .atc-camp-name { font-size: 14px; font-weight: 500; color: #34322d; letter-spacing: -0.09px; line-height: 18px; }
+  .atc-camp-meta { font-size: 12px; color: #858481; letter-spacing: 0.01px; line-height: 16px; }
+  .atc-camp-radio {
+    width: 24px; height: 24px; flex-shrink: 0;
+    border: 1.5px solid rgba(0,0,0,0.18); border-radius: 50%;
+    box-sizing: border-box; transition: border-color 0.15s;
+  }
+  .atc-camp-item.selected .atc-camp-radio {
+    border-color: #0067ff; background: #0067ff;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center;
+  }
+  .atc-assign-btn {
+    flex: 1; background: #0067ff; border: none;
+    border-radius: 10px; padding: 12px 14px;
+    font-size: 14px; font-weight: 600; color: white;
+    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
+    line-height: 16px; transition: background 0.15s;
+  }
+  .atc-assign-btn:hover { background: #0055d4; }
+  .atc-modal.wide { width: 1024px; }
+  /* ── Toast ── */
+  .atc-toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: #34322d; color: white;
+    font-size: 14px; font-weight: 500; letter-spacing: -0.09px;
+    padding: 12px 20px; border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    z-index: 600; opacity: 0; transition: opacity 0.25s;
+    white-space: nowrap; pointer-events: none;
+  }
+  .atc-toast.show { opacity: 1; }
+
   /* ── Empty state ── */
   .nlv-empty {
     flex: 1; display: flex; flex-direction: column;
@@ -266,10 +565,19 @@
               Filters
             </button>
             <button class="nlv-tool-btn" type="button">
-              <img src="assets/icons/d8d17a5d-d134-4090-a882-4023011db481.svg" width="18" height="18" alt="">
+              <img src="assets/icons/aab464af-9c7c-4387-8eea-790e3bef8a62.svg" width="18" height="18" alt="">
               Export
             </button>
           </div>
+        </div>
+
+        <!-- Selection bar -->
+        <div class="nlv-selection-bar" id="nlv-selection-bar">
+          <span class="nlv-selection-count" id="nlv-selection-count"></span>
+          <button class="nlv-selection-atc" id="nlv-bulk-atc" type="button">
+            <img src="assets/icons/e18942db-8713-4e07-a3c9-53976c803bd5.svg" width="16" height="16" alt="" style="filter:brightness(0) invert(1);">
+            Add to Campaign
+          </button>
         </div>
 
         <!-- Table -->
@@ -277,10 +585,12 @@
           <!-- shimmer placeholder -->
           <table class="nlv-table" id="nlv-shimmer-table">
             <thead><tr>
+              <th class="nlv-cb-cell"></th>
               <th style="width:228px;">Customer Name</th>
               <th style="width:174px;">Mobile Number</th>
               <th style="width:201px;">Location</th>
               <th>Summary</th>
+              <th>Action</th>
             </tr></thead>
             <tbody id="nlv-shimmer-body">
               <!-- filled by shimmer JS -->
@@ -308,7 +618,202 @@
     </div>
 
   </main>
+
+  <!-- Chat flyout -->
+  <div class="nlv-flyout" id="nlv-flyout">
+    <div class="nlv-flyout-head">
+      <div class="nlv-flyout-avatar" id="nlv-flyout-avatar">
+        <img src="assets/icons/536e13b8-adad-48f2-a3e5-ce27db2e0d52.svg" alt="">
+      </div>
+      <div class="nlv-flyout-info">
+        <div class="nlv-flyout-name" id="nlv-flyout-name"></div>
+        <div class="nlv-flyout-sub" id="nlv-flyout-sub"></div>
+      </div>
+      <div class="nlv-flyout-head-actions">
+        <button class="nlv-flyout-icon-btn" type="button" aria-label="Details">
+          <img src="assets/icons/75d77129-9e54-4d1a-9bf4-ee9d4ce23b22.svg" alt="">
+        </button>
+        <button class="nlv-flyout-icon-btn" type="button" id="nlv-flyout-close" aria-label="Close">
+          <img src="assets/icons/83a61752-ef33-4821-8495-8a9d5528b66e.svg" alt="">
+        </button>
+      </div>
+    </div>
+    <div class="nlv-flyout-messages" id="nlv-flyout-messages"></div>
+    <div class="nlv-flyout-composer">
+      <div class="nlv-flyout-input-wrap">
+        <textarea class="nlv-flyout-textarea" id="nlv-flyout-input" rows="1" placeholder="Reply to this lead…"></textarea>
+        <div class="nlv-flyout-toolbar">
+          <div class="nlv-flyout-toolbar-side">
+            <input type="file" id="nlv-flyout-file" style="display:none">
+            <button class="nlv-flyout-tool-btn" type="button" id="nlv-flyout-attach">
+              <img src="assets/icons/8efa9adf-db39-4332-8f16-82d6eaa45e7e.svg" alt="">
+            </button>
+          </div>
+          <div class="nlv-flyout-toolbar-side">
+            <button class="nlv-flyout-tool-btn no-border" type="button">
+              <img src="assets/icons/f6de2427-0dd7-49d0-966a-ad8d3a65d56d.svg" alt="">
+            </button>
+            <button class="nlv-flyout-send-btn" id="nlv-flyout-send" type="button">
+              <img src="assets/icons/d1da0259-fc19-4607-94b5-c54f7252a657.svg" alt="">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<!-- Add to Campaign Modal -->
+<div class="atc-overlay" id="atc-overlay">
+  <div class="atc-modal">
+
+    <!-- View 1: Connect to Zotok -->
+    <div class="atc-view" id="atc-view-1">
+      <div class="atc-modal-head">
+        <div>
+          <div class="atc-modal-title">Connect to Zotok</div>
+          <div class="atc-modal-sub">Enable campaign management for new leads detected from WhatsApp groups. View campaigns, assign leads, and send campaign messages directly through ZoTok.</div>
+        </div>
+        <button class="atc-close-btn" id="atc-close" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="atc-connect-box">
+        <div class="atc-icons-row">
+          <div class="atc-icon-left">
+            <img src="https://www.figma.com/api/mcp/asset/9d037a1b-82fd-41e2-9163-da206899e3e4" alt="">
+          </div>
+          <img src="https://www.figma.com/api/mcp/asset/1ba346c0-0553-4dab-bb50-3a899617f652" width="20" height="20" alt="">
+          <div class="atc-icon-right">
+            <img src="https://www.figma.com/api/mcp/asset/53abfcbc-7378-4f37-a349-43e04a8cec2c" alt="Zotok">
+          </div>
+        </div>
+        <div class="atc-connect-text">
+          <div class="atc-connect-title">Continue to Setup Zotok</div>
+          <div class="atc-connect-desc">Securely connect your ZoTok account to manage campaigns and automate lead workflows.</div>
+        </div>
+      </div>
+      <div class="atc-footer">
+        <button class="atc-cancel-btn" id="atc-cancel">Cancel</button>
+        <button class="atc-continue-btn" id="atc-continue">Continue to Zotok</button>
+      </div>
+    </div>
+
+    <!-- View 2: Campaign list -->
+    <div class="atc-view" id="atc-view-2" style="display:none;">
+      <div class="atc-modal-head">
+        <div>
+          <div class="atc-modal-title">Add to Campaign</div>
+          <div class="atc-modal-sub">Enable campaign management for new leads detected from WhatsApp groups. View campaigns, assign leads, and send campaign messages directly through ZoTok.</div>
+        </div>
+        <button class="atc-close-btn" id="atc-close-2" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="atc-camp-header">
+          <span class="atc-camp-label">Select your preferred campaign to add customer to campaign</span>
+          <span class="atc-camp-connected">Connected to: JK Traders (+91 94434 33422)</span>
+        </div>
+        <div class="atc-search">
+          <img src="https://www.figma.com/api/mcp/asset/707cfe11-e71a-44f7-9752-af18f1821444" alt="">
+          <input class="atc-search-input" id="atc-search-input" type="search" placeholder="Search Group">
+        </div>
+        <div class="atc-camp-list" id="atc-camp-list">
+          <div class="atc-camp-item" data-campaign="Smart Lead Connect">
+            <div class="atc-camp-icon" style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
+              <img src="https://www.figma.com/api/mcp/asset/90a23bc7-da03-43f5-9257-ac4daa2dc1e7" width="20" height="20" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Smart Lead Connect</div>
+              <div class="atc-camp-meta">CTWA</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="Instant Buyer Reach">
+            <div class="atc-camp-icon" style="background:linear-gradient(135deg,#f4b42a 15%,#d99100 92%);display:flex;align-items:center;justify-content:center;">
+              <img src="https://www.figma.com/api/mcp/asset/4daf4503-b492-4164-8420-9ee7a869ebe0" width="24" height="24" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Instant Buyer Reach</div>
+              <div class="atc-camp-meta">Dynamic Segments • Scheduled: 19 Oct, 10:30 AM • 47 Members</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="New Lead Booster">
+            <div class="atc-camp-icon" style="overflow:hidden;">
+              <img src="https://www.figma.com/api/mcp/asset/ac64607c-e5fd-4233-baa7-27742a206cd2" width="36" height="36" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">New Lead Booster</div>
+              <div class="atc-camp-meta">Standard • Recurring: Customer Level • 47 Members</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="Quick Response Leads">
+            <div class="atc-camp-icon" style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
+              <img src="https://www.figma.com/api/mcp/asset/f767fd5e-8a92-4e12-94ed-e0af8867be4f" width="20" height="20" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Quick Response Leads</div>
+              <div class="atc-camp-meta">India Mart • 47 Members</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="Hot Lead Pipeline">
+            <div class="atc-camp-icon" style="overflow:hidden;">
+              <img src="https://www.figma.com/api/mcp/asset/2a0ed46b-950a-4430-82b4-70a4dd412218" width="36" height="36" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Hot Lead Pipeline</div>
+              <div class="atc-camp-meta">Events</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="Lead Magnet Pro">
+            <div class="atc-camp-icon" style="background:linear-gradient(135deg,#f4b42a 15%,#d99100 92%);display:flex;align-items:center;justify-content:center;">
+              <img src="https://www.figma.com/api/mcp/asset/4daf4503-b492-4164-8420-9ee7a869ebe0" width="24" height="24" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Lead Magnet Pro</div>
+              <div class="atc-camp-meta">Segments • Recurring: 19 Oct, 10:30 AM - 18 Nov • 47 Members</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="Customer Connect Flow">
+            <div class="atc-camp-icon" style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
+              <img src="https://www.figma.com/api/mcp/asset/90a23bc7-da03-43f5-9257-ac4daa2dc1e7" width="20" height="20" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Customer Connect Flow</div>
+              <div class="atc-camp-meta">Meta Lead Gen</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+          <div class="atc-camp-item" data-campaign="Lead Capture Drive">
+            <div class="atc-camp-icon" style="overflow:hidden;">
+              <img src="https://www.figma.com/api/mcp/asset/ac64607c-e5fd-4233-baa7-27742a206cd2" width="36" height="36" alt="">
+            </div>
+            <div class="atc-camp-info">
+              <div class="atc-camp-name">Lead Capture Drive</div>
+              <div class="atc-camp-meta">Standard • Recurring: Customer Level • 47 Members</div>
+            </div>
+            <div class="atc-camp-radio"></div>
+          </div>
+        </div>
+      </div>
+      <div class="atc-footer">
+        <button class="atc-cancel-btn" id="atc-cancel-2">Cancel</button>
+        <button class="atc-assign-btn" id="atc-assign">Assign To Campaign</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="atc-toast" id="atc-toast"></div>
 
 <script src="scripts/sidebar.js"></script>
 <script src="scripts/app.js"></script>
@@ -384,6 +889,14 @@
   let activeLeads = dateGroups[0].leads;
   let currentPage = 1;
   const PAGE_SIZE = 50;
+  let selectedLeadKeys = new Set();
+  function leadKey(lead) { return lead.name + '|' + lead.phone; }
+  function updateSelectionBar() {
+    const n = selectedLeadKeys.size;
+    const bar = document.getElementById('nlv-selection-bar');
+    bar.classList.toggle('show', n > 0);
+    document.getElementById('nlv-selection-count').textContent = `${n} lead${n !== 1 ? 's' : ''} selected`;
+  }
 
   const searchInput  = document.getElementById('nlv-search');
   const dateTitle    = document.getElementById('nlv-date-title');
@@ -416,27 +929,46 @@
     const slice     = leads.slice(start, start + PAGE_SIZE);
 
     let html = `<table class="nlv-table"><thead><tr>
+      <th class="nlv-cb-cell"><input type="checkbox" class="nlv-cb" id="nlv-cb-all"></th>
       <th style="width:228px;">Customer Name</th>
       <th style="width:174px;">Mobile Number</th>
       <th style="width:201px;">Location</th>
       <th>Summary</th>
+      <th>Action</th>
     </tr></thead><tbody>`;
 
     if (slice.length === 0) {
-      html += `<tr><td colspan="4"><div class="nlv-empty">No leads found</div></td></tr>`;
+      html += `<tr><td colspan="6"><div class="nlv-empty">No leads found</div></td></tr>`;
     } else {
       slice.forEach((lead, i) => {
         const globalIdx = start + i;
+        const checked = selectedLeadKeys.has(leadKey(lead)) ? 'checked' : '';
         html += `<tr>
+          <td class="nlv-cb-cell"><input type="checkbox" class="nlv-cb nlv-row-cb" data-idx="${i}" ${checked}></td>
           <td><div class="nlv-name-cell">${avatar(globalIdx)}<span>${lead.name}</span></div></td>
           <td class="nlv-td-phone">${lead.phone}</td>
           <td class="nlv-td-location">${lead.location}</td>
           <td class="nlv-td-summary">${lead.summary}</td>
+          <td class="nlv-td-action"><div class="nlv-td-action-wrap"><button class="nlv-action-btn" type="button" data-lead-idx="${i}"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button><button class="nlv-action-btn nlv-campaign-btn" type="button" data-campaign-idx="${i}"><img src="assets/icons/e18942db-8713-4e07-a3c9-53976c803bd5.svg" width="16" height="16" alt="">Add to Campaign</button></div></td>
         </tr>`;
       });
     }
     html += `</tbody></table>`;
     tableWrap.innerHTML = html;
+
+    // Wire select-all
+    const cbAll = document.getElementById('nlv-cb-all');
+    if (cbAll) {
+      const allChecked = slice.length > 0 && slice.every(l => selectedLeadKeys.has(leadKey(l)));
+      const someChecked = slice.some(l => selectedLeadKeys.has(leadKey(l)));
+      cbAll.checked = allChecked;
+      cbAll.indeterminate = !allChecked && someChecked;
+      cbAll.addEventListener('change', () => {
+        slice.forEach(l => { cbAll.checked ? selectedLeadKeys.add(leadKey(l)) : selectedLeadKeys.delete(leadKey(l)); });
+        updateSelectionBar();
+        renderPage();
+      });
+    }
 
     // Hide pagination when everything fits on one page
     const paginationEl = document.getElementById('nlv-pagination');
@@ -479,6 +1011,8 @@
     activeLeads  = group.leads;
     currentPage  = 1;
     searchInput.value = '';
+    selectedLeadKeys.clear();
+    updateSelectionBar();
     dateTitle.textContent = group.date;
     countSub.textContent  = `${group.leads.length} New Lead${group.leads.length !== 1 ? 's' : ''}`;
     renderPage();
@@ -486,7 +1020,7 @@
 
   prevBtn.addEventListener('click', () => { currentPage--; renderPage(); });
   nextBtn.addEventListener('click', () => { currentPage++; renderPage(); });
-  searchInput.addEventListener('input', () => { currentPage = 1; renderPage(); });
+  searchInput.addEventListener('input', () => { currentPage = 1; selectedLeadKeys.clear(); updateSelectionBar(); renderPage(); });
 
   // Date dropdown — portaled to body to escape overflow:hidden on .nlv-card
   const dateRow      = document.getElementById('nlv-date-row');
@@ -533,6 +1067,204 @@
 
   // Init with Today
   selectGroup(dateGroups[0]);
+
+  // ── Chat flyout ──
+  const nlvFlyout      = document.getElementById('nlv-flyout');
+  const nlvFlyoutName  = document.getElementById('nlv-flyout-name');
+  const nlvFlyoutSub   = document.getElementById('nlv-flyout-sub');
+  const nlvFlyoutMsgs  = document.getElementById('nlv-flyout-messages');
+  const nlvFlyoutInput = document.getElementById('nlv-flyout-input');
+  const nlvFlyoutSend  = document.getElementById('nlv-flyout-send');
+  const nlvFlyoutAvatar= document.getElementById('nlv-flyout-avatar');
+
+  function openLeadFlyout(lead, avatarColor) {
+    nlvFlyoutName.textContent = lead.name;
+    nlvFlyoutSub.textContent  = lead.phone;
+    nlvFlyoutAvatar.style.background = avatarColor;
+    nlvFlyoutInput.value = '';
+    nlvFlyoutInput.style.height = '';
+    const replies = [
+      "Thanks for reaching out! We'll review your request and get back to you shortly.",
+      "Thank you for your interest! Our team will contact you soon with more details.",
+      "Noted! We'll have someone from our sales team reach out to you today.",
+    ];
+    const reply = replies[lead.name.length % replies.length];
+    nlvFlyoutMsgs.innerHTML = `
+      <div class="nlv-flyout-msg-in">
+        <div class="nlv-flyout-msg-meta">
+          <span class="nlv-flyout-msg-sender">${lead.name}</span>
+          <span class="nlv-flyout-msg-dot">•</span>
+          <span class="nlv-flyout-msg-time">${lead.date === 'Today' ? 'Today, 10:30 AM' : lead.date}</span>
+        </div>
+        <div class="nlv-flyout-msg-text">${lead.summary}</div>
+      </div>
+      <div class="nlv-flyout-msg-out">
+        <div class="nlv-flyout-msg-bubble">${reply}</div>
+      </div>`;
+    nlvFlyout.classList.add('open');
+    nlvFlyoutMsgs.scrollTop = nlvFlyoutMsgs.scrollHeight;
+    nlvFlyoutInput.focus();
+  }
+
+  function sendLeadMsg() {
+    const text = nlvFlyoutInput.value.trim();
+    if (!text) return;
+    const out = document.createElement('div');
+    out.className = 'nlv-flyout-msg-out';
+    out.innerHTML = `<div class="nlv-flyout-msg-bubble">${text}</div>`;
+    nlvFlyoutMsgs.appendChild(out);
+    nlvFlyoutMsgs.scrollTop = nlvFlyoutMsgs.scrollHeight;
+    nlvFlyoutInput.value = '';
+    nlvFlyoutInput.style.height = '';
+    nlvFlyoutSend.classList.remove('active');
+  }
+
+  nlvFlyoutSend.addEventListener('click', sendLeadMsg);
+  nlvFlyoutInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendLeadMsg(); }
+  });
+  nlvFlyoutInput.addEventListener('input', () => {
+    nlvFlyoutInput.style.height = '';
+    nlvFlyoutInput.style.height = Math.min(nlvFlyoutInput.scrollHeight, 120) + 'px';
+    nlvFlyoutSend.classList.toggle('active', nlvFlyoutInput.value.trim().length > 0);
+  });
+
+  tableWrap.addEventListener('change', e => {
+    const cb = e.target.closest('.nlv-row-cb');
+    if (!cb) return;
+    const i = parseInt(cb.dataset.idx);
+    const leads = filtered();
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const lead = leads[start + i];
+    if (!lead) return;
+    cb.checked ? selectedLeadKeys.add(leadKey(lead)) : selectedLeadKeys.delete(leadKey(lead));
+    updateSelectionBar();
+    // update select-all state
+    const slice = leads.slice(start, start + PAGE_SIZE);
+    const cbAll = document.getElementById('nlv-cb-all');
+    if (cbAll) {
+      const allChecked = slice.every(l => selectedLeadKeys.has(leadKey(l)));
+      cbAll.checked = allChecked;
+      cbAll.indeterminate = !allChecked && slice.some(l => selectedLeadKeys.has(leadKey(l)));
+    }
+  });
+
+  document.getElementById('nlv-bulk-atc').addEventListener('click', () => {
+    atcCurrentLead = `${selectedLeadKeys.size} lead${selectedLeadKeys.size !== 1 ? 's' : ''}`;
+    openAtcModal();
+  });
+
+  function openAtcModal() {
+    if (localStorage.getItem('zotok_atc_connected') === 'true') {
+      document.getElementById('atc-view-1').style.display = 'none';
+      document.getElementById('atc-view-2').style.display = 'flex';
+      document.querySelector('.atc-modal').classList.add('wide');
+    } else {
+      document.getElementById('atc-view-1').style.display = 'flex';
+      document.getElementById('atc-view-2').style.display = 'none';
+      document.querySelector('.atc-modal').classList.remove('wide');
+    }
+    document.getElementById('atc-overlay').classList.add('open');
+  }
+
+  tableWrap.addEventListener('click', e => {
+    const campaignBtn = e.target.closest('.nlv-campaign-btn');
+    if (campaignBtn) {
+      const i = parseInt(campaignBtn.dataset.campaignIdx);
+      const leads = filtered();
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const lead = leads[start + i];
+      atcCurrentLead = lead ? lead.name : '';
+      openAtcModal();
+      return;
+    }
+    const btn = e.target.closest('.nlv-action-btn');
+    if (!btn) return;
+    const i    = parseInt(btn.dataset.leadIdx);
+    const leads = filtered();
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const lead  = leads[start + i];
+    if (!lead) return;
+    const color = AVATAR_COLORS[(start + i) % AVATAR_COLORS.length];
+    openLeadFlyout(lead, color);
+  });
+
+  document.getElementById('nlv-flyout-close').addEventListener('click', () => nlvFlyout.classList.remove('open'));
+  document.getElementById('nlv-flyout-attach').addEventListener('click', () => document.getElementById('nlv-flyout-file').click());
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      nlvFlyout.classList.remove('open');
+      closeAtcModal();
+    }
+  });
+
+  let atcSelectedCampaign = null;
+  let atcCurrentLead = '';
+
+  function closeAtcModal() {
+    document.getElementById('atc-overlay').classList.remove('open');
+    // Reset view 1
+    const continueBtn = document.getElementById('atc-continue');
+    continueBtn.disabled = false;
+    continueBtn.textContent = 'Continue to Zotok';
+    // Reset view 2
+    document.getElementById('atc-view-1').style.display = 'flex';
+    document.getElementById('atc-view-2').style.display = 'none';
+    document.querySelector('.atc-modal').classList.remove('wide');
+    document.getElementById('atc-search-input').value = '';
+    filterCampaigns('');
+    document.querySelectorAll('.atc-camp-item').forEach(el => el.classList.remove('selected'));
+    atcSelectedCampaign = null;
+  }
+
+  function filterCampaigns(q) {
+    document.querySelectorAll('.atc-camp-item').forEach(item => {
+      const name = item.dataset.campaign.toLowerCase();
+      item.style.display = !q || name.includes(q.toLowerCase()) ? 'flex' : 'none';
+    });
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('atc-toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('atc-close').addEventListener('click', closeAtcModal);
+  document.getElementById('atc-cancel').addEventListener('click', closeAtcModal);
+  document.getElementById('atc-close-2').addEventListener('click', closeAtcModal);
+  document.getElementById('atc-cancel-2').addEventListener('click', closeAtcModal);
+  document.getElementById('atc-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeAtcModal(); });
+
+  document.getElementById('atc-search-input').addEventListener('input', e => filterCampaigns(e.target.value.trim()));
+
+  document.getElementById('atc-camp-list').addEventListener('click', e => {
+    const item = e.target.closest('.atc-camp-item');
+    if (!item) return;
+    document.querySelectorAll('.atc-camp-item').forEach(el => el.classList.remove('selected'));
+    item.classList.add('selected');
+    atcSelectedCampaign = item.dataset.campaign;
+  });
+
+  document.getElementById('atc-continue').addEventListener('click', function() {
+    this.disabled = true;
+    this.innerHTML = '<img src="assets/icons/735d2cd1-4a1f-461f-ab55-22f7b4d39c52.svg" width="20" height="20" alt="" class="atc-spin">';
+    setTimeout(() => {
+      document.getElementById('atc-view-1').style.display = 'none';
+      document.getElementById('atc-view-2').style.display = 'flex';
+      document.querySelector('.atc-modal').classList.add('wide');
+      localStorage.setItem('zotok_atc_connected', 'true');
+    }, 2000);
+  });
+
+  document.getElementById('atc-assign').addEventListener('click', () => {
+    if (!atcSelectedCampaign) return;
+    const name = atcCurrentLead || 'Customer';
+    const campaign = atcSelectedCampaign;
+    closeAtcModal();
+    showToast(`${name} assigned to ${campaign}`);
+  });
 </script>
 </body>
 </html>

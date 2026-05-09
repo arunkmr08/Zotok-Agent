@@ -6,7 +6,7 @@
 ---
 
 ## What this is
-A static, multi-page HTML prototype for **Zotok** — a SaaS dashboard offering AI insights over WhatsApp groups. Inspired by ChatGPT-style chat UI but ORIGINAL design (do not recreate WhatsApp/ChatGPT trade dress).
+A static, multi-page HTML prototype for **Group Sense** (formerly Zotok) — a SaaS dashboard offering AI insights over WhatsApp groups. Inspired by ChatGPT-style chat UI but ORIGINAL design (do not recreate WhatsApp/ChatGPT trade dress).
 
 ## Stack constraints (hard rules)
 - **HTML5 + CSS3 only.** Vanilla JS allowed ONLY for UI toggles (modal show/hide, sidebar collapse, tab switching, group selection, drag-to-reorder).
@@ -33,9 +33,9 @@ A static, multi-page HTML prototype for **Zotok** — a SaaS dashboard offering 
 /whatsapp.html           → connection + synced groups
 /profile.html            → user profile + plan
 /styles/main.css         → ALL styles (includes :root.dark vars, shimmer)
-/scripts/app.js          → vanilla JS: sidebar, modals, tabs, chat, OTP
+/scripts/app.js          → vanilla JS: sidebar, modals, tabs, chat, OTP, connect flow
 /scripts/sidebar.js      → injects sidebar HTML into #sidebar-host
-/assets/icons/           → all icon SVGs (52 files, UUID-named, downloaded from Figma)
+/assets/icons/           → all icon SVGs (UUID-named + zotok-logo.svg, downloaded from Figma)
 /AGENT_HANDOVER.md       → this file
 /uploads/...             → user-uploaded reference, do not ship
 ```
@@ -49,17 +49,61 @@ Every authenticated page uses the same shell:
 ### Sidebar injection (sidebar.js)
 All authenticated pages use `<div id="sidebar-host"></div>` — `sidebar.js` replaces it with the full `<aside>` at runtime. Load order: `sidebar.js` → `app.js` → page inline `<script>`.
 
+### Brand / logo
+- Logo file: `assets/icons/zotok-logo.svg` (Zotok robot character — blue/orange).
+- Used in: `.brand-mark` in sidebar, `login.html` brand header, `.msg-avatar` in chat messages.
+- `.brand-mark` CSS: `background: transparent`, icon 32×32px via `.brand-mark .nav-img-icon`.
+- Chat avatar: `<img class="msg-avatar-img">` inside `.msg-avatar`, sized 22×22px via `.msg-avatar-img`.
+- Brand name displayed: **Group Sense** (no `brand-sub` element).
+
 ### Page-load transition suppression
 All authenticated pages have `<html lang="en" data-loading>`. `app.js` removes the attribute after the first two `requestAnimationFrame` calls, preventing sidebar animation on load while preserving it during normal use.
 
 ## Interactive bits (state lives in `app.js`)
 1. **Sidebar collapse** — toggles `.sidebar.collapsed`, persists to `localStorage.zotok_sidebar`.
 2. **Dark theme** — toggles `.dark` on `<html>`, persists to `localStorage.zotok_theme`.
-3. **WhatsApp connect modal** — tabs for QR / Code, fake "waiting → connected".
-4. **Group selection modal** — 20 mock groups, first 10 selectable.
-5. **Chat composer** — Enter sends; faked AI reply after 850ms.
-6. **Login OTP** — phone → OTP (`1234`) → `dashboard.html`. Sets `localStorage.zotok_auth`.
-7. **Logout** — clears `localStorage.zotok_auth`.
+3. **WhatsApp connect flow** — 3-modal sequence: Connect → History → Groups (see below).
+4. **Chat composer** — Enter sends; faked AI reply after 850ms.
+5. **Login OTP** — phone → OTP (`1234`) → `dashboard.html`. Sets `localStorage.zotok_auth`.
+6. **Logout** — clears `localStorage.zotok_auth`.
+
+---
+
+## WhatsApp connect flow (3-modal sequence)
+
+Pages: `whatsapp.html` and `dashboard.html` both include the full flow.
+
+### Modals
+| ID | Purpose |
+|---|---|
+| `modal-connect` | QR/Code scan. "Simulate Connection" triggers flow. |
+| `modal-history` | Fetch Chat History — radio-list date range picker. |
+| `modal-groups` | Choose Groups to Sync — group checklist + sync progress. |
+
+### Transitions (`transitionTo`)
+`transitionTo(fromId, toId, direction, onBefore)` in `app.js`:
+- Slides out `fromCard` (`.modal` or `.mgc`) and slides in `toCard` with CSS transform + opacity.
+- `direction`: `'forward'` (left) or `'back'` (right).
+- `.modal-no-bg` temporarily added to incoming backdrop to avoid double-dim during transition.
+- Both cards found via `.querySelector('.modal, .mgc')` — supports both `.modal` (whatsapp.html) and `.mgc` (dashboard.html) card wrappers.
+
+### Flow state
+- `inConnectFlow` boolean — set `true` when fake-connect fires, `false` on completion/dismiss.
+- Back button `#groups-back-btn` shown only when `inConnectFlow === true`.
+- `initHistoryModal()` resets history modal to "Last 7 Days" on each entry (back navigation safe — uses `onclick` assignment to avoid listener accumulation).
+
+### Sync progress view
+- Triggered by `[data-mark-connected]` click inside the groups modal.
+- Adds `.syncing` class to `.modal` or `.mgc` card.
+- CSS hides `.modal-head/.modal-body/.modal-foot` (or `.mgc-*`) and shows `.sync-progress-view`.
+- `closeModal()` always strips `.syncing` on close.
+- Sets `localStorage.zotok_connected = '1'`.
+
+### History modal options
+Radio-list: Last 7 Days (default) / Last 30 Days / Last 3 Months / Custom Range.
+Selected row has `.selected` class; radio toggles `.radio-off` / `.radio-on` SVGs via CSS.
+"Continue" button → `goToGroups()` → `transitionTo` to groups modal.
+"Maybe Later" / close → dismisses and sets `zotok_connect_dismissed`.
 
 ---
 
@@ -109,7 +153,7 @@ Multi-view modal. Container: `#leads-modal-box` (`.leads-modal`).
 - `leadsColumns[]` is the source of truth.
 - `renderLeadsColumns()` rebuilds DOM and re-attaches all listeners on every change.
 - HTML5 drag-to-reorder (`draggable`, dragstart/dragover/drop events).
-- `cat-modal-delete-btn` CSS class reused for delete button style.
+- "Add Column" button uses icon `assets/icons/e18942db-8713-4e07-a3c9-53976c803bd5.svg`.
 - Row hover: `#f8f8f7` background. Row with focused input: `#0067ff` border, white background (`:has(.leads-col-name-input:focus)`).
 
 **Groups view interactivity:**
@@ -136,7 +180,7 @@ All three modals use `.leads-success-body` for their success state:
 - Title `.leads-success-title`, subtitle `.leads-success-sub`, primary button closes the modal.
 
 ### Sidebar sync
-Deployed Karamcharis appear in the sidebar under "Deployed Karamaris". `window.syncSidebar()` (defined in `sidebar.js`) reads `localStorage.zotok_agent_*` and rebuilds the list. Called on every deploy/remove.
+Deployed Karamcharis appear in the sidebar under "Deployed Karamacharis". `window.syncSidebar()` (defined in `sidebar.js`) reads `localStorage.zotok_agent_*` and rebuilds the list. Called on every deploy/remove.
 
 ### Init order (bottom of agents.html `<script>`)
 ```javascript
@@ -153,15 +197,23 @@ Redesigned (Figma 46:1499). Single-pane layout — no left date list.
 **Structure:**
 - Top bar: `#f8f8f7` bg, cyan icon (`rgba(0,221,255,0.18)`), "New Leads" title.
 - White card (`border-radius:18px`): header row + table + pagination.
-- Card header: "Today" + chevron (date label, static for now) + count subtitle; Search / Filters / Export on right.
-- Table: `<table>` inside `.nlv-table-wrap` (scrollable). Columns: Customer Name (228px, with colored avatar) | Mobile Number (174px) | Location (201px) | Summary (flex).
+- Card header: date label + chevron (dropdown to switch date group) + count subtitle; Search / Filters / Export on right.
+- Table: `<table>` inside `.nlv-table-wrap` (scrollable). Columns: Checkbox | Customer Name (228px, colored avatar) | Mobile Number (174px) | Location (201px) | Summary (flex) | Action.
+- Action cell: "View" button + "Add to Campaign" button. Both use `assets/icons/e18942db-8713-4e07-a3c9-53976c803bd5.svg` icon (same as `leads-col-add-btn` in agents.html).
 - Avatar: 28px colored circle + white Zotok icon (`536e13b8-...svg`), color cycled from `AVATAR_COLORS[]`.
-- Pagination: 10 rows/page, prev/next + page number buttons. Resets on search.
+- Pagination: 50 rows/page, prev/next + page number buttons. Resets on search.
 - Search: filters name, phone, location, summary on keystroke.
-- 42 mock leads across 6 dates (Today, Yesterday, 02/01 May, 30/29 Apr). Default group: Today (10 leads).
+- 48 mock leads across 7 dates. Default group: Today (10 leads).
 - CSS prefix: `nlv-`. All styles are inline `<style>` in the file.
-- `dateGroups[]` holds all groups; `selectGroup(group)` switches active set.
-- Filters and Export buttons are visual only.
+
+**Selection bar:**
+- Appears when ≥1 row checked (`.nlv-selection-bar.show`).
+- "Add to Campaign" bulk button uses same `e18942db-...svg` icon with `filter:brightness(0) invert(1)` (white on blue bg).
+
+**Add to Campaign modal (`.atc-overlay`):**
+- View 1: Connect to Zotok (shown if `localStorage.zotok_atc_connected !== 'true'`).
+- View 2: Campaign list with search + radio selection → "Assign To Campaign".
+- `localStorage.zotok_atc_connected = 'true'` persists connection across opens.
 
 ## Category View (`category-view.html`)
 Three-pane: category selector → customer list → message thread.
@@ -174,8 +226,10 @@ Two-pane: left group list (280px) + right table pane.
 ---
 
 ## Assets
-All icons live in `assets/icons/` as UUID-named SVGs (e.g. `8874ab92-d105-471b-b17d-1b1bc10b9cb4.svg`).
-Two files are PNG (`67bdde72-...png`, `c6408a11-...png`).
+All icons live in `assets/icons/` as UUID-named SVGs (e.g. `0f7fdc6d-...svg`).
+Special files:
+- `zotok-logo.svg` — Zotok robot character (blue/orange). Used as brand logo everywhere.
+- Two PNGs: `67bdde72-...png`, `c6408a11-...png`.
 When referencing new Figma assets: download first, save to `assets/icons/`, reference locally.
 
 ---
@@ -192,3 +246,4 @@ When referencing new Figma assets: download first, save to `assets/icons/`, refe
 - **Apostrophes in single-quoted JS strings** — e.g. `'What's...'` breaks parse. Use `"` or reword.
 - **Do not re-add `renderColumns()` to the init block** — that function was removed when the leads modal was replaced. Init only calls `renderSheetsColumns()`, `renderCards()`, `renderCatModal()`.
 - **Do not use external Figma MCP URLs** — they expire in 7 days. Always download to `assets/icons/` first.
+- **`initHistoryModal` listener accumulation** — always use `onclick =` assignment (not `addEventListener`) for option rows and fetch button inside `initHistoryModal`, since it's called on every back-navigation re-entry.

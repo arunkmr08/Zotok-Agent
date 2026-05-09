@@ -5,7 +5,7 @@
 
   // Figma icon assets (expires 7 days from fetch)
   const IC = {
-    brand: 'assets/icons/8874ab92-d105-471b-b17d-1b1bc10b9cb4.svg',
+    brand: 'assets/icons/zotok-logo.svg',
     toggle: 'assets/icons/0f7fdc6d-8914-4969-aa66-7e5c12ade250.svg',
     newChat: 'assets/icons/1d40fffc-2ed9-4139-9ff0-81d744269bc0.svg',
     category: 'assets/icons/821e14c3-be0d-452b-80e7-d802808a46c0.svg',
@@ -27,8 +27,10 @@
   <aside class="sidebar" data-screen-label="Sidebar">
     <div class="sidebar-head">
       <a href="dashboard.html" class="brand">
-        <div class="brand-mark">${img(IC.brand, 'Zotok')}</div>
-        <span class="brand-text">Zotok</span>
+        <div class="brand-mark">${img(IC.brand, 'Group Sense')}</div>
+        <div class="brand-text-wrap">
+          <span class="brand-text">Group Sense</span>
+        </div>
       </a>
       <button class="icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
         ${img(IC.toggle, 'Toggle')}
@@ -96,7 +98,7 @@
 
     const kamdaris = [
       {
-        key: 'category', defaultActive: true,
+        key: 'category', defaultActive: false,
         href: 'category-view.html', nav: 'category-view',
         tooltip: 'Category Messages', label: 'Category Messages',
         icon: img(IC.category),
