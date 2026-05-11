@@ -1,5 +1,17 @@
 // Zotok — vanilla JS for UI toggles only.
 
+// ---------- Dark theme ----------
+(function () {
+  const DARK_KEY = 'zotok_dark';
+  if (localStorage.getItem(DARK_KEY) === 'true') {
+    document.documentElement.classList.add('dark');
+  }
+  window.toggleDarkTheme = function () {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem(DARK_KEY, isDark ? 'true' : 'false');
+  };
+})();
+
 // Remove transition suppression after first paint (set via data-loading on <html>)
 requestAnimationFrame(() => requestAnimationFrame(() => {
   document.documentElement.removeAttribute('data-loading');
@@ -46,25 +58,14 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     });
   });
 
-  // ---------- Theme toggle ----------
-  const THEME_KEY = 'zotok_theme';
-  const currentTheme = localStorage.getItem(THEME_KEY) || 'light';
-  if (currentTheme === 'dark') {
-    document.documentElement.classList.add('dark');
-  }
-
-  document.querySelectorAll('[data-theme-toggle]').forEach(b => {
-    b.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
-    });
-  });
+  // ---------- Dark mode toggle ----------
+  const darkBtn = document.getElementById('dark-toggle');
+  if (darkBtn) darkBtn.addEventListener('click', () => window.toggleDarkTheme());
 
   // ---------- Logout ----------
   document.querySelectorAll('[data-logout]').forEach(b =>
     b.addEventListener('click', () => {
-      const keep = new Set(['zotok_theme', 'zotok_sidebar']);
+      const keep = new Set(['zotok_sidebar']);
       Object.keys(localStorage)
         .filter(k => k.startsWith('zotok_') && !keep.has(k))
         .forEach(k => localStorage.removeItem(k));
@@ -487,7 +488,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     otpVerify.addEventListener('click', e => {
       e.preventDefault();
       localStorage.setItem('zotok_auth', '1');
-      window.location.href = 'dashboard.html?connect=1';
+      window.location.href = 'chat.html?connect=1';
     });
   }
   // OTP cell auto-advance
@@ -504,7 +505,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   // ---------- First-load connect modal on dashboard ----------
   if (page === 'chat') {
     if (new URLSearchParams(window.location.search).get('connect') === '1') {
-      try { history.replaceState(null, '', 'dashboard.html'); } catch(e) {}
+      try { history.replaceState(null, '', 'chat.html'); } catch(e) {}
       setTimeout(() => openModal('modal-connect'), 300);
     } else if (!localStorage.getItem('zotok_connected') && !localStorage.getItem('zotok_connect_dismissed')) {
       setTimeout(() => openModal('modal-connect'), 400);

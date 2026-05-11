@@ -6,18 +6,18 @@
   // Figma icon assets (expires 7 days from fetch)
   const IC = {
     brand: 'assets/icons/zotok-logo.svg',
-    toggle: 'assets/icons/0f7fdc6d-8914-4969-aa66-7e5c12ade250.svg',
-    newChat: 'assets/icons/1d40fffc-2ed9-4139-9ff0-81d744269bc0.svg',
-    category: 'assets/icons/821e14c3-be0d-452b-80e7-d802808a46c0.svg',
-    leads: 'assets/icons/986fd26d-33b3-4060-bf93-895bc187711c.svg',
-    sheets: 'assets/icons/f8e44bf2-b953-4629-9dc2-12d048e4e5fc.svg',
-    karamchari: 'assets/icons/8680c74b-81c4-4478-ada7-b57d06d9e878.svg',
-    connectors: 'assets/icons/764702f4-710d-4920-a8a3-3159d452c3f6.svg',
-    whatsapp: 'assets/icons/e7fdb246-50b1-49a6-942f-ecb4efd714da.svg',
-    search: 'assets/icons/be06c1cb-d4f8-4c95-9213-4024c26cdb9d.svg',
-    settings: 'assets/icons/0f75a375-65ea-4195-934a-b83df91870fe.svg',
-    theme: 'assets/icons/d90f2275-bb5c-435b-a89c-ba1e0566e322.svg',
-    logout: 'assets/icons/1849420d-5c1d-470d-8e5e-8e0f1bc9a5b5.svg',
+    toggle: 'assets/icons/nav-toggle.svg',
+    newChat: 'assets/icons/nav-new-chat.svg',
+    category: 'assets/icons/nav-category.svg',
+    leads: 'assets/icons/nav-leads.svg',
+    sheets: 'assets/icons/nav-sheets.svg',
+    karamchari: 'assets/icons/nav-karamchari.svg',
+    connectors: 'assets/icons/nav-connectors.svg',
+    whatsapp: 'assets/icons/nav-whatsapp.svg',
+    search: 'assets/icons/nav-search.svg',
+    settings: 'assets/icons/nav-settings.svg',
+    logout: 'assets/icons/nav-logout.svg',
+    theme: 'assets/icons/nav-theme.svg',
   };
 
   const img = (src, alt = '') =>
@@ -26,7 +26,7 @@
   host.outerHTML = `
   <aside class="sidebar" data-screen-label="Sidebar">
     <div class="sidebar-head">
-      <a href="dashboard.html" class="brand">
+      <a href="chat.html" class="brand">
         <div class="brand-mark">${img(IC.brand, 'Group Sense')}</div>
         <div class="brand-text-wrap">
           <span class="brand-text">Group Sense</span>
@@ -39,7 +39,7 @@
 
     <nav class="nav">
       <div class="nav-group">
-        <a href="dashboard.html" class="new-chat" data-nav="chat" data-tooltip="New Chat">
+        <a href="chat.html" class="new-chat" data-nav="chat" data-tooltip="New Chat">
           <span class="nav-icon">${img(IC.newChat)}</span>
           <span class="nav-label">New Chat</span>
         </a>
@@ -64,10 +64,6 @@
           <span class="nav-icon">${img(IC.whatsapp)}</span>
           <span class="nav-label">WhatsApp Sync</span>
         </a>
-        <a href="#" class="nav-item" data-nav="search" data-tooltip="Search">
-          <span class="nav-icon">${img(IC.search)}</span>
-          <span class="nav-label">Search</span>
-        </a>
       </div>
     </nav>
 
@@ -80,7 +76,7 @@
         </div>
       </a>
       <div class="sidebar-footer-actions">
-        <button class="footer-icon-btn" type="button" data-theme-toggle data-tooltip="Switch theme" aria-label="Switch theme">
+        <button class="footer-icon-btn" type="button" id="dark-toggle" data-tooltip="Toggle dark mode" aria-label="Toggle dark mode">
           ${img(IC.theme)}
         </button>
         <button class="footer-icon-btn" type="button" data-logout data-tooltip="Log out" aria-label="Log out">

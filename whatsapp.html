@@ -3,11 +3,118 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WhatsApp Sync — Group Sense</title>
+<title>WhatsApp Sync — Zotok</title>
 <link rel="stylesheet" href="styles/main.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/dark.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  .wa-page .page-head {
+    text-align: center;
+    padding-top: 48px;
+    margin-bottom: 40px;
+  }
+  .wa-page .page-head h1 {
+    font-size: 24px;
+    letter-spacing: -0.47px;
+    margin-bottom: 4px;
+  }
+  .wa-page .page-head .lede {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+  .wa-summary-card {
+    border-radius: 18px !important;
+    margin-bottom: 32px;
+  }
+  .wa-icon-box {
+    background: #008069;
+    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 10px;
+  }
+  .wa-page .section-head {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+  .wa-page .section-head .lede {
+    font-size: 14px;
+  }
+  .wa-list {
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+  .wa-group-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: block;
+  }
+  .wa-upgrade-row {
+    border-style: solid;
+    margin-top: 0;
+  }
+  .wa-upgrade-row .text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .wa-upgrade-row .text small {
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 3px;
+  }
+  .btn-blue {
+    background: #0067ff;
+    color: #fff;
+    border-color: #0067ff;
+  }
+  .btn-blue:hover {
+    background: #0055d4;
+    border-color: #0055d4;
+    color: #fff;
+  }
+  .btn-danger-outline {
+    color: #dd360c;
+    border-color: #dd360c;
+    background: var(--white);
+  }
+  .btn-danger-outline:hover {
+    background: rgba(221, 54, 12, 0.06);
+    color: #dd360c;
+    border-color: #dd360c;
+  }
+  html.dark .btn-blue {
+    background: #0067ff;
+    color: #fff;
+    border-color: #0067ff;
+  }
+  html.dark .btn-blue:hover {
+    background: #1a78ff;
+    border-color: #1a78ff;
+  }
+  html.dark .btn-danger-outline {
+    color: #ff6b47;
+    border-color: rgba(255, 107, 71, 0.45);
+    background: transparent;
+  }
+  html.dark .btn-danger-outline:hover {
+    background: rgba(255, 107, 71, 0.08);
+    color: #ff6b47;
+    border-color: rgba(255, 107, 71, 0.6);
+  }
+  html.dark .wa-icon-box {
+    background: #005c4b;
+  }
+</style>
 </head>
 <body data-page="whatsapp">
 
@@ -15,85 +122,105 @@
   <div id="sidebar-host"></div>
 
   <main class="main">
+    <div class="page wa-page">
 
-
-    <div class="page">
+      <!-- Page header -->
       <div class="page-head">
         <h1>WhatsApp Sync</h1>
-        <p class="lede">Manage your connection and the groups Zotok is allowed to read.</p>
+        <p class="lede">Manage your connection and the groups ZoTok is allowed to read.</p>
       </div>
 
-      <div class="summary-card">
-        <div class="summary-icon">
-          <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5A8.48 8.48 0 0 1 21 11v.5Z"/></svg>
+      <!-- Connection status card -->
+      <div class="summary-card wa-summary-card">
+        <div class="wa-icon-box">
+          <img src="assets/avatars/wa-icon.svg" width="22" height="22" alt="WhatsApp">
         </div>
         <div class="summary-meta">
-          <strong>Connected · +91 98765 43210</strong>
-          <span class="meta-sub">Last sync 12 minutes ago · 4 groups · 1,284 messages indexed</span>
+          <strong>Connected <span style="font-weight:400">•</span> +91 9876543210</strong>
+          <span class="meta-sub">Last Sync 12 minutes ago • 4 groups</span>
         </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost btn-sm">Disconnect</button>
-          <button class="btn btn-primary btn-sm">Re-sync now</button>
-          <button class="btn btn-ghost btn-sm" data-open="modal-connect">Manage connection</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn btn-sm btn-danger-outline">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.5 7.5 7.5 10.5"/>
+              <path d="M8.5 4.5 10 3a4.24 4.24 0 0 1 5 5L13.5 9.5"/>
+              <path d="M9.5 13.5 8 15a4.24 4.24 0 0 1-5-5L4.5 8.5"/>
+            </svg>
+            Disconnect
+          </button>
+          <button class="btn btn-sm btn-blue">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1.5 6A7.5 7.5 0 0 1 15.5 8.5"/>
+              <path d="M16.5 12A7.5 7.5 0 0 1 2.5 9.5"/>
+              <polyline points="1.5 2.5 1.5 6 5 6"/>
+              <polyline points="16.5 15.5 16.5 12 13 12"/>
+            </svg>
+            Re-sync now
+          </button>
         </div>
       </div>
 
+      <!-- Sync Groups -->
       <div class="section-head">
         <div>
-          <h2>Synced groups</h2>
-          <span class="lede">4 of 10 slots used on Free plan.</span>
+          <h2>Sync Groups</h2>
+          <span class="lede">4 of 10 slots used on free plan</span>
         </div>
         <button class="btn btn-ghost btn-sm" data-open="modal-groups">
-          <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 8v8M8 12h8"/>
+          </svg>
           Add groups
         </button>
       </div>
 
-      <div class="list">
+      <div class="list wa-list">
         <div class="list-item">
-          <div class="li-icon">SM</div>
+          <img src="assets/avatars/wa-group-4.svg" class="wa-group-img" alt="">
           <div>
-            <div class="li-title">Sales – Mumbai</div>
-            <div class="li-sub">32 members · last message 4 minutes ago</div>
+            <div class="li-title">Sales - Mumbai</div>
+            <div class="li-sub">32 Members • last message 4 minutes ago</div>
           </div>
-          <span class="badge badge-success"><span class="dot dot-success"></span> Live</span>
         </div>
         <div class="list-item">
-          <div class="li-icon">DS</div>
+          <img src="assets/avatars/wa-group-2.svg" class="wa-group-img" alt="">
           <div>
-            <div class="li-title">Distributors – South</div>
-            <div class="li-sub">21 members · last message 28 minutes ago</div>
+            <div class="li-title">Distributors - South</div>
+            <div class="li-sub">21 Members • last message 28 minutes ago</div>
           </div>
-          <span class="badge badge-success"><span class="dot dot-success"></span> Live</span>
         </div>
         <div class="list-item">
-          <div class="li-icon">RP</div>
+          <img src="assets/avatars/wa-group-3.svg" class="wa-group-img" alt="">
           <div>
-            <div class="li-title">Retail Partners – Pune</div>
-            <div class="li-sub">18 members · last message 2 hours ago</div>
+            <div class="li-title">Reatail Partners - Pune</div>
+            <div class="li-sub">21 Members • last message 2 hours ago</div>
           </div>
-          <span class="badge badge-warn"><span class="dot dot-warn"></span> Catching up</span>
         </div>
         <div class="list-item">
-          <div class="li-icon">FR</div>
+          <img src="assets/avatars/wa-group-1.svg" class="wa-group-img" alt="">
           <div>
             <div class="li-title">Founders Roundtable</div>
-            <div class="li-sub">9 members · last message yesterday</div>
+            <div class="li-sub">21 Members • last message yesterday</div>
           </div>
-          <span class="badge badge-success"><span class="dot dot-success"></span> Live</span>
         </div>
       </div>
 
-      <div class="upgrade-row">
+      <!-- Upgrade banner -->
+      <div class="upgrade-row wa-upgrade-row">
         <div class="text">
           Add more groups beyond 10
           <small>Pro removes the cap and unlocks all 20 mock groups in the demo.</small>
         </div>
-        <button class="btn btn-primary btn-sm">
-          <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <button class="btn btn-sm btn-blue">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="9" width="12" height="9" rx="2"/>
+            <path d="M6 9V6a3 3 0 0 1 6 0v3"/>
+          </svg>
           Upgrade to Pro
         </button>
       </div>
+
     </div>
   </main>
 </div>
@@ -121,7 +248,6 @@
         <div class="tab-panel active" data-panel="qr">
           <div class="qr-frame">
             <div class="qr-cells">
-              <!-- decorative QR pattern -->
               <span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span>
               <span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
               <span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span><span></span><span class="off"></span><span></span>
@@ -301,7 +427,6 @@
 </div>
 
 <script>
-// Populate 20 mock groups; first 10 selectable, rest locked.
 (function () {
   const groups = [
     ["Sales – Mumbai", "32 members · 84 msgs/day"],

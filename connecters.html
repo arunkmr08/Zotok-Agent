@@ -5,18 +5,219 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Connecters — Group Sense</title>
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/dark.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-  .agent-icon.brand { background: none; border: none; overflow: hidden; padding: 0; }
-  .agent-icon.brand svg { width: 36px; height: 36px; display: block; }
-  .agent-icon.brand img { width: 36px; height: 36px; object-fit: contain; display: block; }
-  .connector-connected-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: #2a7d4f; background: #edfbf3; border: 1px solid #b4efce; border-radius: 20px; padding: 3px 10px; }
-  .connector-connected-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #2a7d4f; flex-shrink: 0; }
-  .btn-disconnect-sm { background: none; border: 1px solid #e5484d; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #e5484d; cursor: pointer; }
-  .btn-disconnect-sm:hover { background: rgba(229,72,77,0.06); }
+/* ── Page shell ───────────────────────────────────── */
+.connectors-wrap {
+  background: #f8f8f7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* ── Hero header ──────────────────────────────────── */
+.connectors-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 80px 160px 40px;
+  text-align: center;
+  color: #34322d;
+  font-style: normal;
+}
+.connectors-hero h1 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.47px;
+  color: #34322d;
+  margin: 0;
+}
+.connectors-hero p {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: #34322d;
+  margin: 0;
+}
+
+/* ── Grid ─────────────────────────────────────────── */
+.connectors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 200px 40px;
+}
+
+/* ── Card ─────────────────────────────────────────── */
+.connector-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 21px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 18px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Icon box ─────────────────────────────────────── */
+.connector-icon {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid #e8e6e0;
+  background: #f8f8f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 11px 9px;
+}
+.connector-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.connector-icon.icon-green {
+  background: #589981;
+  border-color: #589981;
+  padding: 11px 13px;
+}
+.connector-icon.icon-blue {
+  background: #0089ff;
+  border-color: #0089ff;
+  padding: 11px 1px;
+}
+
+/* ── Card body ────────────────────────────────────── */
+.connector-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-style: normal;
+}
+.connector-body h3 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.18px;
+  color: #34322d;
+  margin: 0;
+  white-space: nowrap;
+}
+.connector-body p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.09px;
+  color: #858481;
+  margin: 0;
+}
+
+/* ── Card footer ──────────────────────────────────── */
+.connector-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+.btn-know-more {
+  background: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 20px;
+  letter-spacing: -0.09px;
+  color: #34322d;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-know-more:hover { background: #f0eeec; }
+
+.btn-connect {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0067ff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px 10px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 20px;
+  letter-spacing: -0.09px;
+  color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-connect:hover { background: #0055e0; }
+.btn-connect svg { flex-shrink: 0; }
+
+.btn-disconnect {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #dd360c;
+  border-radius: 10px;
+  padding: 10px 15px 10px 13px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 20px;
+  letter-spacing: -0.09px;
+  color: #dd360c;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-disconnect:hover { background: rgba(221, 54, 12, 0.06); }
+.btn-disconnect svg { flex-shrink: 0; }
+
+/* ── Zotok connect modal ─────────────────────────── */
+.zt-connect-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 24px;
+  background: #fafaf9;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 16px;
+  text-align: center;
+}
+.zt-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #589981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+}
+.zt-icon-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.zt-connect-title { font-size: 16px; font-weight: 600; color: #34322d; letter-spacing: -0.18px; margin: 0; }
+.zt-connect-sub { font-size: 14px; color: #858481; line-height: 20px; margin: 0; }
 </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body data-page="connecters">
 
@@ -24,104 +225,111 @@
   <div id="sidebar-host"></div>
 
   <main class="main">
-    <div class="page">
-      <div class="page-head">
+    <div class="connectors-wrap">
+
+      <!-- Hero -->
+      <div class="connectors-hero">
         <h1>Connecters</h1>
-        <p class="lede">Link external tools so Zotok can push insights where your team already works.</p>
+        <p>Link external tools so Group Sense can push insights where your team already works.</p>
       </div>
 
-      <div class="agent-grid">
+      <!-- Grid -->
+      <div class="connectors-grid">
 
-        <!-- Google Sheets -->
-        <article class="agent-card" id="connector-gsheets">
-          <div class="agent-head">
-            <div class="agent-icon brand">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Google_Sheets_logo_%282014-2020%29.svg/1920px-Google_Sheets_logo_%282014-2020%29.svg.png" alt="Google Sheets">
-            </div>
+        <!-- Google Sheets (dynamic: connected/disconnected) -->
+        <article class="connector-card" id="connector-gsheets">
+          <div class="connector-icon">
+            <img src="assets/icons/connector-google-sheets.png" alt="Google Sheets">
           </div>
-          <div>
+          <div class="connector-body">
             <h3>Google Sheets</h3>
             <p>Send structured data — orders, leads, decisions — directly into a spreadsheet you own.</p>
           </div>
-          <div class="agent-foot" id="gsheets-foot"></div>
+          <div class="connector-foot" id="gsheets-foot"></div>
+        </article>
+
+        <!-- Zotok (dynamic: connected/disconnected) -->
+        <article class="connector-card" id="connector-zotok">
+          <div class="connector-icon icon-green">
+            <img src="assets/icons/connector-zotok.png" alt="Zotok">
+          </div>
+          <div class="connector-body">
+            <h3>Zotok</h3>
+            <p>Add leads directly into Zotok campaigns for automated follow-ups and lead nurturing workflows.</p>
+          </div>
+          <div class="connector-foot" id="zotok-foot"></div>
         </article>
 
         <!-- Tally -->
-        <article class="agent-card">
-          <div class="agent-head">
-            <div class="agent-icon brand">
-              <img src="https://profitbooks.net/wp-content/uploads/2018/12/Tally-logo.jpg" alt="Tally">
-            </div>
+        <article class="connector-card">
+          <div class="connector-icon">
+            <img src="assets/icons/connector-tally.png" alt="Tally">
           </div>
-          <div>
+          <div class="connector-body">
             <h3>Tally</h3>
             <p>Sync orders, invoices and purchase decisions captured from your groups into Tally ERP.</p>
           </div>
-          <div class="agent-foot">
-            <button class="btn btn-primary btn-sm">Connect</button>
+          <div class="connector-foot">
+            <button class="btn-know-more">Know More</button>
+            <button class="btn-connect">
+              <img src="assets/icons/connector-btn-connect.svg" width="18" height="18" alt="">
+              Connect
+            </button>
+          </div>
+        </article>
+
+        <!-- SAP Business One -->
+        <article class="connector-card">
+          <div class="connector-icon">
+            <img src="assets/icons/connector-sap-b1.png" alt="SAP Business One">
+          </div>
+          <div class="connector-body">
+            <h3>SAP Business One (B1)</h3>
+            <p>Sync masters data from SAP B1 directly into Group Sense for streamlined ERP workflows.</p>
+          </div>
+          <div class="connector-foot">
+            <button class="btn-know-more">Know More</button>
+            <button class="btn-connect">
+              <img src="assets/icons/connector-btn-connect.svg" width="18" height="18" alt="">
+              Connect
+            </button>
           </div>
         </article>
 
         <!-- ERPNext -->
-        <article class="agent-card">
-          <div class="agent-head">
-            <div class="agent-icon brand">
-              <img src="https://play-lh.googleusercontent.com/zgvHh99L3g8Bo3UgbAMFg3TXCHy1YDZmfHNfRtQyE_hyPBewMNPrEnFwTcjEO4n-dvs=w240-h480-rw" alt="ERPNext">
-            </div>
+        <article class="connector-card">
+          <div class="connector-icon icon-blue">
+            <img src="assets/icons/connector-erpnext.png" alt="ERPNext">
           </div>
-          <div>
+          <div class="connector-body">
             <h3>ERPNext</h3>
-            <p>Push leads, contacts and sales data directly into your ERPNext CRM and sales pipeline.</p>
+            <p>Push leads, contacts and sales data directly into your ERPNext CRM and sales pipeline</p>
           </div>
-          <div class="agent-foot">
-            <button class="btn btn-primary btn-sm">Connect</button>
+          <div class="connector-foot">
+            <button class="btn-know-more">Know More</button>
+            <button class="btn-connect">
+              <img src="assets/icons/connector-btn-connect.svg" width="18" height="18" alt="">
+              Connect
+            </button>
           </div>
         </article>
 
-        <!-- Zoho -->
-        <article class="agent-card">
-          <div class="agent-head">
-            <div class="agent-icon brand">
-              <img src="https://cdn.iconscout.com/icon/free/png-256/free-zoho-icon-svg-download-png-282840.png" alt="Zoho">
-            </div>
+        <!-- Zoho CRM -->
+        <article class="connector-card">
+          <div class="connector-icon">
+            <img src="assets/icons/connector-zoho-crm.png" alt="Zoho CRM">
           </div>
-          <div>
+          <div class="connector-body">
             <h3>Zoho CRM</h3>
             <p>Automatically add new leads and contacts detected from your WhatsApp groups into Zoho CRM.</p>
           </div>
-          <div class="agent-foot">
-            <button class="btn btn-primary btn-sm">Connect</button>
+          <div class="connector-foot">
+            <button class="btn-know-more">Know More</button>
+            <button class="btn-connect">
+              <img src="assets/icons/connector-btn-connect.svg" width="18" height="18" alt="">
+              Connect
+            </button>
           </div>
-        </article>
-
-        <!-- SAP B1 -->
-        <article class="agent-card">
-          <div class="agent-head">
-            <div class="agent-icon brand">
-              <img src="https://cdn.shopaccino.com/igmguru/products/sap-business-one-training-online-2390474615788753_l.jpg?v=547" alt="SAP B1">
-            </div>
-          </div>
-          <div>
-            <h3>SAP Business One</h3>
-            <p>Sync leads, orders, and customer data from WhatsApp groups directly into SAP Business One for streamlined ERP workflows.</p>
-          </div>
-          <div class="agent-foot">
-            <button class="btn btn-primary btn-sm">Connect</button>
-          </div>
-        </article>
-
-        <!-- Zotok -->
-        <article class="agent-card">
-          <div class="agent-head">
-            <div class="agent-icon brand" style="background:#589981;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-              <img src="https://www.figma.com/api/mcp/asset/53abfcbc-7378-4f37-a349-43e04a8cec2c" alt="Zotok" style="width:24px;height:18px;object-fit:contain;">
-            </div>
-          </div>
-          <div>
-            <h3>Zotok</h3>
-            <p>Add leads directly into Zotok campaigns for automated follow-ups and lead nurturing workflows.</p>
-          </div>
-          <div class="agent-foot" id="zotok-foot"></div>
         </article>
 
       </div>
@@ -129,52 +337,568 @@
   </main>
 </div>
 
+<!-- ============================================ -->
+<!-- Disconnect Confirmation                       -->
+<!-- ============================================ -->
+<div class="modal-backdrop" id="modal-disconnect-confirm" role="dialog" aria-modal="true">
+  <div class="remove-confirm-box">
+    <p class="remove-confirm-title">Disconnect?</p>
+    <p class="remove-confirm-desc" id="disconnect-confirm-desc">This will remove the connection and stop syncing data to this service.</p>
+    <div class="remove-confirm-actions">
+      <button class="remove-confirm-cancel" id="disconnect-confirm-cancel">Cancel</button>
+      <button class="remove-confirm-ok" id="disconnect-confirm-ok">Disconnect</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- Google Sheets — Configure Collect New Leads  -->
+<!-- ============================================ -->
+<div class="modal-backdrop cat-modal-backdrop" id="modal-gsheets-connect" role="dialog" aria-modal="true">
+  <div class="leads-modal" id="gsheets-modal-box">
+
+    <!-- VIEW 1: Google Connect -->
+    <div id="gsheets-view-connect" class="leads-modal-view">
+      <div class="leads-modal-head">
+        <div class="leads-modal-title-group">
+          <h2 class="leads-modal-title">Configure Collect New Leads</h2>
+          <p class="leads-modal-desc">Detect unknown contacts and extract lead information. Configure the columns below.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-gsheets-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="leads-connect-card">
+        <div class="leads-connect-icons">
+          <div class="leads-zotok-icon">
+            <img src="assets/icons/zotok-logo-36.svg" width="36" height="27" alt="Zotok">
+          </div>
+          <img src="assets/icons/icon-arrow-right.svg" width="20" height="20" alt="" class="leads-arrows-icon">
+          <div class="leads-sheets-icon">
+            <img src="assets/icons/icon-google-sheets-sm.png" width="26" height="36" alt="Google Sheets">
+          </div>
+        </div>
+        <div class="leads-connect-text">
+          <p class="leads-connect-title">Continue to Setup Google Sheets</p>
+          <p class="leads-connect-sub">Approve this connection in Google</p>
+        </div>
+      </div>
+      <div class="leads-modal-footer">
+        <button class="leads-btn-cancel" data-close="modal-gsheets-connect">Cancel</button>
+        <button class="leads-btn-primary" id="gsheets-btn-continue">Continue In Google</button>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Loading -->
+    <div id="gsheets-view-loading" class="leads-modal-view" style="display:none;">
+      <div class="leads-modal-head">
+        <div class="leads-modal-title-group">
+          <h2 class="leads-modal-title">Configure Collect New Leads</h2>
+          <p class="leads-modal-desc">Detect unknown contacts and extract lead information. Configure the columns below.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-gsheets-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="leads-connect-card">
+        <div class="leads-connect-icons">
+          <div class="leads-zotok-icon">
+            <img src="assets/icons/zotok-logo-36.svg" width="36" height="27" alt="Zotok">
+          </div>
+          <img src="assets/icons/icon-arrow-right.svg" width="20" height="20" alt="" class="leads-arrows-icon">
+          <div class="leads-sheets-icon">
+            <img src="assets/icons/icon-google-sheets-sm.png" width="26" height="36" alt="Google Sheets">
+          </div>
+        </div>
+        <div class="leads-connect-text">
+          <p class="leads-connect-title">Continue to Setup Google Sheets</p>
+          <p class="leads-connect-sub">Approve this connection in Google</p>
+        </div>
+      </div>
+      <div class="leads-modal-footer">
+        <button class="leads-btn-cancel" data-close="modal-gsheets-connect">Cancel</button>
+        <button class="leads-btn-primary leads-btn-loading" disabled>
+          <img src="assets/icons/icon-spinner.svg" width="20" height="20" alt="" class="leads-spin">
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 3: Sheet Picker -->
+    <div id="gsheets-view-picker" class="leads-modal-view" style="display:none;">
+      <div class="leads-modal-head">
+        <div class="leads-modal-title-group">
+          <h2 class="leads-modal-title">Configure Collect New Leads</h2>
+          <p class="leads-modal-desc">Detect unknown contacts and extract lead information. Configure the columns below.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-gsheets-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="leads-picker-card">
+        <div class="leads-picker-header">
+          <p class="leads-picker-title">Select Your Preferred Sheet to Insert the Leads</p>
+          <p class="leads-picker-account">Connected to: jktraders223@gmail.com</p>
+        </div>
+        <div class="leads-picker-grid">
+          <div class="leads-sheet-option leads-sheet-blank" data-gsheets-sheet="blank">
+            <div class="leads-sheet-blank-icon">
+              <img src="assets/icons/icon-circle-lg.svg" width="24" height="24" alt="">
+            </div>
+            <p class="leads-sheet-name">Start from blank sheet</p>
+          </div>
+          <div class="leads-sheet-option leads-sheet-existing" data-gsheets-sheet="feb">
+            <div class="leads-sheet-preview">
+              <img src="assets/icons/icon-google-sheets-md.png" alt="">
+            </div>
+            <div class="leads-sheet-info">
+              <img src="assets/icons/icon-spreadsheet.svg" width="24" height="24" alt="">
+              <p class="leads-sheet-filename">New leads February 2026...2.xlsx</p>
+            </div>
+          </div>
+          <div class="leads-sheet-option leads-sheet-existing" data-gsheets-sheet="mar">
+            <div class="leads-sheet-preview">
+              <img src="assets/icons/icon-google-sheets-md.png" alt="">
+            </div>
+            <div class="leads-sheet-info">
+              <img src="assets/icons/icon-spreadsheet.svg" width="24" height="24" alt="">
+              <p class="leads-sheet-filename">New leads March 2026 23.xlsx</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 4: Configure Columns -->
+    <div id="gsheets-view-columns" class="leads-modal-view" style="display:none;">
+      <div class="leads-modal-head">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="create-cat-back-btn" data-gsheets-back="picker" data-tooltip="Back" aria-label="Back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34322d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+            </button>
+            <h2 class="leads-modal-title">Configure the Sheet Columns</h2>
+          </div>
+          <p class="leads-modal-desc">Existing columns have been automatically fetched from the selected sheet. You can add, edit, reorder, or remove columns based on your requirement.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-gsheets-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="leads-col-header">
+          <span class="leads-col-count" id="gsheets-col-count">5 Columns</span>
+          <button class="leads-col-add-btn" id="gsheets-col-add-btn">
+            <img src="assets/icons/icon-add-campaign.svg" width="18" height="18" alt="">
+            Add Column
+          </button>
+        </div>
+        <div class="leads-col-list" id="gsheets-col-list"></div>
+      </div>
+      <div class="leads-modal-footer" style="justify-content:flex-end;">
+        <button class="leads-btn-primary" id="gsheets-btn-col-continue">Continue</button>
+      </div>
+    </div>
+
+    <!-- VIEW 5: Select Groups -->
+    <div id="gsheets-view-groups" class="leads-modal-view" style="display:none;">
+      <div class="leads-modal-head">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="create-cat-back-btn" data-gsheets-back="columns" data-tooltip="Back" aria-label="Back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34322d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+            </button>
+            <h2 class="leads-modal-title">Select the Groups</h2>
+          </div>
+          <p class="leads-modal-desc">Select the WhatsApp groups to fetch conversations and customer enquiries from. Relevant messages will be automatically processed and added to your configured leads sheet columns.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-gsheets-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="leads-groups-search">
+        <img src="assets/icons/icon-search.svg" width="18" height="18" alt="">
+        <input id="gsheets-groups-search-input" class="leads-groups-search-input" type="text" placeholder="Search Group">
+      </div>
+      <div class="leads-groups-card" id="gsheets-groups-card"></div>
+      <div class="leads-modal-footer" style="justify-content:flex-end;">
+        <button class="leads-btn-primary" id="gsheets-btn-connect">Connect Google Sheets</button>
+      </div>
+    </div>
+
+    <!-- VIEW 6: Success -->
+    <div id="gsheets-view-success" class="leads-modal-view" style="display:none;">
+      <div class="leads-success-body">
+        <div class="leads-success-icon">
+          <img src="https://cdn3d.iconscout.com/3d/premium/thumb/employee-3d-icon-png-download-10199754.png" width="120" height="120" alt="">
+        </div>
+        <p class="leads-success-title">Google Sheets Connected!</p>
+        <p class="leads-success-sub">Your Google Sheets account is now connected. Lead data will sync automatically to your configured sheet.</p>
+        <button class="leads-btn-primary" style="margin-top:8px;" id="gsheets-done-btn">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- Zotok — Connect to Zotok                     -->
+<!-- ============================================ -->
+<div class="modal-backdrop cat-modal-backdrop" id="modal-zotok-connect" role="dialog" aria-modal="true">
+  <div class="leads-modal" id="zotok-modal-box">
+
+    <!-- VIEW 1: Connect -->
+    <div id="zt-view-connect" class="leads-modal-view">
+      <div class="leads-modal-head">
+        <div class="leads-modal-title-group">
+          <h2 class="leads-modal-title">Connect to Zotok</h2>
+          <p class="leads-modal-desc">Push leads detected from your WhatsApp groups directly into Zotok campaigns for automated follow-ups.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-zotok-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="leads-connect-card">
+        <div class="zt-icon-wrap">
+          <img src="assets/icons/connector-zotok.png" alt="Zotok">
+        </div>
+        <div class="leads-connect-text">
+          <p class="leads-connect-title">Continue to Zotok</p>
+          <p class="leads-connect-sub">Log in to your Zotok account to approve the connection</p>
+        </div>
+      </div>
+      <div class="leads-modal-footer">
+        <button class="leads-btn-cancel" data-close="modal-zotok-connect">Cancel</button>
+        <button class="leads-btn-primary" id="zt-btn-continue">Continue In Zotok</button>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Loading -->
+    <div id="zt-view-loading" class="leads-modal-view" style="display:none;">
+      <div class="leads-modal-head">
+        <div class="leads-modal-title-group">
+          <h2 class="leads-modal-title">Connect to Zotok</h2>
+          <p class="leads-modal-desc">Push leads detected from your WhatsApp groups directly into Zotok campaigns for automated follow-ups.</p>
+        </div>
+        <button class="cat-modal-close-btn" data-close="modal-zotok-connect" data-tooltip="Close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#858481" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="leads-connect-card">
+        <div class="zt-icon-wrap">
+          <img src="assets/icons/connector-zotok.png" alt="Zotok">
+        </div>
+        <div class="leads-connect-text">
+          <p class="leads-connect-title">Connecting to Zotok…</p>
+          <p class="leads-connect-sub">Verifying your account and permissions</p>
+        </div>
+      </div>
+      <div class="leads-modal-footer">
+        <button class="leads-btn-cancel" data-close="modal-zotok-connect">Cancel</button>
+        <button class="leads-btn-primary leads-btn-loading" disabled>
+          <img src="assets/icons/icon-spinner.svg" width="20" height="20" alt="" class="leads-spin">
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 3: Success -->
+    <div id="zt-view-success" class="leads-modal-view" style="display:none;">
+      <div class="leads-success-body">
+        <div class="leads-success-icon">
+          <img src="https://cdn3d.iconscout.com/3d/premium/thumb/employee-3d-icon-png-download-10199754.png" width="120" height="120" alt="">
+        </div>
+        <p class="leads-success-title">Zotok Connected!</p>
+        <p class="leads-success-sub">Group Sense is now connected to Zotok. Detected leads will be pushed to your campaigns automatically.</p>
+        <button class="leads-btn-primary" style="margin-top:8px;" id="zt-done-btn">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script src="scripts/sidebar.js"></script>
 <script src="scripts/app.js"></script>
 <script>
-  function renderGsheetsCard() {
-    const foot = document.getElementById('gsheets-foot');
-    if (!foot) return;
-    const connected = localStorage.getItem('zotok_gsheets_connected') === 'true';
-    if (connected) {
-      foot.innerHTML = `
-        <span class="connector-connected-badge">Connected</span>
-        <button class="btn-disconnect-sm" id="gsheets-disconnect-btn">Disconnect</button>`;
-      document.getElementById('gsheets-disconnect-btn').addEventListener('click', () => {
-        localStorage.removeItem('zotok_gsheets_connected');
-        renderGsheetsCard();
-      });
-    } else {
-      foot.innerHTML = `<button class="btn btn-primary btn-sm" id="gsheets-connect-btn">Connect</button>`;
-      document.getElementById('gsheets-connect-btn').addEventListener('click', () => {
-        localStorage.setItem('zotok_gsheets_connected', 'true');
-        renderGsheetsCard();
-      });
-    }
-  }
-  renderGsheetsCard();
+  const CONNECT_ICON    = `<img src="assets/icons/connector-btn-connect.svg" width="18" height="18" alt="">`;
+  const DISCONNECT_ICON = `<img src="assets/icons/connector-btn-disconnect.svg" width="18" height="18" alt="">`;
 
-  function renderZotokCard() {
-    const foot = document.getElementById('zotok-foot');
+  // ── Render connector cards ────────────────────────────────────────────────
+  function renderConnectorCard({ footId, storageKey, onConnect }) {
+    const foot = document.getElementById(footId);
     if (!foot) return;
-    const connected = localStorage.getItem('zotok_atc_connected') === 'true';
+    const connected = localStorage.getItem(storageKey) === 'true';
     if (connected) {
       foot.innerHTML = `
-        <span class="connector-connected-badge">Connected</span>
-        <button class="btn-disconnect-sm" id="zotok-disconnect-btn">Disconnect</button>`;
-      document.getElementById('zotok-disconnect-btn').addEventListener('click', () => {
-        localStorage.removeItem('zotok_atc_connected');
-        renderZotokCard();
+        <button class="btn-know-more">Know More</button>
+        <button class="btn-disconnect" id="${footId}-action">
+          ${DISCONNECT_ICON}Disconnect
+        </button>`;
+      document.getElementById(`${footId}-action`).addEventListener('click', () => {
+        showDisconnectConfirm(storageKey, footId);
       });
     } else {
-      foot.innerHTML = `<button class="btn btn-primary btn-sm" id="zotok-connect-btn">Connect</button>`;
-      document.getElementById('zotok-connect-btn').addEventListener('click', () => {
-        localStorage.setItem('zotok_atc_connected', 'true');
-        renderZotokCard();
+      foot.innerHTML = `
+        <button class="btn-know-more">Know More</button>
+        <button class="btn-connect" id="${footId}-action">
+          ${CONNECT_ICON}Connect
+        </button>`;
+      document.getElementById(`${footId}-action`).addEventListener('click', () => {
+        if (onConnect) onConnect();
       });
     }
   }
-  renderZotokCard();
+
+  // ── Disconnect confirmation ───────────────────────────────────────────────
+  let pendingDisconnectKey  = null;
+  let pendingDisconnectFoot = null;
+
+  function showDisconnectConfirm(storageKey, footId) {
+    pendingDisconnectKey  = storageKey;
+    pendingDisconnectFoot = footId;
+    openModal('modal-disconnect-confirm');
+  }
+
+  document.getElementById('disconnect-confirm-cancel').addEventListener('click', () => {
+    pendingDisconnectKey  = null;
+    pendingDisconnectFoot = null;
+    closeModal('modal-disconnect-confirm');
+  });
+
+  document.getElementById('disconnect-confirm-ok').addEventListener('click', () => {
+    if (pendingDisconnectKey) {
+      localStorage.removeItem(pendingDisconnectKey);
+      const fid = pendingDisconnectFoot;
+      const key = pendingDisconnectKey;
+      pendingDisconnectKey  = null;
+      pendingDisconnectFoot = null;
+      closeModal('modal-disconnect-confirm');
+      if (fid === 'gsheets-foot')  renderConnectorCard({ footId: fid, storageKey: key, onConnect: openGsheetsModal });
+      else if (fid === 'zotok-foot') renderConnectorCard({ footId: fid, storageKey: key, onConnect: openZotokModal });
+      else renderConnectorCard({ footId: fid, storageKey: key });
+    }
+  });
+
+  // ── Google Sheets modal ───────────────────────────────────────────────────
+  const GSHEETS_VIEWS = ['connect','loading','picker','columns','groups','success'];
+  let gsheetsCurrentView  = 'connect';
+  let gsheetsLoadingTimer = null;
+  let gsheetsColumns      = ['Time', 'Customer Name', 'Phone Number', 'Location', 'Summary'];
+  let gsheetsDragSrcIdx   = null;
+  const gsheetsGroupsSelected = new Set();
+
+  function openGsheetsModal() {
+    gsheetsShowView('connect');
+    openModal('modal-gsheets-connect');
+  }
+
+  function gsheetsShowView(view) {
+    const prevView = gsheetsCurrentView;
+    gsheetsCurrentView = view;
+    const box = document.getElementById('gsheets-modal-box');
+    if (box) box.classList.toggle('leads-modal--wide', view === 'picker');
+
+    const forward  = prevView === 'columns' && view === 'groups';
+    const backward = prevView === 'groups'  && view === 'columns';
+
+    if (forward || backward) {
+      const outEl = document.getElementById(`gsheets-view-${prevView}`);
+      const inEl  = document.getElementById(`gsheets-view-${view}`);
+      if (!outEl || !inEl) return;
+      outEl.style.animation = `leads-slide-out-${forward ? 'left' : 'right'} 200ms ease forwards`;
+      setTimeout(() => {
+        outEl.style.display = 'none';
+        outEl.style.animation = '';
+        if (view === 'columns') renderGsheetsColumns();
+        if (view === 'groups')  renderGsheetsGroups();
+        inEl.style.display = 'flex';
+        inEl.style.animation = `leads-slide-in-${forward ? 'right' : 'left'} 220ms ease forwards`;
+        setTimeout(() => { inEl.style.animation = ''; }, 220);
+      }, 200);
+    } else {
+      GSHEETS_VIEWS.forEach(v => {
+        const el = document.getElementById(`gsheets-view-${v}`);
+        if (el) el.style.display = v === view ? 'flex' : 'none';
+      });
+      if (view === 'columns') renderGsheetsColumns();
+      if (view === 'groups')  renderGsheetsGroups();
+    }
+  }
+
+  function renderGsheetsColumns() {
+    const list    = document.getElementById('gsheets-col-list');
+    const countEl = document.getElementById('gsheets-col-count');
+    if (!list) return;
+    const DRAG_ICON = 'assets/icons/icon-drag.svg';
+    const DEL_ICON  = 'assets/icons/icon-trash.svg';
+    list.innerHTML = gsheetsColumns.map((col, i) => `
+      <div class="leads-col-row" draggable="true" data-col-idx="${i}">
+        <img src="${DRAG_ICON}" width="18" height="18" alt="" class="leads-col-drag">
+        <input class="leads-col-name-input" type="text" value="${col.replace(/"/g,'&quot;')}" placeholder="Enter Column Name" data-col-idx="${i}">
+        <button class="cat-modal-delete-btn leads-col-delete-btn" data-col-idx="${i}" data-tooltip="Delete" aria-label="Delete">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+          </svg>
+        </button>
+      </div>`).join('');
+
+    if (countEl) countEl.textContent = `${gsheetsColumns.length} Column${gsheetsColumns.length !== 1 ? 's' : ''}`;
+
+    list.querySelectorAll('.leads-col-name-input').forEach(input => {
+      input.addEventListener('change', () => { gsheetsColumns[parseInt(input.dataset.colIdx)] = input.value; });
+    });
+    list.querySelectorAll('.leads-col-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => { gsheetsColumns.splice(parseInt(btn.dataset.colIdx), 1); renderGsheetsColumns(); });
+    });
+    list.querySelectorAll('.leads-col-row').forEach(row => {
+      row.addEventListener('dragstart', e => {
+        gsheetsDragSrcIdx = parseInt(row.dataset.colIdx);
+        row.classList.add('leads-col-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      row.addEventListener('dragend', () => {
+        row.classList.remove('leads-col-dragging');
+        list.querySelectorAll('.leads-col-row').forEach(r => r.classList.remove('leads-col-dragover'));
+      });
+      row.addEventListener('dragover', e => {
+        e.preventDefault();
+        list.querySelectorAll('.leads-col-row').forEach(r => r.classList.remove('leads-col-dragover'));
+        if (parseInt(row.dataset.colIdx) !== gsheetsDragSrcIdx) row.classList.add('leads-col-dragover');
+      });
+      row.addEventListener('drop', e => {
+        e.preventDefault();
+        const targetIdx = parseInt(row.dataset.colIdx);
+        if (gsheetsDragSrcIdx === null || gsheetsDragSrcIdx === targetIdx) return;
+        const [moved] = gsheetsColumns.splice(gsheetsDragSrcIdx, 1);
+        gsheetsColumns.splice(targetIdx, 0, moved);
+        gsheetsDragSrcIdx = null;
+        renderGsheetsColumns();
+      });
+    });
+  }
+
+  document.getElementById('gsheets-col-add-btn').addEventListener('click', () => {
+    gsheetsColumns.push('');
+    renderGsheetsColumns();
+    const inputs = document.querySelectorAll('#gsheets-col-list .leads-col-name-input');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  });
+
+  const GSHEETS_GROUPS_DATA = [
+    { name: 'Distributor Orders',   meta: '19 Members', avatar: 'assets/icons/group-avatar-maroon.svg' },
+    { name: 'South Zone Sales',     meta: '46 Members', avatar: 'assets/icons/group-avatar-green.svg' },
+    { name: 'Key Customer Orders',  meta: '46 Members', avatar: 'assets/icons/group-avatar-indigo.svg' },
+    { name: 'Sales Follow-Ups',     meta: '47 Members', avatar: 'assets/icons/group-avatar-olive.svg' },
+    { name: 'Pending Payments',     meta: '38 Members', avatar: 'assets/icons/group-avatar-teal.svg' },
+    { name: 'Invoice Confirmation', meta: '26 Members', avatar: 'assets/icons/group-avatar-violet.svg' },
+    { name: 'Dealer Outstanding',   meta: '44 Members', avatar: 'assets/icons/group-avatar-red.svg' },
+  ];
+
+  function renderGsheetsGroups(filter = '') {
+    const card = document.getElementById('gsheets-groups-card');
+    if (!card) return;
+    const lower    = filter.toLowerCase();
+    const filtered = GSHEETS_GROUPS_DATA.filter(g => g.name.toLowerCase().includes(lower));
+    card.innerHTML = filtered.length ? filtered.map(g => {
+      const idx = GSHEETS_GROUPS_DATA.indexOf(g);
+      const sel = gsheetsGroupsSelected.has(idx);
+      return `<div class="leads-group-row${sel ? ' selected' : ''}" data-group-idx="${idx}">
+        <div class="leads-group-avatar"><img src="${g.avatar}" alt=""></div>
+        <div class="leads-group-info"><p class="leads-group-name">${g.name}</p><p class="leads-group-meta">${g.meta}</p></div>
+        <div class="leads-group-check">
+          <svg class="leads-group-check-tick" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <polyline points="2 6 5 9 10 3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>`;
+    }).join('') : `<p style="padding:20px;text-align:center;color:#858481;font-size:14px;">No groups found</p>`;
+
+    card.querySelectorAll('.leads-group-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const idx = parseInt(row.dataset.groupIdx);
+        gsheetsGroupsSelected.has(idx) ? gsheetsGroupsSelected.delete(idx) : gsheetsGroupsSelected.add(idx);
+        renderGsheetsGroups(document.getElementById('gsheets-groups-search-input').value);
+      });
+    });
+  }
+
+  document.getElementById('gsheets-groups-search-input').addEventListener('input', e => {
+    renderGsheetsGroups(e.target.value);
+  });
+
+  // Navigation
+  document.getElementById('gsheets-btn-continue').addEventListener('click', () => {
+    localStorage.setItem('zotok_gsheets_connected', 'true');
+    gsheetsShowView('loading');
+    gsheetsLoadingTimer = setTimeout(() => gsheetsShowView('picker'), 2500);
+  });
+
+  document.getElementById('gsheets-btn-col-continue').addEventListener('click', () => {
+    gsheetsShowView('groups');
+  });
+
+  document.getElementById('gsheets-btn-connect').addEventListener('click', () => {
+    gsheetsShowView('success');
+  });
+
+  document.querySelectorAll('[data-gsheets-sheet]').forEach(opt => {
+    opt.addEventListener('click', () => gsheetsShowView('columns'));
+  });
+
+  document.querySelectorAll('[data-gsheets-back]').forEach(btn => {
+    btn.addEventListener('click', () => gsheetsShowView(btn.dataset.gsheetsBack));
+  });
+
+  document.querySelectorAll('[data-close="modal-gsheets-connect"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      clearTimeout(gsheetsLoadingTimer);
+      setTimeout(() => gsheetsShowView('connect'), 300);
+    });
+  });
+
+  document.getElementById('gsheets-done-btn').addEventListener('click', () => {
+    closeModal('modal-gsheets-connect');
+    setTimeout(() => gsheetsShowView('connect'), 300);
+    renderConnectorCard({ footId: 'gsheets-foot', storageKey: 'zotok_gsheets_connected', onConnect: openGsheetsModal });
+  });
+
+  // ── Zotok modal ───────────────────────────────────────────────────────────
+  const ZT_VIEWS = ['connect','loading','success'];
+  let ztLoadingTimer = null;
+
+  function openZotokModal() {
+    ztShowView('connect');
+    openModal('modal-zotok-connect');
+  }
+
+  function ztShowView(view) {
+    ZT_VIEWS.forEach(v => {
+      const el = document.getElementById(`zt-view-${v}`);
+      if (el) el.style.display = v === view ? 'flex' : 'none';
+    });
+  }
+
+  document.getElementById('zt-btn-continue').addEventListener('click', () => {
+    localStorage.setItem('zotok_atc_connected', 'true');
+    ztShowView('loading');
+    ztLoadingTimer = setTimeout(() => ztShowView('success'), 2000);
+  });
+
+  document.querySelectorAll('[data-close="modal-zotok-connect"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      clearTimeout(ztLoadingTimer);
+      setTimeout(() => ztShowView('connect'), 300);
+    });
+  });
+
+  document.getElementById('zt-done-btn').addEventListener('click', () => {
+    closeModal('modal-zotok-connect');
+    setTimeout(() => ztShowView('connect'), 300);
+    renderConnectorCard({ footId: 'zotok-foot', storageKey: 'zotok_atc_connected', onConnect: openZotokModal });
+  });
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  renderConnectorCard({ footId: 'gsheets-foot', storageKey: 'zotok_gsheets_connected', onConnect: openGsheetsModal });
+  renderConnectorCard({ footId: 'zotok-foot',   storageKey: 'zotok_atc_connected',     onConnect: openZotokModal  });
 </script>
 </body>
 </html>

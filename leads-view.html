@@ -5,521 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>New Leads — Group Sense</title>
 <link rel="stylesheet" href="styles/main.css">
-<style>
-  /* ── Full-height chain ── */
-  html, body { height: 100%; overflow: hidden; }
-  .app { height: 100vh; overflow: hidden; min-height: unset; }
-  /* ── Layout ── */
-  .nlv-main {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background: #f8f8f7;
-    overflow: hidden;
-    padding: 0;
-  }
-  /* ── Top bar ── */
-  .nlv-topbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 12px;
-    flex-shrink: 0;
-  }
-  .nlv-topbar-icon {
-    width: 40px; height: 40px;
-    background: rgba(0,221,255,0.18);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .nlv-topbar-title {
-    font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.26px;
-  }
-  /* ── Body ── */
-  .nlv-body {
-    flex: 1; min-height: 0;
-    height: 100%;
-    padding: 0 12px 12px;
-    display: flex;
-    flex-direction: column;
-  }
-  /* ── Card ── */
-  .nlv-card {
-    flex: 1; min-height: 0;
-    background: white;
-    border: 1px solid rgba(0,0,0,0.12);
-    border-radius: 18px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    overflow: hidden;
-  }
-  /* ── Card header ── */
-  .nlv-card-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-    padding: 20px 20px 12px;
-  }
-  .nlv-head-left { display: flex; flex-direction: column; gap: 3px; }
-  .nlv-date-row  { display: flex; align-items: center; gap: 4px; position: relative; }
-  .nlv-date-trigger {
-    display: flex; align-items: center; gap: 4px;
-    cursor: pointer; user-select: none;
-    border-radius: 8px; transition: background 0.15s;
-    margin: -4px -6px; padding: 4px 6px;
-  }
-  .nlv-date-trigger:hover { background: #37352f0f; }
-  .nlv-date-title {
-    font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.33px;
-  }
-  .nlv-date-chevron { transition: transform 0.18s ease; flex-shrink: 0; }
-  .nlv-date-row.open .nlv-date-chevron { transform: rotate(180deg); }
-  .nlv-count-sub {
-    font-size: 14px; font-weight: 400; color: #858481;
-    line-height: 18px; letter-spacing: -0.09px;
-  }
-  /* Date dropdown */
-  .nlv-date-dropdown {
-    position: fixed;
-    background: white;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    min-width: 220px;
-    padding: 6px;
-    z-index: 1000;
-    display: none;
-    flex-direction: column;
-    gap: 1px;
-  }
-  .nlv-date-dropdown.open { display: flex; }
-  .nlv-date-opt {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 9px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px; font-weight: 500; color: #34322d;
-    letter-spacing: -0.09px;
-    gap: 12px;
-  }
-  .nlv-date-opt:hover { background: #37352f0f; }
-  .nlv-date-opt.active { background: #37352f0f; }
-  .nlv-date-badge {
-    background: #f0efeb; color: #858481;
-    font-size: 12px; font-weight: 500;
-    border-radius: 20px; padding: 2px 8px;
-    white-space: nowrap;
-  }
-  .nlv-date-opt.active .nlv-date-badge { background: #e6e4de; color: #34322d; }
-  .nlv-head-right { display: flex; align-items: center; gap: 12px; }
-  /* Search */
-  .nlv-search {
-    display: flex; align-items: center; gap: 8px;
-    background: white; border: 1px solid #e8e6e0;
-    border-radius: 10px; padding: 9px 13px;
-    width: 300px;
-  }
-  .nlv-search-input {
-    flex: 1; border: none; outline: none; background: transparent;
-    font-size: 14px; color: #34322d; font-family: inherit; letter-spacing: -0.09px;
-  }
-  .nlv-search-input::placeholder { color: #858481; }
-  /* Toolbar buttons */
-  .nlv-tool-btn {
-    display: flex; align-items: center; gap: 8px;
-    background: white; border: 1px solid #e8e6e0;
-    border-radius: 10px; padding: 9px 13px;
-    font-size: 14px; font-weight: 500; color: #34322d;
-    letter-spacing: -0.09px; cursor: pointer; white-space: nowrap;
-  }
-  .nlv-tool-btn:hover { background: #f8f8f7; }
-  /* ── Action button ── */
-  .nlv-action-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: white; border: 1px solid #e8e6e0; border-radius: 10px;
-    padding: 9px 13px; font-size: 14px; font-weight: 500; color: #34322d;
-    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
-    white-space: nowrap; transition: background 0.15s;
-  }
-  .nlv-action-btn:hover { background: #f8f8f7; }
-  .nlv-action-btn img { width: 18px; height: 18px; display: block; }
-  .nlv-table td.nlv-td-action { white-space: nowrap; }
-  .nlv-td-action-wrap { display: flex; align-items: center; gap: 6px; }
-  /* ── Checkboxes ── */
-  .nlv-cb-cell { width: 40px; padding: 12px 8px 12px 16px !important; }
-  .nlv-cb {
-    width: 16px; height: 16px; border-radius: 4px;
-    border: 1.5px solid rgba(0,0,0,0.2); cursor: pointer;
-    appearance: none; -webkit-appearance: none;
-    background: white; display: block; flex-shrink: 0;
-    transition: background 0.12s, border-color 0.12s;
-  }
-  .nlv-cb:checked {
-    background: #0067ff; border-color: #0067ff;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: center;
-  }
-  .nlv-cb:indeterminate {
-    background: #0067ff; border-color: #0067ff;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='2' viewBox='0 0 10 2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1' y='0.5' width='8' height='1' rx='0.5' fill='white'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: center;
-  }
-  /* ── Selection bar ── */
-  .nlv-selection-bar {
-    display: none; align-items: center; justify-content: space-between;
-    padding: 10px 20px; flex-shrink: 0;
-    background: #f0f6ff; border-bottom: 1px solid rgba(0,103,255,0.12);
-  }
-  .nlv-selection-bar.show { display: flex; }
-  .nlv-selection-count { font-size: 14px; font-weight: 500; color: #0067ff; letter-spacing: -0.09px; }
-  .nlv-selection-atc {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: #0067ff; border: none; border-radius: 8px;
-    padding: 8px 14px; font-size: 13px; font-weight: 600; color: white;
-    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
-    transition: background 0.15s;
-  }
-  .nlv-selection-atc:hover { background: #0055d4; }
-  /* ── Table container ── */
-  .nlv-table-wrap {
-    flex: 1; min-height: 0;
-    border-top: 1px solid rgba(0,0,0,0.06);
-    overflow: auto;
-  }
-  /* ── Table ── */
-  .nlv-table {
-    width: 100%;
-    border-collapse: collapse;
-    flex: 1;
-  }
-  .nlv-table th {
-    font-size: 14px; font-weight: 500; color: #858481;
-    letter-spacing: -0.09px; text-align: left;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    white-space: nowrap;
-    position: sticky; top: 0;
-    background: white;
-    z-index: 2;
-  }
-  .nlv-table td {
-    font-size: 14px; color: #34322d;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    line-height: 20px; letter-spacing: -0.09px;
-    vertical-align: middle;
-  }
-  .nlv-table tbody tr:last-child td { border-bottom: none; }
-  .nlv-table tbody tr:hover td { background: #fafafa; }
-  /* Customer name cell */
-  .nlv-name-cell {
-    display: flex; align-items: center; gap: 8px;
-    white-space: nowrap; font-weight: 500;
-  }
-  .nlv-avatar {
-    width: 28px; height: 28px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; overflow: hidden;
-  }
-  .nlv-avatar img { width: 14px; height: 14px; display: block; }
-  /* Mobile — nowrap */
-  .nlv-table td.nlv-td-phone { white-space: nowrap; }
-  .nlv-table td.nlv-td-location { white-space: nowrap; }
-  /* Summary wraps */
-  .nlv-table td.nlv-td-summary { min-width: 200px; }
-  /* ── Pagination ── */
-  .nlv-pagination {
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 20px 12px;
-    border-top: 1px solid rgba(0,0,0,0.06);
-  }
-  .nlv-page-info { font-size: 13px; color: #858481; }
-  .nlv-page-controls { display: flex; align-items: center; gap: 4px; }
-  .nlv-page-btn {
-    min-width: 32px; height: 32px; border-radius: 8px;
-    border: 1px solid transparent; background: none;
-    font-size: 13px; color: #34322d; cursor: pointer; padding: 0 8px;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .nlv-page-btn:hover:not(:disabled) { background: #f8f8f7; border-color: #e8e6e0; }
-  .nlv-page-btn.active { background: #34322d; color: white; border-color: #34322d; }
-  .nlv-page-btn:disabled { opacity: 0.4; cursor: default; }
-  /* ── Chat flyout ── */
-  .nlv-flyout {
-    position: fixed; top: 0; right: 0; bottom: 0;
-    width: 460px;
-    background: #f8f8f7;
-    border-left: 1px solid rgba(0,0,0,0.12);
-    box-shadow: 0px 8px 32px rgba(0,0,0,0.16);
-    border-radius: 18px 0 0 18px;
-    display: flex; flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
-    z-index: 300;
-  }
-  .nlv-flyout.open { transform: translateX(0); }
-  .nlv-flyout-head {
-    display: flex; align-items: center; gap: 12px;
-    padding: 16px; flex-shrink: 0;
-    background: #ffffff;
-    border-radius: 18px 0 0 0;
-  }
-  .nlv-flyout-avatar {
-    width: 40px; height: 40px; border-radius: 100px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; overflow: hidden;
-    border: 0.5px solid rgba(0,0,0,0.16);
-  }
-  .nlv-flyout-avatar img { width: 20px; height: 20px; display: block; filter: brightness(0) invert(1); }
-  .nlv-flyout-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .nlv-flyout-name { font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.33px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .nlv-flyout-sub  { font-size: 14px; color: #858481; line-height: 18px; letter-spacing: -0.09px; }
-  .nlv-flyout-head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .nlv-flyout-icon-btn {
-    display: flex; align-items: center; justify-content: center;
-    background: white; border: 1px solid #e8e6e0; border-radius: 10px;
-    padding: 9px; cursor: pointer; flex-shrink: 0;
-    transition: background 0.15s;
-  }
-  .nlv-flyout-icon-btn:hover { background: #f4f3ef; }
-  .nlv-flyout-icon-btn img { width: 18px; height: 18px; display: block; }
-  .nlv-flyout-messages {
-    flex: 1; min-height: 0; overflow-y: auto;
-    border-top: 1px solid rgba(0,0,0,0.06);
-    padding: 20px; display: flex; flex-direction: column; gap: 20px;
-  }
-  .nlv-flyout-msg-in { display: flex; flex-direction: column; gap: 2px; padding-right: 100px; }
-  .nlv-flyout-msg-meta { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
-  .nlv-flyout-msg-sender { font-size: 14px; font-weight: 500; color: #34322d; line-height: 20px; letter-spacing: -0.09px; }
-  .nlv-flyout-msg-dot { font-size: 12px; color: #34322d; line-height: 20px; }
-  .nlv-flyout-msg-time { font-size: 12px; color: #858481; line-height: 16px; }
-  .nlv-flyout-msg-text { font-size: 14px; color: #34322d; line-height: 20px; letter-spacing: -0.09px; }
-  .nlv-flyout-msg-out { display: flex; flex-direction: column; align-items: flex-end; padding-left: 100px; }
-  .nlv-flyout-msg-bubble {
-    background: white; border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 8px; padding: 12px; max-width: 360px;
-    font-size: 14px; color: #34322d; line-height: 20px; letter-spacing: -0.09px;
-  }
-  .nlv-flyout-composer { flex-shrink: 0; padding: 0 12px 12px; }
-  .nlv-flyout-input-wrap {
-    background: white; border: 1px solid #e8e6e0; border-radius: 22px;
-    padding: 19px 19px 13px; display: flex; flex-direction: column; gap: 60px;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .nlv-flyout-input-wrap:focus-within {
-    border-color: rgba(0,0,0,0.18);
-    box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
-  }
-  .nlv-flyout-textarea {
-    width: 100%; border: none; outline: none; background: transparent;
-    font-family: inherit; font-size: 14px; font-weight: 500; color: #34322d;
-    letter-spacing: -0.18px; resize: none; line-height: 1.4;
-    min-height: 20px; max-height: 120px; overflow-y: auto;
-  }
-  .nlv-flyout-textarea::placeholder { color: #b9b9b7; }
-  .nlv-flyout-toolbar { display: flex; align-items: center; justify-content: space-between; }
-  .nlv-flyout-toolbar-side { display: flex; align-items: center; gap: 8px; }
-  .nlv-flyout-tool-btn {
-    width: 36px; height: 36px; border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.06); background: none;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-  }
-  .nlv-flyout-tool-btn:hover { background: #f4f3ef; }
-  .nlv-flyout-tool-btn.no-border { border: none; }
-  .nlv-flyout-tool-btn img { width: 20px; height: 20px; display: block; }
-  .nlv-flyout-send-btn {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: rgba(55,53,47,0.08); border: 1px solid rgba(229,231,235,0.06);
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-  }
-  .nlv-flyout-send-btn:hover { background: rgba(55,53,47,0.16); }
-  .nlv-flyout-send-btn img { width: 20px; height: 20px; display: block; transition: filter 0.15s; }
-  .nlv-flyout-send-btn.active { background: #0067ff; border-color: transparent; }
-  .nlv-flyout-send-btn.active:hover { background: #0055d4; }
-  .nlv-flyout-send-btn.active img { filter: brightness(0) invert(1); }
-
-  /* ── Add-to-Campaign modal ── */
-  .atc-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
-    z-index: 500;
-    align-items: center; justify-content: center;
-  }
-  .atc-overlay.open { display: flex; }
-  .atc-modal {
-    background: #f8f8f7;
-    border: 1px solid rgba(0,0,0,0.12);
-    border-radius: 18px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
-    width: 480px;
-    padding: 21px;
-    display: flex; flex-direction: column; gap: 20px;
-  }
-  .atc-modal-head {
-    display: flex; gap: 12px;
-    align-items: flex-start; justify-content: space-between;
-  }
-  .atc-modal-title {
-    font-size: 20px; font-weight: 600; color: #34322d;
-    letter-spacing: -0.33px; line-height: normal;
-  }
-  .atc-modal-sub {
-    font-size: 14px; color: #858481;
-    letter-spacing: -0.09px; line-height: 22px; margin-top: 2px;
-  }
-  .atc-close-btn {
-    background: none; border: none; cursor: pointer;
-    width: 24px; height: 24px; flex-shrink: 0; padding: 0;
-    display: flex; align-items: center; justify-content: center;
-    color: #858481; border-radius: 6px; transition: background 0.15s;
-  }
-  .atc-close-btn:hover { background: rgba(0,0,0,0.06); }
-  .atc-connect-box {
-    background: white;
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 18px;
-    padding: 48px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 44px;
-  }
-  .atc-icons-row { display: flex; align-items: center; gap: 22px; }
-  .atc-icon-left {
-    width: 60px; height: 60px; background: white;
-    border: 1px solid rgba(0,0,0,0.12); border-radius: 10px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; padding: 1px;
-  }
-  .atc-icon-left img { width: 43px; height: 43px; object-fit: contain; }
-  .atc-icon-right {
-    width: 60px; height: 60px; background: #589981;
-    border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-  }
-  .atc-icon-right img { width: 36px; height: 27px; object-fit: contain; }
-  .atc-connect-text { text-align: center; }
-  .atc-connect-title {
-    font-size: 16px; font-weight: 600; color: #34322d;
-    letter-spacing: -0.18px; line-height: 20px;
-  }
-  .atc-connect-desc {
-    font-size: 14px; color: #858481;
-    letter-spacing: -0.09px; line-height: 22px; margin-top: 2px;
-  }
-  .atc-footer { display: flex; gap: 12px; align-items: center; }
-  .atc-cancel-btn {
-    flex: 1; background: white; border: 1px solid #e8e6e0;
-    border-radius: 10px; padding: 12px 15px;
-    font-size: 14px; font-weight: 600; color: #34322d;
-    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
-    line-height: 16px; transition: background 0.15s;
-  }
-  .atc-cancel-btn:hover { background: #f8f8f7; }
-  .atc-continue-btn {
-    flex: 1; background: #0067ff; border: none;
-    border-radius: 10px; padding: 12px 14px;
-    font-size: 14px; font-weight: 600; color: white;
-    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
-    line-height: 16px; transition: background 0.15s;
-  }
-  .atc-continue-btn:hover { background: #0055d4; }
-  .atc-continue-btn:disabled { background: #0067ff; cursor: not-allowed; opacity: 0.85; display: flex; align-items: center; justify-content: center; }
-  @keyframes atc-spin { to { transform: rotate(360deg); } }
-  .atc-spin { animation: atc-spin 0.8s linear infinite; display: block; }
-  /* ── Campaign list view ── */
-  .atc-view { display: flex; flex-direction: column; gap: 20px; width: 100%; }
-  .atc-camp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .atc-camp-label { font-size: 14px; font-weight: 600; color: #34322d; letter-spacing: -0.09px; line-height: 20px; }
-  .atc-camp-connected { font-size: 14px; color: #858481; letter-spacing: -0.09px; line-height: 22px; white-space: nowrap; flex-shrink: 0; }
-  .atc-search {
-    display: flex; align-items: center; gap: 8px;
-    background: white; border: 1px solid rgba(0,0,0,0.12);
-    border-radius: 8px; padding: 0 12px; height: 40px;
-  }
-  .atc-search img { width: 18px; height: 18px; flex-shrink: 0; }
-  .atc-search-input {
-    flex: 1; border: none; outline: none; background: transparent;
-    font-size: 14px; color: #34322d; font-family: inherit; letter-spacing: -0.09px;
-  }
-  .atc-search-input::placeholder { color: #858481; }
-  .atc-camp-list {
-    background: white; border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 12px; overflow: hidden;
-    max-height: 300px; overflow-y: auto;
-  }
-  .atc-camp-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px; cursor: pointer;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    transition: background 0.12s;
-  }
-  .atc-camp-item:last-child { border-bottom: none; }
-  .atc-camp-item:hover { background: #fafafa; }
-  .atc-camp-icon { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50px; overflow: hidden; }
-  .atc-camp-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .atc-camp-name { font-size: 14px; font-weight: 500; color: #34322d; letter-spacing: -0.09px; line-height: 18px; }
-  .atc-camp-meta { font-size: 12px; color: #858481; letter-spacing: 0.01px; line-height: 16px; }
-  .atc-camp-radio {
-    width: 24px; height: 24px; flex-shrink: 0;
-    border: 1.5px solid rgba(0,0,0,0.18); border-radius: 50%;
-    box-sizing: border-box; transition: border-color 0.15s;
-  }
-  .atc-camp-item.selected .atc-camp-radio {
-    border-color: #0067ff; background: #0067ff;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: center;
-  }
-  .atc-assign-btn {
-    flex: 1; background: #0067ff; border: none;
-    border-radius: 10px; padding: 12px 14px;
-    font-size: 14px; font-weight: 600; color: white;
-    letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
-    line-height: 16px; transition: background 0.15s;
-  }
-  .atc-assign-btn:hover { background: #0055d4; }
-  .atc-modal.wide { width: 1024px; }
-  /* ── Toast ── */
-  .atc-toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: #34322d; color: white;
-    font-size: 14px; font-weight: 500; letter-spacing: -0.09px;
-    padding: 12px 20px; border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-    z-index: 600; opacity: 0; transition: opacity 0.25s;
-    white-space: nowrap; pointer-events: none;
-  }
-  .atc-toast.show { opacity: 1; }
-
-  /* ── Empty state ── */
-  .nlv-empty {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 8px; color: #858481; padding: 48px;
-    font-size: 14px; text-align: center;
-  }
-  /* ── Shimmer ── */
-  @keyframes nlv-shimmer {
-    from { background-position: -600px 0; }
-    to   { background-position:  600px 0; }
-  }
-  .nlv-shimmer {
-    background: linear-gradient(90deg, #ebe9e4 25%, #f4f2ed 50%, #ebe9e4 75%);
-    background-size: 600px 100%;
-    animation: nlv-shimmer 1.4s infinite linear;
-    border-radius: 4px;
-  }
-</style>
+<link rel="stylesheet" href="styles/dark.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -534,7 +20,7 @@
     <!-- Top bar -->
     <div class="nlv-topbar">
       <div class="nlv-topbar-icon">
-        <img src="assets/icons/a958801e-3e68-4f2f-8ab3-18cf2e4e3171.svg" width="20" height="20" alt="">
+        <img src="assets/icons/icon-user.svg" width="20" height="20" alt="">
       </div>
       <span class="nlv-topbar-title">New Leads</span>
     </div>
@@ -549,7 +35,7 @@
             <div class="nlv-date-row" id="nlv-date-row">
               <div class="nlv-date-trigger" id="nlv-date-trigger">
                 <span class="nlv-date-title" id="nlv-date-title">Today</span>
-                <img class="nlv-date-chevron" src="assets/icons/fdd0b5f6-7c81-4bfc-a203-cfb3b9f1707c.svg" width="16" height="16" alt="">
+                <img class="nlv-date-chevron" src="assets/icons/icon-chevron-down.svg" width="16" height="16" alt="">
               </div>
             </div>
             <div class="nlv-date-dropdown" id="nlv-date-dropdown"></div>
@@ -557,15 +43,15 @@
           </div>
           <div class="nlv-head-right">
             <div class="nlv-search">
-              <img src="assets/icons/a2d9a7f4-238f-497e-977b-0f2438de7cd1.svg" width="18" height="18" alt="">
+              <img src="assets/icons/icon-search-alt.svg" width="18" height="18" alt="">
               <input id="nlv-search" class="nlv-search-input" type="search" placeholder="Search Customer">
             </div>
             <button class="nlv-tool-btn" type="button">
-              <img src="assets/icons/8c6024f8-c8ef-43f7-ab39-7b944c6a1443.svg" width="18" height="18" alt="">
+              <img src="assets/icons/icon-export.svg" width="18" height="18" alt="">
               Filters
             </button>
             <button class="nlv-tool-btn" type="button">
-              <img src="assets/icons/aab464af-9c7c-4387-8eea-790e3bef8a62.svg" width="18" height="18" alt="">
+              <img src="assets/icons/icon-download.svg" width="18" height="18" alt="">
               Export
             </button>
           </div>
@@ -575,7 +61,7 @@
         <div class="nlv-selection-bar" id="nlv-selection-bar">
           <span class="nlv-selection-count" id="nlv-selection-count"></span>
           <button class="nlv-selection-atc" id="nlv-bulk-atc" type="button">
-            <img src="assets/icons/e18942db-8713-4e07-a3c9-53976c803bd5.svg" width="16" height="16" alt="" style="filter:brightness(0) invert(1);">
+            <img src="assets/icons/icon-add-campaign.svg" width="16" height="16" alt="" style="filter:brightness(0) invert(1);">
             Add to Campaign
           </button>
         </div>
@@ -623,7 +109,7 @@
   <div class="nlv-flyout" id="nlv-flyout">
     <div class="nlv-flyout-head">
       <div class="nlv-flyout-avatar" id="nlv-flyout-avatar">
-        <img src="assets/icons/536e13b8-adad-48f2-a3e5-ce27db2e0d52.svg" alt="">
+        <img src="assets/icons/zotok-avatar-inner.svg" alt="">
       </div>
       <div class="nlv-flyout-info">
         <div class="nlv-flyout-name" id="nlv-flyout-name"></div>
@@ -631,10 +117,10 @@
       </div>
       <div class="nlv-flyout-head-actions">
         <button class="nlv-flyout-icon-btn" type="button" aria-label="Details">
-          <img src="assets/icons/75d77129-9e54-4d1a-9bf4-ee9d4ce23b22.svg" alt="">
+          <img src="assets/icons/icon-details.svg" alt="">
         </button>
         <button class="nlv-flyout-icon-btn" type="button" id="nlv-flyout-close" aria-label="Close">
-          <img src="assets/icons/83a61752-ef33-4821-8495-8a9d5528b66e.svg" alt="">
+          <img src="assets/icons/icon-close.svg" alt="">
         </button>
       </div>
     </div>
@@ -646,15 +132,15 @@
           <div class="nlv-flyout-toolbar-side">
             <input type="file" id="nlv-flyout-file" style="display:none">
             <button class="nlv-flyout-tool-btn" type="button" id="nlv-flyout-attach">
-              <img src="assets/icons/8efa9adf-db39-4332-8f16-82d6eaa45e7e.svg" alt="">
+              <img src="assets/icons/icon-minus.svg" alt="">
             </button>
           </div>
           <div class="nlv-flyout-toolbar-side">
             <button class="nlv-flyout-tool-btn no-border" type="button">
-              <img src="assets/icons/f6de2427-0dd7-49d0-966a-ad8d3a65d56d.svg" alt="">
+              <img src="assets/icons/icon-media.svg" alt="">
             </button>
             <button class="nlv-flyout-send-btn" id="nlv-flyout-send" type="button">
-              <img src="assets/icons/d1da0259-fc19-4607-94b5-c54f7252a657.svg" alt="">
+              <img src="assets/icons/icon-send.svg" alt="">
             </button>
           </div>
         </div>
@@ -818,7 +304,7 @@
 <script src="scripts/sidebar.js"></script>
 <script src="scripts/app.js"></script>
 <script>
-  const AVATAR_ICON = 'assets/icons/536e13b8-adad-48f2-a3e5-ce27db2e0d52.svg';
+  const AVATAR_ICON = 'assets/icons/zotok-avatar-inner.svg';
   const AVATAR_COLORS = ['#b879ff','#ffae4c','#537ff1','#b6ca00','#3cc3df','#50c796','#57b7ec','#e16540','#47d096','#328efa','#ff6b6b','#ffd93d'];
 
   const mockLeads = [
@@ -949,7 +435,7 @@
           <td class="nlv-td-phone">${lead.phone}</td>
           <td class="nlv-td-location">${lead.location}</td>
           <td class="nlv-td-summary">${lead.summary}</td>
-          <td class="nlv-td-action"><div class="nlv-td-action-wrap"><button class="nlv-action-btn" type="button" data-lead-idx="${i}"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button><button class="nlv-action-btn nlv-campaign-btn" type="button" data-campaign-idx="${i}"><img src="assets/icons/e18942db-8713-4e07-a3c9-53976c803bd5.svg" width="16" height="16" alt="">Add to Campaign</button></div></td>
+          <td class="nlv-td-action"><div class="nlv-td-action-wrap"><button class="nlv-action-btn" type="button" data-lead-idx="${i}"><img src="assets/icons/icon-view.svg" alt="">View</button><button class="nlv-action-btn nlv-campaign-btn" type="button" data-campaign-idx="${i}"><img src="assets/icons/icon-add-campaign.svg" width="16" height="16" alt="">Add to Campaign</button></div></td>
         </tr>`;
       });
     }
@@ -1249,7 +735,7 @@
 
   document.getElementById('atc-continue').addEventListener('click', function() {
     this.disabled = true;
-    this.innerHTML = '<img src="assets/icons/735d2cd1-4a1f-461f-ab55-22f7b4d39c52.svg" width="20" height="20" alt="" class="atc-spin">';
+    this.innerHTML = '<img src="assets/icons/icon-spinner.svg" width="20" height="20" alt="" class="atc-spin">';
     setTimeout(() => {
       document.getElementById('atc-view-1').style.display = 'none';
       document.getElementById('atc-view-2').style.display = 'flex';

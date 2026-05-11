@@ -6,310 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Category Messages — Group Sense</title>
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/dark.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <style>
-    .cat-layout {
-      flex-direction: row;
-      background: #f8f8f7;
-      overflow: hidden;
-      height: 100vh;
-    }
-    .cat-panel {
-      width: 260px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow: hidden;
-    }
-    .cat-panel-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 12px;
-      flex-shrink: 0;
-    }
-    .cat-panel-icon {
-      background: rgba(0,255,59,0.12);
-      width: 40px;
-      height: 40px;
-      border-radius: 6px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-    .cat-panel-icon img { width: 20px; height: 20px; display: block; }
-    .cat-panel-title {
-      font-weight: 600;
-      font-size: 18px;
-      color: #34322d;
-      white-space: nowrap;
-      letter-spacing: -0.26px;
-    }
-    .cat-list {
-      flex: 1;
-      padding: 8px 12px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .cat-item {
-      padding: 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 14px;
-      color: #34322d;
-      line-height: normal;
-      letter-spacing: -0.09px;
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-      transition-duration: .15s;
-    }
-    .cat-item:hover { background: #37352f0a; }
-    .cat-item.active { background: #37352f0f; }
-    .cat-content {
-      flex: 1;
-      min-width: 0;
-      padding: 12px 12px 12px 0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .cat-card {
-      background: white;
-      border: 1px solid rgba(0,0,0,0.12);
-      border-radius: 22px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.06);
-      flex: 1;
-      min-height: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      overflow: hidden;
-    }
-    .cat-card-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-shrink: 0;
-      padding: 20px 20px 14px;
-    }
-    .cat-card-title { font-weight: 600; font-size: 18px; color: #34322d; line-height: normal; letter-spacing: -0.33px; }
-    .cat-card-sub { font-size: 14px; color: #858481; line-height: 18px; margin-top: 3px; letter-spacing: -0.09px; }
-    .cat-card-actions { display: flex; gap: 12px; align-items: center; }
-    .cat-btn {
-      background: white;
-      border: 1px solid #e8e6e0;
-      border-radius: 10px;
-      padding: 9px 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 14px;
-      color: #34322d;
-      white-space: nowrap;
-      font-family: inherit;
-      letter-spacing: -0.09px;
-    }
-    .cat-btn img { width: 18px; height: 18px; display: block; }
-    .cat-table {
-      flex: 1;
-      min-height: 0;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .cat-row {
-      display: flex;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      flex-shrink: 0;
-    }
-    .cat-row:last-child { border-bottom: none; }
-    .cat-row:not(.cat-row--head) {
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-      transition-duration: .15s;
-    }
-    .cat-row:not(.cat-row--head):hover { background: #37352f0a; cursor: pointer; }
-    .cat-row--head { font-size: 14px; color: #858481; font-weight: 400; letter-spacing: -0.09px; position: sticky; top: 0; background: white; z-index: 2; }
-    .cat-row--head .cat-cell { padding: 12px 12px; align-items: center; font-weight: 500; color: #858481; }
-    .cat-row--head .cat-cell--time { padding-left: 24px; }
-    .cat-cell {
-      font-size: 14px;
-      color: #34322d;
-      font-weight: 500;
-      line-height: 20px;
-      display: flex;
-      align-items: center;
-      padding: 16px 12px;
-      letter-spacing: -0.09px;
-    }
-    .cat-cell--time { width: 154px; flex-shrink: 0; padding-left: 24px; white-space: nowrap; }
-    .cat-cell--group { width: 228px; flex-shrink: 0; }
-    .cat-cell--by { width: 162px; flex-shrink: 0; font-weight: 400; white-space: nowrap; }
-    .cat-cell--msg { flex: 1; min-width: 0; font-weight: 400; }
-    .cat-cell--action { width: 120px; flex-shrink: 0; }
-    .cat-reply-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: white; border: 1px solid #e8e6e0; border-radius: 10px;
-      padding: 9px 13px; font-size: 14px; font-weight: 500; color: #34322d;
-      letter-spacing: -0.09px; cursor: pointer; font-family: inherit;
-      white-space: nowrap;
-    }
-    .cat-reply-btn:hover { background: #f8f8f7; }
-    .cat-reply-btn img { width: 18px; height: 18px; display: block; }
-    .cat-group-cell { display: flex; align-items: center; gap: 10px; }
-    .cat-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 56px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .cat-avatar img { width: 28px; height: 28px; display: block; object-fit: cover; }
-
-    /* ── Chat flyout ── */
-    .cat-flyout {
-      position: fixed; top: 0; right: 0; bottom: 0;
-      width: 460px;
-      background: #f8f8f7;
-      border-left: 1px solid rgba(0,0,0,0.12);
-      box-shadow: 0px 8px 32px rgba(0,0,0,0.16);
-      border-radius: 18px 0 0 18px;
-      display: flex; flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(.4,0,.2,1);
-      z-index: 300;
-    }
-    .cat-flyout.open { transform: translateX(0); }
-    .cat-flyout-head {
-      display: flex; align-items: center; gap: 12px;
-      padding: 16px; flex-shrink: 0;
-      background: #ffffff;
-      border-radius: 18px 0 0 0;
-    }
-    .cat-flyout-avatar {
-      width: 40px; height: 40px; border-radius: 100px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; overflow: hidden;
-      border: 0.5px solid rgba(0,0,0,0.16);
-    }
-    .cat-flyout-avatar img { width: 40px; height: 40px; display: block; }
-    .cat-flyout-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-    .cat-flyout-name { font-size: 18px; font-weight: 600; color: #34322d; letter-spacing: -0.33px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cat-flyout-sub  { font-size: 14px; color: #858481; line-height: 18px; letter-spacing: -0.09px; }
-    .cat-flyout-icon-btn {
-      display: flex; align-items: center; justify-content: center;
-      background: white; border: 1px solid #e8e6e0; border-radius: 10px;
-      padding: 9px; cursor: pointer; flex-shrink: 0;
-    }
-    .cat-flyout-icon-btn:hover { background: #f4f3ef; }
-    .cat-flyout-icon-btn img { width: 18px; height: 18px; display: block; }
-    .cat-flyout-head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .cat-flyout-messages {
-      flex: 1; min-height: 0; overflow-y: auto;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      padding: 20px; display: flex; flex-direction: column; gap: 20px;
-    }
-    .cat-flyout-msg-in { display: flex; flex-direction: column; gap: 2px; padding-right: 100px; }
-    .cat-flyout-msg-meta { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
-    .cat-flyout-msg-sender { font-size: 14px; font-weight: 500; color: #34322d; line-height: 20px; letter-spacing: -0.09px; }
-    .cat-flyout-msg-dot { font-size: 12px; font-weight: 500; color: #34322d; line-height: 20px; }
-    .cat-flyout-msg-time { font-size: 12px; color: #858481; line-height: 16px; letter-spacing: 0.01px; }
-    .cat-flyout-msg-text { font-size: 14px; color: #34322d; line-height: 20px; letter-spacing: -0.09px; }
-    .cat-flyout-msg-out { display: flex; flex-direction: column; align-items: flex-end; padding-left: 100px; }
-    .cat-flyout-msg-bubble {
-      background: white; border: 1px solid rgba(0,0,0,0.06);
-      border-radius: 8px; padding: 12px; max-width: 360px;
-      font-size: 14px; color: #34322d; line-height: 20px; letter-spacing: -0.09px;
-    }
-    .cat-flyout-composer { flex-shrink: 0; padding: 0 12px 12px; }
-    .cat-flyout-input-wrap {
-      background: white; border: 1px solid #e8e6e0; border-radius: 22px;
-      padding: 19px 19px 13px; display: flex; flex-direction: column; gap: 60px;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .cat-flyout-input-wrap:focus-within {
-      border-color: rgba(0,0,0,0.18);
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
-    }
-    .cat-flyout-textarea {
-      width: 100%; border: none; outline: none; background: transparent;
-      font-family: inherit; font-size: 14px; font-weight: 500; color: #34322d;
-      letter-spacing: -0.18px; resize: none; line-height: 1.4;
-      min-height: 20px; max-height: 120px; overflow-y: auto;
-    }
-    .cat-flyout-textarea::placeholder { color: #b9b9b7; }
-    .cat-flyout-toolbar { display: flex; align-items: center; justify-content: space-between; }
-    .cat-flyout-toolbar-side { display: flex; align-items: center; gap: 8px; }
-    .cat-flyout-wa-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      height: 36px; padding: 0 10px; border-radius: 18px;
-      border: 1px solid rgba(0,0,0,0.06); background: none;
-      cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 500;
-      color: #34322d; letter-spacing: -0.09px; white-space: nowrap;
-      transition: background 0.15s;
-    }
-    .cat-flyout-wa-btn:hover { background: #f4f3ef; }
-    .cat-flyout-wa-dot { width: 8px; height: 8px; border-radius: 50%; background: #25d366; flex-shrink: 0; }
-    .cat-flyout-wa-chevron { opacity: 0.45; display: block; }
-    .cat-flyout-wa-dd {
-      position: fixed; z-index: 9999;
-      background: white; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-      padding: 6px; min-width: 220px;
-      opacity: 0; pointer-events: none;
-      transform: translateY(6px); transition: opacity 0.15s, transform 0.15s;
-    }
-    .cat-flyout-wa-dd.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-    .cat-flyout-wa-dd-label {
-      font-size: 11px; font-weight: 600; color: #858481; letter-spacing: 0.04em;
-      text-transform: uppercase; padding: 4px 10px 6px;
-    }
-    .cat-flyout-wa-opt {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px; border-radius: 8px; cursor: pointer;
-      font-size: 14px; font-weight: 500; color: #34322d; letter-spacing: -0.09px;
-      transition: background 0.12s;
-    }
-    .cat-flyout-wa-opt:hover { background: #f4f3ef; }
-    .cat-flyout-wa-opt-dot { width: 8px; height: 8px; border-radius: 50%; background: #25d366; flex-shrink: 0; }
-    .cat-flyout-wa-opt-num { flex: 1; }
-    .cat-flyout-wa-opt-badge {
-      font-size: 11px; font-weight: 500; color: #25d366;
-      background: #25d36615; border-radius: 6px; padding: 2px 7px;
-    }
-    .cat-flyout-tool-btn {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.06); background: none;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-    .cat-flyout-tool-btn:hover { background: #f4f3ef; }
-    .cat-flyout-tool-btn.no-border { border: none; }
-    .cat-flyout-tool-btn img { width: 20px; height: 20px; display: block; }
-    .cat-flyout-send-btn {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(55,53,47,0.08); border: 1px solid rgba(229,231,235,0.06);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s;
-    }
-    .cat-flyout-send-btn:hover { background: rgba(55,53,47,0.16); }
-    .cat-flyout-send-btn img { width: 20px; height: 20px; display: block; transition: filter 0.15s; }
-    .cat-flyout-send-btn.active { background: #0067ff; border-color: transparent; }
-    .cat-flyout-send-btn.active:hover { background: #0055d4; }
-    .cat-flyout-send-btn.active img { filter: brightness(0) invert(1); }
-
-  </style>
 </head>
 
 <body data-page="category-view">
@@ -322,7 +22,7 @@
       <div class="cat-panel">
         <div class="cat-panel-head">
           <div class="cat-panel-icon">
-            <img src="assets/icons/4777faff-f38f-412f-91a6-4357b44324a5.svg" alt="">
+            <img src="assets/icons/icon-chat-header.svg" alt="">
           </div>
           <span class="cat-panel-title">Category Messages</span>
         </div>
@@ -349,11 +49,11 @@
             </div>
             <div class="cat-card-actions">
               <button class="cat-btn">
-                <img src="assets/icons/aab464af-9c7c-4387-8eea-790e3bef8a62.svg" alt="">
+                <img src="assets/icons/icon-download.svg" alt="">
                 Export
               </button>
               <button class="cat-btn">
-                <img src="assets/icons/4450e142-f5bb-401c-bc8f-19f258520b26.svg" alt="">
+                <img src="assets/icons/icon-info-circle.svg" alt="">
                 Details
               </button>
             </div>
@@ -376,13 +76,13 @@
               <div class="cat-cell cat-cell--time">02:01 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/a576fbc9-18aa-42d3-a434-2961bda77932.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-maroon.svg" alt=""></div>
                   <span>Rajesh Traders</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Vivaan Reddy</div>
               <div class="cat-cell cat-cell--msg">Need 50 boxes of SKU-4421 for Friday delivery. Same billing as last time. Urgent please confirm."</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 2 -->
@@ -390,13 +90,13 @@
               <div class="cat-cell cat-cell--time">01:42 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/0426e412-95ce-4713-bdb1-a4aaf9c83871.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-green.svg" alt=""></div>
                   <span>Kumar Enterprises</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Ritvik Mehta</div>
               <div class="cat-cell cat-cell--msg">Bhai 100 units SKU-2200 aur 30 units SKU-3310 chahiye. Kal subah tak de dena. Price same rahega?</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 3 -->
@@ -404,13 +104,13 @@
               <div class="cat-cell cat-cell--time">01:12 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/4b98d069-5697-4d3e-8c58-24d83897fd22.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-indigo.svg" alt=""></div>
                   <span>Sundar Exports</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Vihaan Bhat</div>
               <div class="cat-cell cat-cell--msg">Please send order confirmation for order #ORD-8821. We need it for our accounts team today.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 4 -->
@@ -418,13 +118,13 @@
               <div class="cat-cell cat-cell--time">01:01 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/b5248b5d-b25f-480a-b1fb-394d4f6e3a1a.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-olive.svg" alt=""></div>
                   <span>Lakshmi Supplies</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Atharv Saxena</div>
               <div class="cat-cell cat-cell--msg">Can you deliver 40 cartons of product A to our Secunderabad warehouse?</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 5 -->
@@ -432,13 +132,13 @@
               <div class="cat-cell cat-cell--time">12:58 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/813af8fc-6a41-4d5c-88ba-13a06822ecda.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-teal.svg" alt=""></div>
                   <span>Vijay &amp; Sons</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Ayaan Das</div>
               <div class="cat-cell cat-cell--msg">What is the current rate for SKU-1100? We plan to order 200 units next week.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 6 -->
@@ -446,13 +146,13 @@
               <div class="cat-cell cat-cell--time">12:31 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/b4416ba0-03f1-458c-838a-38e94d17c6a4.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-violet.svg" alt=""></div>
                   <span>Hariharan Associates</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Kian Nair</div>
               <div class="cat-cell cat-cell--msg">Mujhe 500 kg maida chahiye aur 300 kg sugar. Kal tak pohunchao. Same address hai.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 7 -->
@@ -460,13 +160,13 @@
               <div class="cat-cell cat-cell--time">12:29 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/83021361-1e71-438f-94dd-a41cfb8af14d.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-red.svg" alt=""></div>
                   <span>Nirmal Fabrics</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Om Nair</div>
               <div class="cat-cell cat-cell--msg">Reorder same as last month — SKU-3310 x 150, SKU-4421 x 80. Urgent shipment required.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 8 -->
@@ -474,13 +174,13 @@
               <div class="cat-cell cat-cell--time">12:11 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/0426e412-95ce-4713-bdb1-a4aaf9c83871.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-green.svg" alt=""></div>
                   <span>Asha Agro</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Sai Iyer</div>
               <div class="cat-cell cat-cell--msg">Bhaiya ek baar aur 60 pieces SKU-9910 bhejo. Last wali quality achhi thi. COD rahega.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 9 -->
@@ -488,13 +188,13 @@
               <div class="cat-cell cat-cell--time">12:04 PM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/4b98d069-5697-4d3e-8c58-24d83897fd22.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-indigo.svg" alt=""></div>
                   <span>Shree Chemicals</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Kian Patel</div>
               <div class="cat-cell cat-cell--msg">Urgent order — 25 bags cement grade packing material SKU-0012. Deliver to plot 44, IDA Nacharam.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
             <!-- Row 10 -->
@@ -502,13 +202,13 @@
               <div class="cat-cell cat-cell--time">11:58 AM</div>
               <div class="cat-cell cat-cell--group">
                 <div class="cat-group-cell">
-                  <div class="cat-avatar"><img src="assets/icons/b5248b5d-b25f-480a-b1fb-394d4f6e3a1a.svg" alt=""></div>
+                  <div class="cat-avatar"><img src="assets/icons/user-avatar-olive.svg" alt=""></div>
                   <span>Ganesh Motors</span>
                 </div>
               </div>
               <div class="cat-cell cat-cell--by">Muhammad Bhat</div>
               <div class="cat-cell cat-cell--msg">Hamara monthly standing order process karo — same as PO-7712. Any changes call karo.</div>
-              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/23c81a67-01cc-4ae9-a570-7c76ed521002.svg" alt="">View</button></div>
+              <div class="cat-cell cat-cell--action"><button class="cat-reply-btn" type="button"><img src="assets/icons/icon-view.svg" alt="">View</button></div>
             </div>
 
           </div>
@@ -522,18 +222,18 @@
   <div class="cat-flyout" id="cat-flyout">
     <div class="cat-flyout-head">
       <div class="cat-flyout-avatar" id="cat-flyout-avatar">
-        <img src="assets/icons/ee2c2d3d-7667-4f12-98ed-a449774734e0.svg" alt="">
+        <img src="assets/icons/icon-whatsapp-wave.svg" alt="">
       </div>
       <div class="cat-flyout-info">
         <div class="cat-flyout-name" id="cat-flyout-name"></div>
         <div class="cat-flyout-sub">12 Members</div>
       </div>
       <div class="cat-flyout-head-actions">
-        <button class="cat-flyout-icon-btn" type="button" aria-label="Details">
-          <img src="assets/icons/75d77129-9e54-4d1a-9bf4-ee9d4ce23b22.svg" alt="">
+        <button class="cat-flyout-icon-btn" type="button" aria-label="Details" data-tooltip="Details">
+          <img src="assets/icons/icon-details.svg" alt="">
         </button>
-        <button class="cat-flyout-icon-btn" type="button" id="cat-flyout-close" aria-label="Close">
-          <img src="assets/icons/83a61752-ef33-4821-8495-8a9d5528b66e.svg" alt="">
+        <button class="cat-flyout-icon-btn" type="button" id="cat-flyout-close" aria-label="Close" data-tooltip="Close">
+          <img src="assets/icons/icon-close.svg" alt="">
         </button>
       </div>
     </div>
@@ -544,21 +244,21 @@
         <div class="cat-flyout-toolbar">
           <div class="cat-flyout-toolbar-side">
             <input type="file" id="cat-flyout-file" style="display:none">
-            <button class="cat-flyout-tool-btn" type="button" id="cat-flyout-attach">
-              <img src="assets/icons/8efa9adf-db39-4332-8f16-82d6eaa45e7e.svg" alt="">
+            <button class="cat-flyout-tool-btn" type="button" id="cat-flyout-attach" data-tooltip="Attach">
+              <img src="assets/icons/icon-minus.svg" alt="">
             </button>
-            <button class="cat-flyout-wa-btn" type="button" id="cat-flyout-wa-trigger">
+            <button class="cat-flyout-wa-btn" type="button" id="cat-flyout-wa-trigger" title="WhatsApp Number">
               <span class="cat-flyout-wa-dot"></span>
               <span id="cat-flyout-wa-label">+91 93883 22332</span>
               <svg class="cat-flyout-wa-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="#34322d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
           <div class="cat-flyout-toolbar-side">
-            <button class="cat-flyout-tool-btn no-border" type="button">
-              <img src="assets/icons/f6de2427-0dd7-49d0-966a-ad8d3a65d56d.svg" alt="">
+            <button class="cat-flyout-tool-btn no-border" type="button" data-tooltip="Media">
+              <img src="assets/icons/icon-media.svg" alt="">
             </button>
-            <button class="cat-flyout-send-btn" id="cat-flyout-send" type="button">
-              <img src="assets/icons/d1da0259-fc19-4607-94b5-c54f7252a657.svg" alt="">
+            <button class="cat-flyout-send-btn" id="cat-flyout-send" type="button" data-tooltip="Send">
+              <img src="assets/icons/icon-send.svg" alt="">
             </button>
           </div>
         </div>

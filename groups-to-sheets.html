@@ -5,308 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Groups to Sheets — Group Sense</title>
   <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/dark.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <style>
-    .gts-layout {
-      flex-direction: row;
-      background: #f8f8f7;
-      overflow: hidden;
-      height: 100vh;
-    }
-
-    /* ── Left Panel ── */
-    .gts-panel {
-      width: 260px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow: hidden;
-    }
-    .gts-panel-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 12px;
-      flex-shrink: 0;
-    }
-    .gts-panel-icon {
-      background: rgba(15, 157, 88, 0.12);
-      width: 40px;
-      height: 40px;
-      border-radius: 6px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-    .gts-panel-icon img { width: 20px; height: 20px; display: block; }
-    .gts-panel-title {
-      font-weight: 600;
-      font-size: 18px;
-      color: #34322d;
-      white-space: nowrap;
-      letter-spacing: -0.26px;
-    }
-    .gts-list {
-      flex: 1;
-      padding: 8px 12px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .gts-item {
-      padding: 10px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 10px;
-      transition: background 0.15s cubic-bezier(.4,0,.2,1);
-    }
-    .gts-item-icon { width: 24px; height: 24px; flex-shrink: 0; display: block; }
-    .gts-item-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-    .gts-item:hover { background: #37352f0a; }
-    .gts-item.active { background: #37352f0f; }
-    .gts-item-name {
-      font-weight: 500;
-      font-size: 14px;
-      color: #34322d;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: normal;
-      letter-spacing: -0.09px;
-    }
-    .gts-item-meta {
-      font-size: 12px;
-      color: #858481;
-      line-height: 16px;
-    }
-    .gts-panel-add {
-      margin: 0 12px 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px dashed rgba(0,0,0,0.12);
-      background: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      color: #858481;
-      font-family: inherit;
-      letter-spacing: -0.09px;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-      flex-shrink: 0;
-    }
-    .gts-panel-add:hover { background: #37352f0a; color: #34322d; border-color: rgba(0,0,0,0.2); }
-
-    /* ── Right Content ── */
-    .gts-content {
-      flex: 1;
-      min-width: 0;
-      padding: 12px 12px 12px 0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .gts-card {
-      background: white;
-      border: 1px solid rgba(0,0,0,0.12);
-      border-radius: 22px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.06);
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .gts-card-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-shrink: 0;
-      padding: 20px 20px 14px;
-    }
-    .gts-card-title {
-      font-weight: 600;
-      font-size: 18px;
-      color: #34322d;
-      line-height: normal;
-      letter-spacing: -0.33px;
-    }
-    .gts-card-sub {
-      font-size: 14px;
-      color: #858481;
-      line-height: 18px;
-      margin-top: 3px;
-      letter-spacing: -0.09px;
-    }
-    .gts-card-actions { display: flex; gap: 12px; align-items: center; }
-    .gts-btn {
-      background: white;
-      border: 1px solid #e8e6e0;
-      border-radius: 10px;
-      padding: 9px 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 14px;
-      color: #34322d;
-      white-space: nowrap;
-      font-family: inherit;
-      letter-spacing: -0.09px;
-      transition: background 0.15s cubic-bezier(.4,0,.2,1);
-    }
-    .gts-btn:hover { background: #f4f3ef; }
-    .gts-btn img { height: 18px; width: 18px; display: block; }
-
-    /* ── Table ── */
-    .gts-table {
-      flex: 1;
-      min-height: 0;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .gts-row {
-      display: flex;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      flex-shrink: 0;
-    }
-    .gts-row:last-child { border-bottom: none; }
-    .gts-row:not(.gts-row--head) {
-      transition: background 0.15s cubic-bezier(.4,0,.2,1);
-    }
-    .gts-row:not(.gts-row--head):hover { background: #37352f0a; }
-    .gts-row--head {
-      position: sticky;
-      top: 0;
-      background: white;
-      z-index: 2;
-    }
-    .gts-row--head .gts-cell {
-      font-weight: 500;
-      color: #858481;
-      padding: 12px 12px;
-    }
-    .gts-cell {
-      font-size: 14px;
-      color: #34322d;
-      font-weight: 500;
-      line-height: 20px;
-      display: flex;
-      align-items: center;
-      padding: 14px 12px;
-      letter-spacing: -0.09px;
-      overflow: hidden;
-    }
-    .gts-cell--msg     { flex: 1; min-width: 200px; font-weight: 400; }
-    .gts-cell--group   { width: 270px; flex-shrink: 0; }
-    .gts-cell--sender  { width: 150px; flex-shrink: 0; }
-    .gts-cell--phone   { width: 158px; flex-shrink: 0; font-weight: 400; white-space: nowrap; }
-    .gts-cell--time    { width: 190px; flex-shrink: 0; font-weight: 400; white-space: nowrap; }
-    .gts-cell--cat     { width: 124px; flex-shrink: 0; }
-    .gts-cell--other   { width: 140px; flex-shrink: 0; font-weight: 400; }
-    .gts-clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
-    .gts-group-cell { display: flex; align-items: center; gap: 10px; overflow: hidden; }
-    .gts-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 56px;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: #f0f0ef;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .gts-avatar img { width: 28px; height: 28px; display: block; object-fit: cover; }
-
-    /* Badges */
-    .gts-badge {
-      display: inline-flex;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 3px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-    .gts-badge--order     { background: #edf7f0; color: #2f7d4a; }
-    .gts-badge--inquiry   { background: #f0f4ff; color: #3a5ccc; }
-    .gts-badge--complaint { background: #fff4f0; color: #c04020; }
-    .gts-badge--payment   { background: #f5f0ff; color: #6b3fa0; }
-    .gts-badge--delivery  { background: #fffbf0; color: #9a7b1c; }
-
-    /* Empty state */
-    .gts-empty {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      text-align: center;
-      padding: 48px;
-    }
-    .gts-empty-icon {
-      width: 52px;
-      height: 52px;
-      background: rgba(15,157,88,0.08);
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 4px;
-    }
-    .gts-empty-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #34322d;
-      letter-spacing: -0.18px;
-    }
-    .gts-empty-sub {
-      font-size: 14px;
-      color: #858481;
-      line-height: 22px;
-      letter-spacing: -0.09px;
-      max-width: 300px;
-    }
-    .gts-empty-btn {
-      background: #0067ff;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-      font-family: inherit;
-      letter-spacing: -0.09px;
-      margin-top: 4px;
-      transition: background 0.15s;
-    }
-    .gts-empty-btn:hover { background: #0055d4; }
-
-    @keyframes shimmer {
-      from { background-position: -600px 0; }
-      to   { background-position:  600px 0; }
-    }
-    .shimmer {
-      background: linear-gradient(90deg, #f0f0ef 25%, #f8f8f7 50%, #f0f0ef 75%);
-      background-size: 600px 100%;
-      animation: shimmer 1.4s infinite linear;
-      border-radius: 4px;
-    }
-  </style>
 </head>
 <body data-page="groups-to-sheets">
 <div class="app">
@@ -318,7 +20,7 @@
     <div class="gts-panel">
       <div class="gts-panel-head">
         <div class="gts-panel-icon">
-          <img src="assets/icons/f8e44bf2-b953-4629-9dc2-12d048e4e5fc.svg" alt="Groups to Sheets">
+          <img src="assets/icons/nav-sheets.svg" alt="Groups to Sheets">
         </div>
         <span class="gts-panel-title">Groups to Sheets</span>
       </div>
@@ -349,7 +51,7 @@
     {
       id: 'g1',
       name: 'Mumbai Distributors Network',
-      avatar: 'assets/icons/00fa86e0-0ca8-4cc2-98a0-1bdd3effb2b8.svg',
+      avatar: 'assets/icons/group-avatar-maroon.svg',
       messages: [
         { sender:'Raj Gupta',       phone:'+91 98765 43210', message:'Need 2000 units of SKU-44 by Friday. Please confirm availability.',      category:'Order',     timestamp:'Today, 11:50 AM' },
         { sender:'Amit Verma',      phone:'+91 88001 22003', message:'What is the current bulk rate for orders above 5000 units?',               category:'Inquiry',   timestamp:'Today, 11:30 AM' },
@@ -366,7 +68,7 @@
     {
       id: 'g2',
       name: 'Pune Retailers Chat',
-      avatar: 'assets/icons/b6809180-1b1c-4f95-8f7a-d97918b5271c.svg',
+      avatar: 'assets/icons/group-avatar-green.svg',
       messages: [
         { sender:'Mohan Agarwal',   phone:'+91 99887 76655', message:'Festival season coming — need stock of top 10 SKUs ready by 10 Oct.',      category:'Order',     timestamp:'Today, 12:05 PM' },
         { sender:'Rekha Iyer',      phone:'+91 78990 11223', message:'My store is in camp area. Can you add it to the delivery route?',           category:'Delivery',  timestamp:'Today, 11:40 AM' },
@@ -383,7 +85,7 @@
     {
       id: 'g3',
       name: 'Gujarat Wholesalers Group',
-      avatar: 'assets/icons/644f2fb7-d35f-4f08-9701-2dd1ef9d5c17.svg',
+      avatar: 'assets/icons/group-avatar-indigo.svg',
       messages: [
         { sender:'Hitesh Modi',     phone:'+91 88001 77002', message:'Rate revision effective 1st May. Please share updated price list.',          category:'Inquiry',   timestamp:'Today, 01:00 PM' },
         { sender:'Sunita Bhatt',    phone:'+91 91111 33333', message:'Truck loaded, ETA Ahmedabad warehouse 6 PM today.',                         category:'Delivery',  timestamp:'Today, 12:30 PM' },
@@ -400,7 +102,7 @@
     {
       id: 'g4',
       name: 'Delhi FMCG Traders',
-      avatar: 'assets/icons/6449291a-61f4-464e-8020-e3458ba721bd.svg',
+      avatar: 'assets/icons/group-avatar-olive.svg',
       messages: [
         { sender:'Neha Tiwari',     phone:'+91 96543 21000', message:'Stock urgently needed for Connaught Place outlet — shelves empty.',         category:'Order',     timestamp:'Today, 12:45 PM' },
         { sender:'Vijay Patil',     phone:'+91 78111 99000', message:'Blocked payment from Feb still unresolved. Escalating.',                    category:'Complaint', timestamp:'Today, 12:00 PM' },
@@ -417,7 +119,7 @@
     {
       id: 'g5',
       name: 'Bangalore Tech Suppliers',
-      avatar: 'assets/icons/ec81c80a-e2c1-4b73-9340-a5718533d206.svg',
+      avatar: 'assets/icons/group-avatar-teal.svg',
       messages: [
         { sender:'Arun Chandra',    phone:'+91 98001 45678', message:'API integration for auto-PO raising — can Zotok support this?',             category:'Inquiry',   timestamp:'Today, 01:20 PM' },
         { sender:'Sumit Jain',      phone:'+91 92222 33444', message:'Order #B9901 confirmed — 1200 units, ship to Electronic City warehouse.',    category:'Order',     timestamp:'Today, 12:50 PM' },
@@ -434,7 +136,7 @@
     {
       id: 'g6',
       name: 'Rajasthan Agri Traders',
-      avatar: 'assets/icons/0894b817-7271-46b5-a7bb-54be9324a55d.svg',
+      avatar: 'assets/icons/group-avatar-violet.svg',
       messages: [
         { sender:'Ramesh Verma',    phone:'+91 84444 66666', message:'Pre-sowing season starting — need fertiliser stock confirmed by 8 May.',    category:'Order',     timestamp:'Today, 11:55 AM' },
         { sender:'Dinesh Kumar',    phone:'+91 77889 90011', message:'Rain affected last delivery route. Goods arrived 4 days late.',              category:'Complaint', timestamp:'Today, 11:10 AM' },
@@ -451,7 +153,7 @@
     {
       id: 'g7',
       name: 'Hyderabad Pharma Distributors',
-      avatar: 'assets/icons/fd25cd03-c912-4f77-8e89-b3137752bf69.svg',
+      avatar: 'assets/icons/group-avatar-red.svg',
       messages: [
         { sender:'T. Srinivasan',   phone:'+91 79000 56789', message:'Cold chain breach reported at depot. Vaccines possibly compromised.',        category:'Complaint', timestamp:'Today, 12:10 PM' },
         { sender:'Lata Krishna',    phone:'+91 83001 45600', message:'Order for 10,000 strips of Metformin 500 — schedule H compliance ensured.',  category:'Order',     timestamp:'Today, 11:30 AM' },
@@ -640,7 +342,7 @@
     const listEl = document.getElementById('gts-list');
     listEl.innerHTML = sheets.map(s => `
       <div class="gts-item${s.id === activeSheetId ? ' active' : ''}" data-sid="${s.id}">
-        <img class="gts-item-icon" src="assets/icons/26403f92-0912-42ea-b4ea-c6010506c7e8.svg" alt="">
+        <img class="gts-item-icon" src="assets/icons/icon-spreadsheet.svg" alt="">
         <div class="gts-item-text">
           <span class="gts-item-name">${s.name}</span>
           <span class="gts-item-meta">${s.groupCount ? `${s.groupCount} group${s.groupCount !== 1 ? 's' : ''}` : 'Custom data'}</span>
@@ -683,7 +385,7 @@
         </div>
         <div class="gts-card-actions">
           <button class="gts-btn">
-            <img src="assets/icons/aab464af-9c7c-4387-8eea-790e3bef8a62.svg" alt="">
+            <img src="assets/icons/icon-download.svg" alt="">
             Export
           </button>
         </div>
