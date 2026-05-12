@@ -143,7 +143,8 @@
 }
 
 .dark .send-btn:not(:disabled) .composer-icon {
-  filter: invert(0);
+  filter: brightness(0) invert(1);
+  opacity: 1;
 }
 
 .dark .prompt-pill {
@@ -294,19 +295,16 @@
 .dark .table th {
   background: #1c1c1c;
   color: #7f7f7f;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
-.dark .table th,
 .dark .table td {
   border-bottom-color: rgba(255, 255, 255, 0.06);
+  color: #dadada;
 }
 
 .dark .table tbody tr:hover {
   background: #2e2e2e;
-}
-
-.dark .table td {
-  color: #dadada;
 }
 
 .dark .table-message-preview {
@@ -772,6 +770,7 @@
 .dark .wa-group-remove {
   color: rgba(255, 255, 255, 0.25);
 }
+
 .dark .wa-group-remove:hover {
   color: #ff6b47;
 }
@@ -839,13 +838,14 @@
 }
 
 .dark .btn-secondary {
-  background: #2e2e2e !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
-  color: #dadada !important;
+  background: #2e2e2e;
+  border-color: rgba(255, 255, 255, 0.10);
+  color: #dadada;
+  /* background: #3a3a3a; */
 }
 
 .dark .btn-secondary:hover {
-  background: #3a3a3a;
+  background: #444;
 }
 
 .dark .cat-row--head {
@@ -873,16 +873,6 @@
   border-top-color: rgba(255, 255, 255, 0.06);
 }
 
-.dark .btn-secondary {
-  background: #2e2e2e !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
-  color: #dadada !important;
-}
-
-.dark .btn-secondary:hover {
-  background: #3a3a3a;
-}
-
 /* flyout */
 .dark .cat-flyout {
   background: #1c1c1c !important;
@@ -900,15 +890,6 @@
 
 .dark .cat-flyout-sub {
   color: #7f7f7f;
-}
-
-.dark .btn-secondary {
-  background: #2e2e2e !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
-}
-
-.dark .btn-secondary:hover {
-  background: #3a3a3a;
 }
 
 .dark .cat-flyout-messages {
@@ -1042,11 +1023,6 @@
   opacity: 0.78;
 }
 
-.dark .send-btn:not(:disabled) .composer-icon {
-  filter: brightness(0) invert(1);
-  opacity: 1;
-}
-
 .dark .prompt-icon {
   filter: brightness(0) invert(1);
   opacity: 0.6;
@@ -1058,12 +1034,6 @@
 }
 
 /* ── Category view ── */
-.dark .btn-secondary img,
-.dark .btn-secondary img {
-  filter: brightness(0) invert(1) !important;
-  opacity: 0.78;
-}
-
 .dark .btn-secondary img {
   filter: brightness(0) invert(1) !important;
   opacity: 0.78;
@@ -1444,23 +1414,15 @@
   color: #7f7f7f;
 }
 
-.dark .btn-tertiary {
+.dark .btn-danger {
+  color: #dd360c;
+  border-color: #dd360c;
   background: transparent;
-  color: #dadada;
 }
 
-.dark .btn-tertiary:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.dark .btn-secondary {
-  background: #3a3a3a;
-  border-color: rgba(255, 255, 255, 0.10);
-  color: #dadada;
-}
-
-.dark .btn-secondary:hover {
-  background: #444;
+.dark .btn-danger:hover {
+  background: rgba(255, 107, 71, 0.08);
+  border-color: #dd360c;
 }
 
 /* Agents — category modal */
@@ -1627,7 +1589,6 @@
 .dark .leads-sheet-preview {
   border-color: rgba(255, 255, 255, 0.06);
 }
-
 
 .dark .leads-sheet-name,
 .dark .leads-sheet-filename {
