@@ -1,346 +1,353 @@
 <!doctype html>
 <html lang="en" data-loading>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Groups to Sheets — Group Sense</title>
   <link rel="stylesheet" href="styles/main.css">
-<link rel="stylesheet" href="styles/dark.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/dark.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body data-page="groups-to-sheets">
-<div class="app">
-  <div id="sidebar-host"></div>
+  <div class="app">
+    <div id="sidebar-host"></div>
 
-  <main class="main gts-layout">
+    <main class="main gts-layout">
 
-    <!-- Left: Sheets panel -->
-    <div class="gts-panel">
-      <div class="gts-panel-head">
-        <div class="gts-panel-icon">
-          <img src="assets/icons/nav-sheets.svg" alt="Groups to Sheets">
+      <!-- Left: Sheets panel -->
+      <div class="gts-panel">
+        <div class="gts-panel-head">
+          <div class="gts-panel-icon">
+            <img src="assets/icons/nav-sheets.svg" alt="Groups to Sheets">
+          </div>
+          <span class="gts-panel-title">Groups to Sheets</span>
         </div>
-        <span class="gts-panel-title">Groups to Sheets</span>
+        <div class="gts-list" id="gts-list">
+          <div class="shimmer" style="height:52px;border-radius:10px;margin-bottom:2px;"></div>
+          <div class="shimmer" style="height:52px;border-radius:10px;margin-bottom:2px;"></div>
+          <div class="shimmer" style="height:52px;border-radius:10px;"></div>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="location.href='agents.html'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14" />
+            <path d="M5 12h14" />
+          </svg>
+          Add Sheet
+        </button>
       </div>
-      <div class="gts-list" id="gts-list">
-        <div class="shimmer" style="height:52px;border-radius:10px;margin-bottom:2px;"></div>
-        <div class="shimmer" style="height:52px;border-radius:10px;margin-bottom:2px;"></div>
-        <div class="shimmer" style="height:52px;border-radius:10px;"></div>
+
+      <!-- Right: Sheet data -->
+      <div class="gts-content">
+        <div class="gts-card" id="gts-card"></div>
       </div>
-      <button class="gts-panel-add" onclick="location.href='agents.html'">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-        Add Sheet
-      </button>
-    </div>
 
-    <!-- Right: Sheet data -->
-    <div class="gts-content">
-      <div class="gts-card" id="gts-card"></div>
-    </div>
+    </main>
+  </div>
 
-  </main>
-</div>
+  <script src="scripts/sidebar.js"></script>
+  <script src="scripts/app.js"></script>
+  <script>
+    // ── Demo groups data ───────────────────────────────────────────────────────
+    const GROUPS = [
+      {
+        id: 'g1',
+        name: 'Mumbai Distributors Network',
+        avatar: 'assets/icons/group-avatar-maroon.svg',
+        messages: [
+          { sender: 'Raj Gupta', phone: '+91 98765 43210', message: 'Need 2000 units of SKU-44 by Friday. Please confirm availability.', category: 'Order', timestamp: 'Today, 11:50 AM' },
+          { sender: 'Amit Verma', phone: '+91 88001 22003', message: 'What is the current bulk rate for orders above 5000 units?', category: 'Inquiry', timestamp: 'Today, 11:30 AM' },
+          { sender: 'Suresh Patel', phone: '+91 97531 86420', message: 'Payment done for invoice #4421. Please check and confirm receipt.', category: 'Payment', timestamp: 'Today, 10:55 AM' },
+          { sender: 'Priya Shah', phone: '+91 91234 56789', message: 'Delivery from last week still pending. Driver not picking calls.', category: 'Complaint', timestamp: 'Today, 10:20 AM' },
+          { sender: 'Nikhil Joshi', phone: '+91 93333 44444', message: 'Can we get GST invoice split into two for this order?', category: 'Inquiry', timestamp: 'Today, 09:45 AM' },
+          { sender: 'Anita Kapoor', phone: '+91 82222 55555', message: 'Interested in exclusive distribution rights for Navi Mumbai zone.', category: 'Inquiry', timestamp: 'Today, 09:10 AM' },
+          { sender: 'Dinesh Kumar', phone: '+91 77889 90011', message: 'Shipment arrived damaged. 40 units need replacement. Raising complaint.', category: 'Complaint', timestamp: 'Today, 08:50 AM' },
+          { sender: 'Rohit Sharma', phone: '+91 99001 23456', message: 'Rate list for Q2 please. Previous one expired.', category: 'Inquiry', timestamp: 'Today, 08:30 AM' },
+          { sender: 'Vishal Mehta', phone: '+91 90909 12345', message: 'Can you extend credit period to 45 days? We are expanding.', category: 'Inquiry', timestamp: 'Yesterday, 06:40 PM' },
+          { sender: 'Geeta Sharma', phone: '+91 97777 44444', message: 'Confirmed order for 3000 units. PO attached in DM.', category: 'Order', timestamp: 'Yesterday, 05:15 PM' },
+        ]
+      },
+      {
+        id: 'g2',
+        name: 'Pune Retailers Chat',
+        avatar: 'assets/icons/group-avatar-green.svg',
+        messages: [
+          { sender: 'Mohan Agarwal', phone: '+91 99887 76655', message: 'Festival season coming — need stock of top 10 SKUs ready by 10 Oct.', category: 'Order', timestamp: 'Today, 12:05 PM' },
+          { sender: 'Rekha Iyer', phone: '+91 78990 11223', message: 'My store is in camp area. Can you add it to the delivery route?', category: 'Delivery', timestamp: 'Today, 11:40 AM' },
+          { sender: 'Sumit Jain', phone: '+91 92222 33444', message: 'Last invoice had wrong GSTIN. Please reissue corrected copy.', category: 'Complaint', timestamp: 'Today, 11:00 AM' },
+          { sender: 'Nirmala Devi', phone: '+91 99234 56780', message: 'Can I place a trial order of 100 units with 30-day return window?', category: 'Inquiry', timestamp: 'Today, 10:15 AM' },
+          { sender: 'Sanjay Yadav', phone: '+91 83456 78901', message: 'Paid ₹68,000 via UPI. Screenshot in DM. Please update ledger.', category: 'Payment', timestamp: 'Today, 09:30 AM' },
+          { sender: 'Arjun Pillai', phone: '+91 94321 09876', message: 'Please send someone to audit our shelf display. Sales dropped 20%.', category: 'Complaint', timestamp: 'Today, 09:00 AM' },
+          { sender: 'Neha Tiwari', phone: '+91 96543 21000', message: 'Want to add 3 new SKUs to my regular order. Can you share the catalogue?', category: 'Inquiry', timestamp: 'Yesterday, 07:00 PM' },
+          { sender: 'Tarun Malhotra', phone: '+91 86789 01234', message: 'Delivery time keeps slipping from 2 days to 5. Please fix this.', category: 'Complaint', timestamp: 'Yesterday, 05:45 PM' },
+          { sender: 'Prasad Kulkarni', phone: '+91 85432 10987', message: 'Bulk order of 1500 units confirmed for next week. Same address.', category: 'Order', timestamp: 'Yesterday, 04:00 PM' },
+          { sender: 'Manish Tomar', phone: '+91 91000 55555', message: 'What is the scheme for next month? Any combo offer?', category: 'Inquiry', timestamp: 'Yesterday, 02:30 PM' },
+        ]
+      },
+      {
+        id: 'g3',
+        name: 'Gujarat Wholesalers Group',
+        avatar: 'assets/icons/group-avatar-indigo.svg',
+        messages: [
+          { sender: 'Hitesh Modi', phone: '+91 88001 77002', message: 'Rate revision effective 1st May. Please share updated price list.', category: 'Inquiry', timestamp: 'Today, 01:00 PM' },
+          { sender: 'Sunita Bhatt', phone: '+91 91111 33333', message: 'Truck loaded, ETA Ahmedabad warehouse 6 PM today.', category: 'Delivery', timestamp: 'Today, 12:30 PM' },
+          { sender: 'Arun Chandra', phone: '+91 98001 45678', message: 'RTGS of ₹2,40,000 sent. Ref: SBIN00332211. Please acknowledge.', category: 'Payment', timestamp: 'Today, 11:45 AM' },
+          { sender: 'Ramesh Verma', phone: '+91 84444 66666', message: 'Item #SKU-107 out of stock? We need 600 units urgently for a client.', category: 'Order', timestamp: 'Today, 11:00 AM' },
+          { sender: 'Deepak Shah', phone: '+91 76543 21098', message: 'Wrong product delivered — sent SKU-44 instead of SKU-48. Urgent.', category: 'Complaint', timestamp: 'Today, 10:20 AM' },
+          { sender: 'T. Srinivasan', phone: '+91 79000 56789', message: 'Looking to distribute in Surat and Vadodara. Interested in tie-up.', category: 'Inquiry', timestamp: 'Today, 09:50 AM' },
+          { sender: 'Geeta Sharma', phone: '+91 97777 44444', message: 'Need revised delivery schedule — monsoon affecting routes.', category: 'Delivery', timestamp: 'Today, 09:00 AM' },
+          { sender: 'Omkar Desai', phone: '+91 99100 22300', message: 'Placing repeat order — 2500 units same as last month.', category: 'Order', timestamp: 'Yesterday, 07:10 PM' },
+          { sender: 'Anand Bhatt', phone: '+91 95000 11223', message: 'Invoice #5501 payment pending from our side. Will clear by Friday.', category: 'Payment', timestamp: 'Yesterday, 06:00 PM' },
+          { sender: 'Ratan Singh', phone: '+91 77001 88002', message: 'New store opening in Rajkot — need stocking of 5000 mixed units.', category: 'Order', timestamp: 'Yesterday, 01:30 PM' },
+        ]
+      },
+      {
+        id: 'g4',
+        name: 'Delhi FMCG Traders',
+        avatar: 'assets/icons/group-avatar-olive.svg',
+        messages: [
+          { sender: 'Neha Tiwari', phone: '+91 96543 21000', message: 'Stock urgently needed for Connaught Place outlet — shelves empty.', category: 'Order', timestamp: 'Today, 12:45 PM' },
+          { sender: 'Vijay Patil', phone: '+91 78111 99000', message: 'Blocked payment from Feb still unresolved. Escalating.', category: 'Complaint', timestamp: 'Today, 12:00 PM' },
+          { sender: 'Tarun Malhotra', phone: '+91 86789 01234', message: 'Looking for co-marketing opportunity — shelf space in exchange for margin.', category: 'Inquiry', timestamp: 'Today, 11:15 AM' },
+          { sender: 'Sanjay Yadav', phone: '+91 83456 78901', message: 'UPI payment ₹95,000 done. UTR 441233556677.', category: 'Payment', timestamp: 'Today, 09:55 AM' },
+          { sender: 'Arjun Pillai', phone: '+91 94321 09876', message: 'Want zone-exclusive deal for South Delhi. Can we discuss?', category: 'Inquiry', timestamp: 'Today, 09:10 AM' },
+          { sender: 'Priya Shah', phone: '+91 91234 56789', message: 'Order #7721 short-delivered by 150 units. Need credit note.', category: 'Complaint', timestamp: 'Yesterday, 07:30 PM' },
+          { sender: 'Rahul Joshi', phone: '+91 91500 67890', message: 'Driver called — says road blocked. Can delivery be rescheduled to 5 PM?', category: 'Delivery', timestamp: 'Yesterday, 05:45 PM' },
+          { sender: 'Anita Kapoor', phone: '+91 82222 55555', message: 'Confirm: 3000 units, Vasant Kunj depot, delivery by 6 May.', category: 'Order', timestamp: 'Yesterday, 04:00 PM' },
+          { sender: 'Rohit Sharma', phone: '+91 99001 23456', message: 'New product launch — what is the landing cost for Delhi market?', category: 'Inquiry', timestamp: 'Yesterday, 02:15 PM' },
+          { sender: 'Geeta Sharma', phone: '+91 97777 44444', message: 'Transferred ₹1,80,000. Two invoices — #6610 and #6611.', category: 'Payment', timestamp: 'Yesterday, 12:30 PM' },
+        ]
+      },
+      {
+        id: 'g5',
+        name: 'Bangalore Tech Suppliers',
+        avatar: 'assets/icons/group-avatar-teal.svg',
+        messages: [
+          { sender: 'Arun Chandra', phone: '+91 98001 45678', message: 'API integration for auto-PO raising — can Zotok support this?', category: 'Inquiry', timestamp: 'Today, 01:20 PM' },
+          { sender: 'Sumit Jain', phone: '+91 92222 33444', message: 'Order #B9901 confirmed — 1200 units, ship to Electronic City warehouse.', category: 'Order', timestamp: 'Today, 12:50 PM' },
+          { sender: 'Omkar Desai', phone: '+91 99100 22300', message: 'Packaging damaged in transit — 60 units affected. Need replacement ASAP.', category: 'Complaint', timestamp: 'Today, 12:00 PM' },
+          { sender: 'Prasad Kulkarni', phone: '+91 85432 10987', message: 'Payment via wire — USD 12,000. Ref HDFC22-BR-0091.', category: 'Payment', timestamp: 'Today, 11:10 AM' },
+          { sender: 'Kavya Rao', phone: '+91 95678 12345', message: 'Need next-day delivery SLA for this quarter. Is that feasible?', category: 'Delivery', timestamp: 'Today, 10:30 AM' },
+          { sender: 'Hitesh Modi', phone: '+91 88001 77002', message: 'Can you supply components with RoHS compliance certification?', category: 'Inquiry', timestamp: 'Today, 09:45 AM' },
+          { sender: 'Anand Bhatt', phone: '+91 95000 11223', message: 'Bulk order of 10,000 units for a government tender. Pricing?', category: 'Inquiry', timestamp: 'Today, 09:00 AM' },
+          { sender: 'Rekha Iyer', phone: '+91 78990 11223', message: 'Last delivery missed ETA by 3 days — SLA breach. Requesting penalty waiver.', category: 'Complaint', timestamp: 'Yesterday, 07:00 PM' },
+          { sender: 'Farhan Sheikh', phone: '+91 80000 12345', message: 'Shipment stuck at customs. Please share HS code for the consignment.', category: 'Delivery', timestamp: 'Yesterday, 05:30 PM' },
+          { sender: 'Karan Malviya', phone: '+91 93010 20030', message: 'Order revision — adding 300 units to PO #B9850 before cut-off.', category: 'Order', timestamp: 'Yesterday, 04:00 PM' },
+        ]
+      },
+      {
+        id: 'g6',
+        name: 'Rajasthan Agri Traders',
+        avatar: 'assets/icons/group-avatar-violet.svg',
+        messages: [
+          { sender: 'Ramesh Verma', phone: '+91 84444 66666', message: 'Pre-sowing season starting — need fertiliser stock confirmed by 8 May.', category: 'Order', timestamp: 'Today, 11:55 AM' },
+          { sender: 'Dinesh Kumar', phone: '+91 77889 90011', message: 'Rain affected last delivery route. Goods arrived 4 days late.', category: 'Complaint', timestamp: 'Today, 11:10 AM' },
+          { sender: 'Nirmala Devi', phone: '+91 99234 56780', message: 'Government subsidy scheme — can we get lower price for BPL list farmers?', category: 'Inquiry', timestamp: 'Today, 10:20 AM' },
+          { sender: 'Geeta Sharma', phone: '+91 97777 44444', message: 'Bank draft of ₹85,000 couriered. Should reach you by tomorrow.', category: 'Payment', timestamp: 'Today, 09:30 AM' },
+          { sender: 'Omkar Desai', phone: '+91 99100 22300', message: 'Seed quality complaint — germination rate below 80%. Need replacement.', category: 'Complaint', timestamp: 'Yesterday, 05:00 PM' },
+          { sender: 'Anand Bhatt', phone: '+91 95000 11223', message: 'Ordering 500 bags of DAP fertiliser. Confirm price before I proceed.', category: 'Order', timestamp: 'Yesterday, 03:30 PM' },
+          { sender: 'Hitesh Modi', phone: '+91 88001 77002', message: 'Payment of ₹1,10,000 done via IMPS. Ref: AXIS-2290-BPL.', category: 'Payment', timestamp: 'Yesterday, 01:45 PM' },
+          { sender: 'Pooja Mehta', phone: '+91 87001 23400', message: 'Route map needed for deliveries to 5 villages near Barmer.', category: 'Delivery', timestamp: 'Yesterday, 11:00 AM' },
+          { sender: 'Tarun Malhotra', phone: '+91 86789 01234', message: 'Pesticide label not in Hindi — regulatory requirement. Please fix.', category: 'Complaint', timestamp: 'Yesterday, 09:00 AM' },
+          { sender: 'Sumit Jain', phone: '+91 92222 33444', message: 'Opening new agri-store in Bikaner. Need full stocking list.', category: 'Order', timestamp: '29 Apr, 06:00 PM' },
+        ]
+      },
+      {
+        id: 'g7',
+        name: 'Hyderabad Pharma Distributors',
+        avatar: 'assets/icons/group-avatar-red.svg',
+        messages: [
+          { sender: 'T. Srinivasan', phone: '+91 79000 56789', message: 'Cold chain breach reported at depot. Vaccines possibly compromised.', category: 'Complaint', timestamp: 'Today, 12:10 PM' },
+          { sender: 'Lata Krishna', phone: '+91 83001 45600', message: 'Order for 10,000 strips of Metformin 500 — schedule H compliance ensured.', category: 'Order', timestamp: 'Today, 11:30 AM' },
+          { sender: 'Anita Kapoor', phone: '+91 82222 55555', message: 'Drug license renewal pending — can shipments still proceed?', category: 'Inquiry', timestamp: 'Today, 10:40 AM' },
+          { sender: 'Prasad Kulkarni', phone: '+91 85432 10987', message: 'Payment ₹4,50,000 NEFT cleared. Invoice #PH-2290 and #PH-2291.', category: 'Payment', timestamp: 'Today, 09:55 AM' },
+          { sender: 'Farhan Sheikh', phone: '+91 80000 12345', message: 'Need ambient temp delivery for antibiotic batch — not refrigerated.', category: 'Delivery', timestamp: 'Today, 09:00 AM' },
+          { sender: 'Kavya Rao', phone: '+91 95678 12345', message: 'Expiry date on received batch is only 4 months out. Acceptable margin?', category: 'Complaint', timestamp: 'Yesterday, 06:30 PM' },
+          { sender: 'Sanjay Yadav', phone: '+91 83456 78901', message: 'Stock of Paracetamol 650 running critically low across 3 stores.', category: 'Order', timestamp: 'Yesterday, 04:45 PM' },
+          { sender: 'Vijay Patil', phone: '+91 78111 99000', message: 'MRP change on labels — need re-sticker for 800 units already in warehouse.', category: 'Complaint', timestamp: 'Yesterday, 03:00 PM' },
+          { sender: 'Geeta Patil', phone: '+91 90011 22033', message: 'Drug Inspector visit scheduled next week — need all invoices in order.', category: 'Inquiry', timestamp: 'Yesterday, 01:20 PM' },
+          { sender: 'Rohit Sharma', phone: '+91 99001 23456', message: 'Temperature log for last cold chain shipment please — for audit.', category: 'Delivery', timestamp: 'Yesterday, 11:00 AM' },
+        ]
+      },
+    ];
 
-<script src="scripts/sidebar.js"></script>
-<script src="scripts/app.js"></script>
-<script>
-  // ── Demo groups data ───────────────────────────────────────────────────────
-  const GROUPS = [
-    {
-      id: 'g1',
-      name: 'Mumbai Distributors Network',
-      avatar: 'assets/icons/group-avatar-maroon.svg',
-      messages: [
-        { sender:'Raj Gupta',       phone:'+91 98765 43210', message:'Need 2000 units of SKU-44 by Friday. Please confirm availability.',      category:'Order',     timestamp:'Today, 11:50 AM' },
-        { sender:'Amit Verma',      phone:'+91 88001 22003', message:'What is the current bulk rate for orders above 5000 units?',               category:'Inquiry',   timestamp:'Today, 11:30 AM' },
-        { sender:'Suresh Patel',    phone:'+91 97531 86420', message:'Payment done for invoice #4421. Please check and confirm receipt.',        category:'Payment',   timestamp:'Today, 10:55 AM' },
-        { sender:'Priya Shah',      phone:'+91 91234 56789', message:'Delivery from last week still pending. Driver not picking calls.',         category:'Complaint', timestamp:'Today, 10:20 AM' },
-        { sender:'Nikhil Joshi',    phone:'+91 93333 44444', message:'Can we get GST invoice split into two for this order?',                    category:'Inquiry',   timestamp:'Today, 09:45 AM' },
-        { sender:'Anita Kapoor',    phone:'+91 82222 55555', message:'Interested in exclusive distribution rights for Navi Mumbai zone.',        category:'Inquiry',   timestamp:'Today, 09:10 AM' },
-        { sender:'Dinesh Kumar',    phone:'+91 77889 90011', message:'Shipment arrived damaged. 40 units need replacement. Raising complaint.',   category:'Complaint', timestamp:'Today, 08:50 AM' },
-        { sender:'Rohit Sharma',    phone:'+91 99001 23456', message:'Rate list for Q2 please. Previous one expired.',                           category:'Inquiry',   timestamp:'Today, 08:30 AM' },
-        { sender:'Vishal Mehta',    phone:'+91 90909 12345', message:'Can you extend credit period to 45 days? We are expanding.',               category:'Inquiry',   timestamp:'Yesterday, 06:40 PM' },
-        { sender:'Geeta Sharma',    phone:'+91 97777 44444', message:'Confirmed order for 3000 units. PO attached in DM.',                       category:'Order',     timestamp:'Yesterday, 05:15 PM' },
-      ]
-    },
-    {
-      id: 'g2',
-      name: 'Pune Retailers Chat',
-      avatar: 'assets/icons/group-avatar-green.svg',
-      messages: [
-        { sender:'Mohan Agarwal',   phone:'+91 99887 76655', message:'Festival season coming — need stock of top 10 SKUs ready by 10 Oct.',      category:'Order',     timestamp:'Today, 12:05 PM' },
-        { sender:'Rekha Iyer',      phone:'+91 78990 11223', message:'My store is in camp area. Can you add it to the delivery route?',           category:'Delivery',  timestamp:'Today, 11:40 AM' },
-        { sender:'Sumit Jain',      phone:'+91 92222 33444', message:'Last invoice had wrong GSTIN. Please reissue corrected copy.',               category:'Complaint', timestamp:'Today, 11:00 AM' },
-        { sender:'Nirmala Devi',    phone:'+91 99234 56780', message:'Can I place a trial order of 100 units with 30-day return window?',         category:'Inquiry',   timestamp:'Today, 10:15 AM' },
-        { sender:'Sanjay Yadav',    phone:'+91 83456 78901', message:'Paid ₹68,000 via UPI. Screenshot in DM. Please update ledger.',             category:'Payment',   timestamp:'Today, 09:30 AM' },
-        { sender:'Arjun Pillai',    phone:'+91 94321 09876', message:'Please send someone to audit our shelf display. Sales dropped 20%.',        category:'Complaint', timestamp:'Today, 09:00 AM' },
-        { sender:'Neha Tiwari',     phone:'+91 96543 21000', message:'Want to add 3 new SKUs to my regular order. Can you share the catalogue?',  category:'Inquiry',   timestamp:'Yesterday, 07:00 PM' },
-        { sender:'Tarun Malhotra',  phone:'+91 86789 01234', message:'Delivery time keeps slipping from 2 days to 5. Please fix this.',           category:'Complaint', timestamp:'Yesterday, 05:45 PM' },
-        { sender:'Prasad Kulkarni', phone:'+91 85432 10987', message:'Bulk order of 1500 units confirmed for next week. Same address.',            category:'Order',     timestamp:'Yesterday, 04:00 PM' },
-        { sender:'Manish Tomar',    phone:'+91 91000 55555', message:'What is the scheme for next month? Any combo offer?',                        category:'Inquiry',   timestamp:'Yesterday, 02:30 PM' },
-      ]
-    },
-    {
-      id: 'g3',
-      name: 'Gujarat Wholesalers Group',
-      avatar: 'assets/icons/group-avatar-indigo.svg',
-      messages: [
-        { sender:'Hitesh Modi',     phone:'+91 88001 77002', message:'Rate revision effective 1st May. Please share updated price list.',          category:'Inquiry',   timestamp:'Today, 01:00 PM' },
-        { sender:'Sunita Bhatt',    phone:'+91 91111 33333', message:'Truck loaded, ETA Ahmedabad warehouse 6 PM today.',                         category:'Delivery',  timestamp:'Today, 12:30 PM' },
-        { sender:'Arun Chandra',    phone:'+91 98001 45678', message:'RTGS of ₹2,40,000 sent. Ref: SBIN00332211. Please acknowledge.',             category:'Payment',   timestamp:'Today, 11:45 AM' },
-        { sender:'Ramesh Verma',    phone:'+91 84444 66666', message:'Item #SKU-107 out of stock? We need 600 units urgently for a client.',       category:'Order',     timestamp:'Today, 11:00 AM' },
-        { sender:'Deepak Shah',     phone:'+91 76543 21098', message:'Wrong product delivered — sent SKU-44 instead of SKU-48. Urgent.',          category:'Complaint', timestamp:'Today, 10:20 AM' },
-        { sender:'T. Srinivasan',   phone:'+91 79000 56789', message:'Looking to distribute in Surat and Vadodara. Interested in tie-up.',        category:'Inquiry',   timestamp:'Today, 09:50 AM' },
-        { sender:'Geeta Sharma',    phone:'+91 97777 44444', message:'Need revised delivery schedule — monsoon affecting routes.',                 category:'Delivery',  timestamp:'Today, 09:00 AM' },
-        { sender:'Omkar Desai',     phone:'+91 99100 22300', message:'Placing repeat order — 2500 units same as last month.',                     category:'Order',     timestamp:'Yesterday, 07:10 PM' },
-        { sender:'Anand Bhatt',     phone:'+91 95000 11223', message:'Invoice #5501 payment pending from our side. Will clear by Friday.',        category:'Payment',   timestamp:'Yesterday, 06:00 PM' },
-        { sender:'Ratan Singh',     phone:'+91 77001 88002', message:'New store opening in Rajkot — need stocking of 5000 mixed units.',          category:'Order',     timestamp:'Yesterday, 01:30 PM' },
-      ]
-    },
-    {
-      id: 'g4',
-      name: 'Delhi FMCG Traders',
-      avatar: 'assets/icons/group-avatar-olive.svg',
-      messages: [
-        { sender:'Neha Tiwari',     phone:'+91 96543 21000', message:'Stock urgently needed for Connaught Place outlet — shelves empty.',         category:'Order',     timestamp:'Today, 12:45 PM' },
-        { sender:'Vijay Patil',     phone:'+91 78111 99000', message:'Blocked payment from Feb still unresolved. Escalating.',                    category:'Complaint', timestamp:'Today, 12:00 PM' },
-        { sender:'Tarun Malhotra',  phone:'+91 86789 01234', message:'Looking for co-marketing opportunity — shelf space in exchange for margin.',category:'Inquiry',   timestamp:'Today, 11:15 AM' },
-        { sender:'Sanjay Yadav',    phone:'+91 83456 78901', message:'UPI payment ₹95,000 done. UTR 441233556677.',                               category:'Payment',   timestamp:'Today, 09:55 AM' },
-        { sender:'Arjun Pillai',    phone:'+91 94321 09876', message:'Want zone-exclusive deal for South Delhi. Can we discuss?',                 category:'Inquiry',   timestamp:'Today, 09:10 AM' },
-        { sender:'Priya Shah',      phone:'+91 91234 56789', message:'Order #7721 short-delivered by 150 units. Need credit note.',               category:'Complaint', timestamp:'Yesterday, 07:30 PM' },
-        { sender:'Rahul Joshi',     phone:'+91 91500 67890', message:'Driver called — says road blocked. Can delivery be rescheduled to 5 PM?',   category:'Delivery',  timestamp:'Yesterday, 05:45 PM' },
-        { sender:'Anita Kapoor',    phone:'+91 82222 55555', message:'Confirm: 3000 units, Vasant Kunj depot, delivery by 6 May.',                category:'Order',     timestamp:'Yesterday, 04:00 PM' },
-        { sender:'Rohit Sharma',    phone:'+91 99001 23456', message:'New product launch — what is the landing cost for Delhi market?',            category:'Inquiry',   timestamp:'Yesterday, 02:15 PM' },
-        { sender:'Geeta Sharma',    phone:'+91 97777 44444', message:'Transferred ₹1,80,000. Two invoices — #6610 and #6611.',                    category:'Payment',   timestamp:'Yesterday, 12:30 PM' },
-      ]
-    },
-    {
-      id: 'g5',
-      name: 'Bangalore Tech Suppliers',
-      avatar: 'assets/icons/group-avatar-teal.svg',
-      messages: [
-        { sender:'Arun Chandra',    phone:'+91 98001 45678', message:'API integration for auto-PO raising — can Zotok support this?',             category:'Inquiry',   timestamp:'Today, 01:20 PM' },
-        { sender:'Sumit Jain',      phone:'+91 92222 33444', message:'Order #B9901 confirmed — 1200 units, ship to Electronic City warehouse.',    category:'Order',     timestamp:'Today, 12:50 PM' },
-        { sender:'Omkar Desai',     phone:'+91 99100 22300', message:'Packaging damaged in transit — 60 units affected. Need replacement ASAP.',  category:'Complaint', timestamp:'Today, 12:00 PM' },
-        { sender:'Prasad Kulkarni', phone:'+91 85432 10987', message:'Payment via wire — USD 12,000. Ref HDFC22-BR-0091.',                         category:'Payment',   timestamp:'Today, 11:10 AM' },
-        { sender:'Kavya Rao',       phone:'+91 95678 12345', message:'Need next-day delivery SLA for this quarter. Is that feasible?',             category:'Delivery',  timestamp:'Today, 10:30 AM' },
-        { sender:'Hitesh Modi',     phone:'+91 88001 77002', message:'Can you supply components with RoHS compliance certification?',              category:'Inquiry',   timestamp:'Today, 09:45 AM' },
-        { sender:'Anand Bhatt',     phone:'+91 95000 11223', message:'Bulk order of 10,000 units for a government tender. Pricing?',               category:'Inquiry',   timestamp:'Today, 09:00 AM' },
-        { sender:'Rekha Iyer',      phone:'+91 78990 11223', message:'Last delivery missed ETA by 3 days — SLA breach. Requesting penalty waiver.',category:'Complaint', timestamp:'Yesterday, 07:00 PM' },
-        { sender:'Farhan Sheikh',   phone:'+91 80000 12345', message:'Shipment stuck at customs. Please share HS code for the consignment.',       category:'Delivery',  timestamp:'Yesterday, 05:30 PM' },
-        { sender:'Karan Malviya',   phone:'+91 93010 20030', message:'Order revision — adding 300 units to PO #B9850 before cut-off.',            category:'Order',     timestamp:'Yesterday, 04:00 PM' },
-      ]
-    },
-    {
-      id: 'g6',
-      name: 'Rajasthan Agri Traders',
-      avatar: 'assets/icons/group-avatar-violet.svg',
-      messages: [
-        { sender:'Ramesh Verma',    phone:'+91 84444 66666', message:'Pre-sowing season starting — need fertiliser stock confirmed by 8 May.',    category:'Order',     timestamp:'Today, 11:55 AM' },
-        { sender:'Dinesh Kumar',    phone:'+91 77889 90011', message:'Rain affected last delivery route. Goods arrived 4 days late.',              category:'Complaint', timestamp:'Today, 11:10 AM' },
-        { sender:'Nirmala Devi',    phone:'+91 99234 56780', message:'Government subsidy scheme — can we get lower price for BPL list farmers?',  category:'Inquiry',   timestamp:'Today, 10:20 AM' },
-        { sender:'Geeta Sharma',    phone:'+91 97777 44444', message:'Bank draft of ₹85,000 couriered. Should reach you by tomorrow.',            category:'Payment',   timestamp:'Today, 09:30 AM' },
-        { sender:'Omkar Desai',     phone:'+91 99100 22300', message:'Seed quality complaint — germination rate below 80%. Need replacement.',    category:'Complaint', timestamp:'Yesterday, 05:00 PM' },
-        { sender:'Anand Bhatt',     phone:'+91 95000 11223', message:'Ordering 500 bags of DAP fertiliser. Confirm price before I proceed.',      category:'Order',     timestamp:'Yesterday, 03:30 PM' },
-        { sender:'Hitesh Modi',     phone:'+91 88001 77002', message:'Payment of ₹1,10,000 done via IMPS. Ref: AXIS-2290-BPL.',                   category:'Payment',   timestamp:'Yesterday, 01:45 PM' },
-        { sender:'Pooja Mehta',     phone:'+91 87001 23400', message:'Route map needed for deliveries to 5 villages near Barmer.',                category:'Delivery',  timestamp:'Yesterday, 11:00 AM' },
-        { sender:'Tarun Malhotra',  phone:'+91 86789 01234', message:'Pesticide label not in Hindi — regulatory requirement. Please fix.',        category:'Complaint', timestamp:'Yesterday, 09:00 AM' },
-        { sender:'Sumit Jain',      phone:'+91 92222 33444', message:'Opening new agri-store in Bikaner. Need full stocking list.',               category:'Order',     timestamp:'29 Apr, 06:00 PM' },
-      ]
-    },
-    {
-      id: 'g7',
-      name: 'Hyderabad Pharma Distributors',
-      avatar: 'assets/icons/group-avatar-red.svg',
-      messages: [
-        { sender:'T. Srinivasan',   phone:'+91 79000 56789', message:'Cold chain breach reported at depot. Vaccines possibly compromised.',        category:'Complaint', timestamp:'Today, 12:10 PM' },
-        { sender:'Lata Krishna',    phone:'+91 83001 45600', message:'Order for 10,000 strips of Metformin 500 — schedule H compliance ensured.',  category:'Order',     timestamp:'Today, 11:30 AM' },
-        { sender:'Anita Kapoor',    phone:'+91 82222 55555', message:'Drug license renewal pending — can shipments still proceed?',                category:'Inquiry',   timestamp:'Today, 10:40 AM' },
-        { sender:'Prasad Kulkarni', phone:'+91 85432 10987', message:'Payment ₹4,50,000 NEFT cleared. Invoice #PH-2290 and #PH-2291.',             category:'Payment',   timestamp:'Today, 09:55 AM' },
-        { sender:'Farhan Sheikh',   phone:'+91 80000 12345', message:'Need ambient temp delivery for antibiotic batch — not refrigerated.',        category:'Delivery',  timestamp:'Today, 09:00 AM' },
-        { sender:'Kavya Rao',       phone:'+91 95678 12345', message:'Expiry date on received batch is only 4 months out. Acceptable margin?',     category:'Complaint', timestamp:'Yesterday, 06:30 PM' },
-        { sender:'Sanjay Yadav',    phone:'+91 83456 78901', message:'Stock of Paracetamol 650 running critically low across 3 stores.',           category:'Order',     timestamp:'Yesterday, 04:45 PM' },
-        { sender:'Vijay Patil',     phone:'+91 78111 99000', message:'MRP change on labels — need re-sticker for 800 units already in warehouse.', category:'Complaint', timestamp:'Yesterday, 03:00 PM' },
-        { sender:'Geeta Patil',     phone:'+91 90011 22033', message:'Drug Inspector visit scheduled next week — need all invoices in order.',     category:'Inquiry',   timestamp:'Yesterday, 01:20 PM' },
-        { sender:'Rohit Sharma',    phone:'+91 99001 23456', message:'Temperature log for last cold chain shipment please — for audit.',           category:'Delivery',  timestamp:'Yesterday, 11:00 AM' },
-      ]
-    },
-  ];
+    // Flatten all messages with groupName attached
+    const ALL_ROWS = [];
+    GROUPS.forEach(g => g.messages.forEach(m => ALL_ROWS.push({ ...m, groupName: g.name, groupAvatar: g.avatar })));
 
-  // Flatten all messages with groupName attached
-  const ALL_ROWS = [];
-  GROUPS.forEach(g => g.messages.forEach(m => ALL_ROWS.push({ ...m, groupName: g.name, groupAvatar: g.avatar })));
+    // ── Default columns ────────────────────────────────────────────────────────
+    const DEFAULT_COLUMNS = [
+      { id: 1, name: 'Group Name' },
+      { id: 2, name: 'Sender Name' },
+      { id: 3, name: 'Phone Number' },
+      { id: 4, name: 'Message' },
+      { id: 5, name: 'Timestamp' },
+      { id: 6, name: 'Category' },
+    ];
 
-  // ── Default columns ────────────────────────────────────────────────────────
-  const DEFAULT_COLUMNS = [
-    { id: 1, name: 'Group Name' },
-    { id: 2, name: 'Sender Name' },
-    { id: 3, name: 'Phone Number' },
-    { id: 4, name: 'Message' },
-    { id: 5, name: 'Timestamp' },
-    { id: 6, name: 'Category' },
-  ];
+    // ── Attendance data (custom sheet) ─────────────────────────────────────────
+    const ATTENDANCE_ROWS = [
+      { employee_name: 'Rahul Kumar', department: 'Sales', date: '8 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:47 AM', delay: '47', remarks: 'Traffic delay' },
+      { employee_name: 'Priya Sharma', department: 'Finance', date: '8 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:32 AM', delay: '32', remarks: 'Doctor visit' },
+      { employee_name: 'Amit Verma', department: 'Operations', date: '8 May 2026', scheduled_time: '09:00 AM', arrival_time: '10:15 AM', delay: '75', remarks: 'Train delay' },
+      { employee_name: 'Sunita Patil', department: 'HR', date: '8 May 2026', scheduled_time: '09:30 AM', arrival_time: '10:05 AM', delay: '35', remarks: 'Personal reason' },
+      { employee_name: 'Deepak Singh', department: 'Warehouse', date: '8 May 2026', scheduled_time: '08:00 AM', arrival_time: '08:52 AM', delay: '52', remarks: 'Bus breakdown' },
+      { employee_name: 'Kavita Nair', department: 'Sales', date: '7 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:22 AM', delay: '22', remarks: 'Overslept' },
+      { employee_name: 'Vikram Rao', department: 'Delivery', date: '7 May 2026', scheduled_time: '07:30 AM', arrival_time: '08:10 AM', delay: '40', remarks: 'Road work' },
+      { employee_name: 'Meena Joshi', department: 'Finance', date: '7 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:55 AM', delay: '55', remarks: 'Child sick' },
+      { employee_name: 'Sanjay Tiwari', department: 'Operations', date: '7 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:18 AM', delay: '18', remarks: 'Minor delay' },
+      { employee_name: 'Lakshmi Reddy', department: 'Warehouse', date: '7 May 2026', scheduled_time: '08:00 AM', arrival_time: '09:30 AM', delay: '90', remarks: 'Flat tyre' },
+      { employee_name: 'Arjun Mehta', department: 'Sales', date: '6 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:45 AM', delay: '45', remarks: 'Power outage' },
+      { employee_name: 'Divya Kapoor', department: 'HR', date: '6 May 2026', scheduled_time: '09:30 AM', arrival_time: '10:12 AM', delay: '42', remarks: 'Traffic jam' },
+      { employee_name: 'Suresh Pillai', department: 'Delivery', date: '6 May 2026', scheduled_time: '07:30 AM', arrival_time: '08:05 AM', delay: '35', remarks: 'Rain' },
+      { employee_name: 'Asha Iyer', department: 'Operations', date: '6 May 2026', scheduled_time: '09:00 AM', arrival_time: '09:28 AM', delay: '28', remarks: 'Personal' },
+      { employee_name: 'Kiran Bhat', department: 'Warehouse', date: '6 May 2026', scheduled_time: '08:00 AM', arrival_time: '09:00 AM', delay: '60', remarks: 'Vehicle issue' },
+    ];
 
-  // ── Attendance data (custom sheet) ─────────────────────────────────────────
-  const ATTENDANCE_ROWS = [
-    { employee_name:'Rahul Kumar',    department:'Sales',      date:'8 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:47 AM', delay:'47', remarks:'Traffic delay' },
-    { employee_name:'Priya Sharma',   department:'Finance',    date:'8 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:32 AM', delay:'32', remarks:'Doctor visit' },
-    { employee_name:'Amit Verma',     department:'Operations', date:'8 May 2026', scheduled_time:'09:00 AM', arrival_time:'10:15 AM', delay:'75', remarks:'Train delay' },
-    { employee_name:'Sunita Patil',   department:'HR',         date:'8 May 2026', scheduled_time:'09:30 AM', arrival_time:'10:05 AM', delay:'35', remarks:'Personal reason' },
-    { employee_name:'Deepak Singh',   department:'Warehouse',  date:'8 May 2026', scheduled_time:'08:00 AM', arrival_time:'08:52 AM', delay:'52', remarks:'Bus breakdown' },
-    { employee_name:'Kavita Nair',    department:'Sales',      date:'7 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:22 AM', delay:'22', remarks:'Overslept' },
-    { employee_name:'Vikram Rao',     department:'Delivery',   date:'7 May 2026', scheduled_time:'07:30 AM', arrival_time:'08:10 AM', delay:'40', remarks:'Road work' },
-    { employee_name:'Meena Joshi',    department:'Finance',    date:'7 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:55 AM', delay:'55', remarks:'Child sick' },
-    { employee_name:'Sanjay Tiwari',  department:'Operations', date:'7 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:18 AM', delay:'18', remarks:'Minor delay' },
-    { employee_name:'Lakshmi Reddy',  department:'Warehouse',  date:'7 May 2026', scheduled_time:'08:00 AM', arrival_time:'09:30 AM', delay:'90', remarks:'Flat tyre' },
-    { employee_name:'Arjun Mehta',    department:'Sales',      date:'6 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:45 AM', delay:'45', remarks:'Power outage' },
-    { employee_name:'Divya Kapoor',   department:'HR',         date:'6 May 2026', scheduled_time:'09:30 AM', arrival_time:'10:12 AM', delay:'42', remarks:'Traffic jam' },
-    { employee_name:'Suresh Pillai',  department:'Delivery',   date:'6 May 2026', scheduled_time:'07:30 AM', arrival_time:'08:05 AM', delay:'35', remarks:'Rain' },
-    { employee_name:'Asha Iyer',      department:'Operations', date:'6 May 2026', scheduled_time:'09:00 AM', arrival_time:'09:28 AM', delay:'28', remarks:'Personal' },
-    { employee_name:'Kiran Bhat',     department:'Warehouse',  date:'6 May 2026', scheduled_time:'08:00 AM', arrival_time:'09:00 AM', delay:'60', remarks:'Vehicle issue' },
-  ];
+    // ── Demo sheets ────────────────────────────────────────────────────────────
+    const DEMO_SHEETS = [
+      {
+        id: 'demo1',
+        name: 'Group Messages 2026',
+        columns: DEFAULT_COLUMNS,
+        groupCount: 7,
+        groupNames: GROUPS.map(g => g.name),
+        subtitle: `${ALL_ROWS.length} rows syncing from all 7 groups`,
+      },
+      {
+        id: 'demo2',
+        name: 'Customer Issues',
+        columns: [
+          { id: 1, name: 'Group Name' },
+          { id: 2, name: 'Customer Name' },
+          { id: 3, name: 'Phone' },
+          { id: 4, name: 'Complaint' },
+          { id: 5, name: 'Timestamp' },
+        ],
+        groupCount: 7,
+        groupNames: GROUPS.map(g => g.name),
+        rows: ALL_ROWS.filter(r => r.category === 'Complaint'),
+      },
+      {
+        id: 'demo3',
+        name: 'Factory Issues',
+        columns: [
+          { id: 1, name: 'Group Name' },
+          { id: 2, name: 'Reported By' },
+          { id: 3, name: 'Phone' },
+          { id: 4, name: 'Issue' },
+          { id: 5, name: 'Issue Type' },
+          { id: 6, name: 'Timestamp' },
+        ],
+        groupCount: 5,
+        groupNames: ['Mumbai Distributors Network', 'Gujarat Wholesalers Group', 'Bangalore Tech Suppliers', 'Rajasthan Agri Traders', 'Hyderabad Pharma Distributors'],
+        rows: ALL_ROWS.filter(r => r.category === 'Complaint' || r.category === 'Order'),
+      },
+      {
+        id: 'demo4',
+        name: 'Product Price Update',
+        columns: [
+          { id: 1, name: 'Group Name' },
+          { id: 2, name: 'Contact Name' },
+          { id: 3, name: 'Phone' },
+          { id: 4, name: 'Enquiry Details' },
+          { id: 5, name: 'Timestamp' },
+        ],
+        groupCount: 7,
+        groupNames: GROUPS.map(g => g.name),
+        rows: ALL_ROWS.filter(r => r.category === 'Inquiry'),
+      },
+      {
+        id: 'demo5',
+        name: 'Late Attendance Marks',
+        columns: [
+          { id: 1, name: 'Employee Name' },
+          { id: 2, name: 'Department' },
+          { id: 3, name: 'Date' },
+          { id: 4, name: 'Scheduled Time' },
+          { id: 5, name: 'Arrival Time' },
+          { id: 6, name: 'Delay (mins)' },
+          { id: 7, name: 'Remarks' },
+        ],
+        groupCount: 0,
+        subtitle: `${ATTENDANCE_ROWS.length} records · HR & Operations`,
+        rows: ATTENDANCE_ROWS,
+      },
+    ];
 
-  // ── Demo sheets ────────────────────────────────────────────────────────────
-  const DEMO_SHEETS = [
-    {
-      id: 'demo1',
-      name: 'Group Messages 2026',
-      columns: DEFAULT_COLUMNS,
-      groupCount: 7,
-      groupNames: GROUPS.map(g => g.name),
-      subtitle: `${ALL_ROWS.length} rows syncing from all 7 groups`,
-    },
-    {
-      id: 'demo2',
-      name: 'Customer Issues',
-      columns: [
-        { id: 1, name: 'Group Name' },
-        { id: 2, name: 'Customer Name' },
-        { id: 3, name: 'Phone' },
-        { id: 4, name: 'Complaint' },
-        { id: 5, name: 'Timestamp' },
-      ],
-      groupCount: 7,
-      groupNames: GROUPS.map(g => g.name),
-      rows: ALL_ROWS.filter(r => r.category === 'Complaint'),
-    },
-    {
-      id: 'demo3',
-      name: 'Factory Issues',
-      columns: [
-        { id: 1, name: 'Group Name' },
-        { id: 2, name: 'Reported By' },
-        { id: 3, name: 'Phone' },
-        { id: 4, name: 'Issue' },
-        { id: 5, name: 'Issue Type' },
-        { id: 6, name: 'Timestamp' },
-      ],
-      groupCount: 5,
-      groupNames: ['Mumbai Distributors Network','Gujarat Wholesalers Group','Bangalore Tech Suppliers','Rajasthan Agri Traders','Hyderabad Pharma Distributors'],
-      rows: ALL_ROWS.filter(r => r.category === 'Complaint' || r.category === 'Order'),
-    },
-    {
-      id: 'demo4',
-      name: 'Product Price Update',
-      columns: [
-        { id: 1, name: 'Group Name' },
-        { id: 2, name: 'Contact Name' },
-        { id: 3, name: 'Phone' },
-        { id: 4, name: 'Enquiry Details' },
-        { id: 5, name: 'Timestamp' },
-      ],
-      groupCount: 7,
-      groupNames: GROUPS.map(g => g.name),
-      rows: ALL_ROWS.filter(r => r.category === 'Inquiry'),
-    },
-    {
-      id: 'demo5',
-      name: 'Late Attendance Marks',
-      columns: [
-        { id: 1, name: 'Employee Name' },
-        { id: 2, name: 'Department' },
-        { id: 3, name: 'Date' },
-        { id: 4, name: 'Scheduled Time' },
-        { id: 5, name: 'Arrival Time' },
-        { id: 6, name: 'Delay (mins)' },
-        { id: 7, name: 'Remarks' },
-      ],
-      groupCount: 0,
-      subtitle: `${ATTENDANCE_ROWS.length} records · HR & Operations`,
-      rows: ATTENDANCE_ROWS,
-    },
-  ];
+    // ── Load sheets from localStorage or use demo ──────────────────────────────
+    let sheets;
+    try {
+      const stored = JSON.parse(localStorage.getItem('zotok_sheets_list') || '[]');
+      sheets = stored.length ? [...DEMO_SHEETS, ...stored] : DEMO_SHEETS;
+    } catch (e) {
+      sheets = DEMO_SHEETS;
+    }
+    let activeSheetId = sheets[0].id;
 
-  // ── Load sheets from localStorage or use demo ──────────────────────────────
-  let sheets;
-  try {
-    const stored = JSON.parse(localStorage.getItem('zotok_sheets_list') || '[]');
-    sheets = stored.length ? [...DEMO_SHEETS, ...stored] : DEMO_SHEETS;
-  } catch(e) {
-    sheets = DEMO_SHEETS;
-  }
-  let activeSheetId = sheets[0].id;
+    // ── Column helpers ─────────────────────────────────────────────────────────
+    const BADGE = {
+      Order: 'gts-badge--order',
+      Inquiry: 'gts-badge--inquiry',
+      Complaint: 'gts-badge--complaint',
+      Payment: 'gts-badge--payment',
+      Delivery: 'gts-badge--delivery',
+    };
 
-  // ── Column helpers ─────────────────────────────────────────────────────────
-  const BADGE = {
-    Order:     'gts-badge--order',
-    Inquiry:   'gts-badge--inquiry',
-    Complaint: 'gts-badge--complaint',
-    Payment:   'gts-badge--payment',
-    Delivery:  'gts-badge--delivery',
-  };
-
-  function colClass(name) {
-    const n = name.toLowerCase();
-    if (n.includes('message') || n.includes('msg') || n.includes('text') || n.includes('content') ||
+    function colClass(name) {
+      const n = name.toLowerCase();
+      if (n.includes('message') || n.includes('msg') || n.includes('text') || n.includes('content') ||
         (n.includes('issue') && !n.includes('type')) || n.includes('complaint') ||
         n.includes('description') || n.includes('enquiry') || n.includes('details') ||
-        n.includes('update') || n.includes('remarks'))                                                return 'gts-cell--msg';
-    if (n.includes('group'))                                                                           return 'gts-cell--group';
-    if (n.includes('sender') || n.includes('reported') || n.includes('customer') ||
+        n.includes('update') || n.includes('remarks')) return 'gts-cell--msg';
+      if (n.includes('group')) return 'gts-cell--group';
+      if (n.includes('sender') || n.includes('reported') || n.includes('customer') ||
         n.includes('employee') || (n.includes('name') && !n.includes('group') && !n.includes('column') && !n.includes('sheet')))
-                                                                                                       return 'gts-cell--sender';
-    if (n.includes('phone') || n.includes('mobile') || n.includes('contact') || n.includes('number')) return 'gts-cell--phone';
-    if (n.includes('time') || n.includes('date') || n.includes('stamp'))                              return 'gts-cell--time';
-    if (n.includes('cat') || n.includes('type') || n.includes('label') || n.includes('kind'))         return 'gts-cell--cat';
-    return 'gts-cell--other';
-  }
+        return 'gts-cell--sender';
+      if (n.includes('phone') || n.includes('mobile') || n.includes('contact') || n.includes('number')) return 'gts-cell--phone';
+      if (n.includes('time') || n.includes('date') || n.includes('stamp')) return 'gts-cell--time';
+      if (n.includes('cat') || n.includes('type') || n.includes('label') || n.includes('kind')) return 'gts-cell--cat';
+      return 'gts-cell--other';
+    }
 
-  function colValue(name, row) {
-    const n = name.toLowerCase();
-    // Generic key for custom rows (no groupAvatar = attendance/custom data)
-    const genericKey = n.replace(/\s*\(.*?\)\s*/g, '').trim().replace(/\s+/g, '_');
-    if (!row.groupAvatar && row[genericKey] !== undefined)
-      return `<span class="gts-clip">${row[genericKey]}</span>`;
+    function colValue(name, row) {
+      const n = name.toLowerCase();
+      // Generic key for custom rows (no groupAvatar = attendance/custom data)
+      const genericKey = n.replace(/\s*\(.*?\)\s*/g, '').trim().replace(/\s+/g, '_');
+      if (!row.groupAvatar && row[genericKey] !== undefined)
+        return `<span class="gts-clip">${row[genericKey]}</span>`;
 
-    // Standard message row mappings
-    if (n.includes('group') && row.groupName)
-      return `<div class="gts-group-cell"><div class="gts-avatar"><img src="${row.groupAvatar}" alt=""></div><span>${row.groupName}</span></div>`;
-    if (n.includes('phone') || n.includes('mobile') || (n.includes('contact') && n.includes('number')))
-      return row.phone || '—';
-    if (n.includes('message') || n.includes('msg') || n.includes('text') || n.includes('content') ||
+      // Standard message row mappings
+      if (n.includes('group') && row.groupName)
+        return `<div class="gts-group-cell"><div class="gts-avatar"><img src="${row.groupAvatar}" alt=""></div><span>${row.groupName}</span></div>`;
+      if (n.includes('phone') || n.includes('mobile') || (n.includes('contact') && n.includes('number')))
+        return row.phone || '—';
+      if (n.includes('message') || n.includes('msg') || n.includes('text') || n.includes('content') ||
         (n.includes('issue') && !n.includes('type')) || n.includes('complaint') ||
         n.includes('description') || n.includes('enquiry') || n.includes('details') || n.includes('update'))
-      return row.message ? `<span class="gts-clip">${row.message}</span>` : '—';
-    if (n.includes('sender') || n.includes('reported') || n.includes('customer') ||
+        return row.message ? `<span class="gts-clip">${row.message}</span>` : '—';
+      if (n.includes('sender') || n.includes('reported') || n.includes('customer') ||
         (n.includes('name') && !n.includes('group') && !n.includes('column') && !n.includes('sheet')))
-      return row.sender ? `<span class="gts-clip">${row.sender}</span>` : '—';
-    if (n.includes('time') || n.includes('date') || n.includes('stamp'))
-      return row.timestamp || '—';
-    if (n.includes('cat') || n.includes('type') || n.includes('label') || n.includes('kind'))
-      return row.category ? `<span class="gts-badge ${BADGE[row.category] || ''}">${row.category}</span>` : '—';
+        return row.sender ? `<span class="gts-clip">${row.sender}</span>` : '—';
+      if (n.includes('time') || n.includes('date') || n.includes('stamp'))
+        return row.timestamp || '—';
+      if (n.includes('cat') || n.includes('type') || n.includes('label') || n.includes('kind'))
+        return row.category ? `<span class="gts-badge ${BADGE[row.category] || ''}">${row.category}</span>` : '—';
 
-    // Generic fallback
-    if (row[genericKey] !== undefined) return `<span class="gts-clip">${row[genericKey]}</span>`;
-    return '—';
-  }
+      // Generic fallback
+      if (row[genericKey] !== undefined) return `<span class="gts-clip">${row[genericKey]}</span>`;
+      return '—';
+    }
 
-  // ── Render left panel ──────────────────────────────────────────────────────
-  function renderList() {
-    const listEl = document.getElementById('gts-list');
-    listEl.innerHTML = sheets.map(s => `
+    // ── Render left panel ──────────────────────────────────────────────────────
+    function renderList() {
+      const listEl = document.getElementById('gts-list');
+      listEl.innerHTML = sheets.map(s => `
       <div class="gts-item${s.id === activeSheetId ? ' active' : ''}" data-sid="${s.id}">
         <img class="gts-item-icon" src="assets/icons/icon-spreadsheet.svg" alt="">
         <div class="gts-item-text">
@@ -349,42 +356,42 @@
         </div>
       </div>`).join('');
 
-    listEl.querySelectorAll('.gts-item').forEach(item => {
-      item.addEventListener('click', () => {
-        activeSheetId = item.dataset.sid;
-        listEl.querySelectorAll('.gts-item').forEach(i =>
-          i.classList.toggle('active', i.dataset.sid === activeSheetId));
-        renderCard();
+      listEl.querySelectorAll('.gts-item').forEach(item => {
+        item.addEventListener('click', () => {
+          activeSheetId = item.dataset.sid;
+          listEl.querySelectorAll('.gts-item').forEach(i =>
+            i.classList.toggle('active', i.dataset.sid === activeSheetId));
+          renderCard();
+        });
       });
-    });
-  }
+    }
 
-  // ── Render right card ──────────────────────────────────────────────────────
-  function renderCard() {
-    const sheet = sheets.find(s => s.id === activeSheetId);
-    const card  = document.getElementById('gts-card');
-    if (!sheet) return;
+    // ── Render right card ──────────────────────────────────────────────────────
+    function renderCard() {
+      const sheet = sheets.find(s => s.id === activeSheetId);
+      const card = document.getElementById('gts-card');
+      if (!sheet) return;
 
-    const cols = sheet.columns && sheet.columns.length ? sheet.columns : DEFAULT_COLUMNS;
-    const rows = sheet.rows || ALL_ROWS;
+      const cols = sheet.columns && sheet.columns.length ? sheet.columns : DEFAULT_COLUMNS;
+      const rows = sheet.rows || ALL_ROWS;
 
-    const subtitle = sheet.subtitle || (() => {
-      const names = sheet.groupNames && sheet.groupNames.length ? sheet.groupNames : [];
-      const label = !names.length
-        ? `${sheet.groupCount} group${sheet.groupCount !== 1 ? 's' : ''}`
-        : names.length <= 2 ? names.join(', ')
-        : `${names.slice(0, 2).join(', ')} +${names.length - 2} more`;
-      return `${rows.length} rows syncing from ${label}`;
-    })();
+      const subtitle = sheet.subtitle || (() => {
+        const names = sheet.groupNames && sheet.groupNames.length ? sheet.groupNames : [];
+        const label = !names.length
+          ? `${sheet.groupCount} group${sheet.groupCount !== 1 ? 's' : ''}`
+          : names.length <= 2 ? names.join(', ')
+            : `${names.slice(0, 2).join(', ')} +${names.length - 2} more`;
+        return `${rows.length} rows syncing from ${label}`;
+      })();
 
-    card.innerHTML = `
+      card.innerHTML = `
       <div class="gts-card-head">
         <div>
           <div class="gts-card-title">${sheet.name}</div>
           <div class="gts-card-sub">${subtitle}</div>
         </div>
         <div class="gts-card-actions">
-          <button class="gts-btn">
+          <button class="btn btn-sm btn-secondary">
             <img src="assets/icons/icon-download.svg" alt="">
             Export
           </button>
@@ -399,11 +406,12 @@
             ${cols.map(c => `<div class="gts-cell ${colClass(c.name)}">${colValue(c.name, row)}</div>`).join('')}
           </div>`).join('')}
       </div>`;
-  }
+    }
 
-  // ── Init ───────────────────────────────────────────────────────────────────
-  renderList();
-  renderCard();
-</script>
+    // ── Init ───────────────────────────────────────────────────────────────────
+    renderList();
+    renderCard();
+  </script>
 </body>
+
 </html>

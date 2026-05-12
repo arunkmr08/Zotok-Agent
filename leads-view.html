@@ -1,421 +1,467 @@
 <!doctype html>
 <html lang="en" data-loading>
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Leads — Group Sense</title>
-<link rel="stylesheet" href="styles/main.css">
-<link rel="stylesheet" href="styles/dark.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Leads — Group Sense</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/dark.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body data-page="leads-view">
 
-<div class="app">
-  <div id="sidebar-host"></div>
+  <div class="app">
+    <div id="sidebar-host"></div>
 
-  <main class="main nlv-main">
+    <main class="main nlv-main">
 
-    <!-- Top bar -->
-    <div class="nlv-topbar">
-      <div class="nlv-topbar-icon">
-        <img src="assets/icons/icon-user.svg" width="20" height="20" alt="">
-      </div>
-      <span class="nlv-topbar-title">New Leads</span>
-    </div>
-
-    <!-- Body -->
-    <div class="nlv-body">
-      <div class="nlv-card">
-
-        <!-- Card header -->
-        <div class="nlv-card-head">
-          <div class="nlv-head-left">
-            <div class="nlv-date-row" id="nlv-date-row">
-              <div class="nlv-date-trigger" id="nlv-date-trigger">
-                <span class="nlv-date-title" id="nlv-date-title">Today</span>
-                <img class="nlv-date-chevron" src="assets/icons/icon-chevron-down.svg" width="16" height="16" alt="">
-              </div>
-            </div>
-            <div class="nlv-date-dropdown" id="nlv-date-dropdown"></div>
-            <span class="nlv-count-sub" id="nlv-count-sub">0 New Leads</span>
-          </div>
-          <div class="nlv-head-right">
-            <div class="nlv-search">
-              <img src="assets/icons/icon-search-alt.svg" width="18" height="18" alt="">
-              <input id="nlv-search" class="nlv-search-input" type="search" placeholder="Search Customer">
-            </div>
-            <button class="nlv-tool-btn" type="button">
-              <img src="assets/icons/icon-export.svg" width="18" height="18" alt="">
-              Filters
-            </button>
-            <button class="nlv-tool-btn" type="button">
-              <img src="assets/icons/icon-download.svg" width="18" height="18" alt="">
-              Export
-            </button>
-          </div>
+      <!-- Top bar -->
+      <div class="nlv-topbar">
+        <div class="nlv-topbar-icon">
+          <img src="assets/icons/icon-user.svg" width="20" height="20" alt="">
         </div>
+        <span class="nlv-topbar-title">New Leads</span>
+      </div>
 
-        <!-- Selection bar -->
-        <div class="nlv-selection-bar" id="nlv-selection-bar">
-          <span class="nlv-selection-count" id="nlv-selection-count"></span>
-          <button class="nlv-selection-atc" id="nlv-bulk-atc" type="button">
-            <img src="assets/icons/icon-add-campaign.svg" width="16" height="16" alt="" style="filter:brightness(0) invert(1);">
-            Add to Campaign
+      <!-- Body -->
+      <div class="nlv-body">
+        <div class="nlv-card">
+
+          <!-- Card header -->
+          <div class="nlv-card-head">
+            <div class="nlv-head-left">
+              <div class="nlv-date-row" id="nlv-date-row">
+                <div class="nlv-date-trigger" id="nlv-date-trigger">
+                  <span class="nlv-date-title" id="nlv-date-title">Today</span>
+                  <img class="nlv-date-chevron" src="assets/icons/icon-chevron-down.svg" width="16" height="16" alt="">
+                </div>
+              </div>
+              <div class="nlv-date-dropdown" id="nlv-date-dropdown"></div>
+              <span class="nlv-count-sub" id="nlv-count-sub">0 New Leads</span>
+            </div>
+            <div class="nlv-head-right">
+              <div class="nlv-search">
+                <img src="assets/icons/icon-search-alt.svg" width="18" height="18" alt="">
+                <input id="nlv-search" class="nlv-search-input" type="search" placeholder="Search Customer">
+              </div>
+              <button class="btn btn-sm btn-secondary" type="button">
+                <img src="assets/icons/icon-export.svg" width="18" height="18" alt="">
+                Filters
+              </button>
+              <button class="btn btn-sm btn-secondary" type="button">
+                <img src="assets/icons/icon-download.svg" width="18" height="18" alt="">
+                Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Selection bar -->
+          <div class="nlv-selection-bar" id="nlv-selection-bar">
+            <span class="nlv-selection-count" id="nlv-selection-count"></span>
+            <div class="nlv-selection-actions">
+              <button class="btn btn-sm btn-secondary" id="nlv-bulk-cancel" type="button">Cancel</button>
+              <button class="btn btn-sm btn-primary" id="nlv-bulk-atc" type="button">
+                <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path
+                    d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z"
+                    stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M6 9H12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M9 6V12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+                Add to Campaign
+              </button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="nlv-table-wrap" id="nlv-table-wrap">
+            <!-- shimmer placeholder -->
+            <table class="nlv-table" id="nlv-shimmer-table">
+              <thead>
+                <tr>
+                  <th class="nlv-cb-cell"></th>
+                  <th style="width:228px;">Customer Name</th>
+                  <th style="width:174px;">Mobile Number</th>
+                  <th style="width:201px;">Location</th>
+                  <th>Summary</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="nlv-shimmer-body">
+                <!-- filled by shimmer JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="nlv-pagination" id="nlv-pagination">
+            <span class="nlv-page-info" id="nlv-page-info"></span>
+            <div class="nlv-page-controls">
+              <button class="nlv-page-btn" id="nlv-prev" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+                Prev
+              </button>
+              <div id="nlv-page-nums" style="display:flex;gap:4px;"></div>
+              <button class="nlv-page-btn" id="nlv-next">
+                Next
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Chat flyout -->
+    <div class="nlv-flyout" id="nlv-flyout">
+      <div class="nlv-flyout-head">
+        <div class="nlv-flyout-avatar" id="nlv-flyout-avatar">
+          <img src="assets/icons/zotok-avatar-inner.svg" alt="">
+        </div>
+        <div class="nlv-flyout-info">
+          <div class="nlv-flyout-name" id="nlv-flyout-name"></div>
+          <div class="nlv-flyout-sub" id="nlv-flyout-sub"></div>
+        </div>
+        <div class="nlv-flyout-head-actions">
+          <button class="btn btn-icon" type="button" aria-label="Details">
+            <img src="assets/icons/icon-details.svg" alt="">
+          </button>
+          <button class="btn btn-icon" type="button" id="nlv-flyout-close" aria-label="Close">
+            <img src="assets/icons/icon-close.svg" alt="">
           </button>
         </div>
-
-        <!-- Table -->
-        <div class="nlv-table-wrap" id="nlv-table-wrap">
-          <!-- shimmer placeholder -->
-          <table class="nlv-table" id="nlv-shimmer-table">
-            <thead><tr>
-              <th class="nlv-cb-cell"></th>
-              <th style="width:228px;">Customer Name</th>
-              <th style="width:174px;">Mobile Number</th>
-              <th style="width:201px;">Location</th>
-              <th>Summary</th>
-              <th>Action</th>
-            </tr></thead>
-            <tbody id="nlv-shimmer-body">
-              <!-- filled by shimmer JS -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="nlv-pagination" id="nlv-pagination">
-          <span class="nlv-page-info" id="nlv-page-info"></span>
-          <div class="nlv-page-controls">
-            <button class="nlv-page-btn" id="nlv-prev" disabled>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-              Prev
-            </button>
-            <div id="nlv-page-nums" style="display:flex;gap:4px;"></div>
-            <button class="nlv-page-btn" id="nlv-next">
-              Next
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
+      </div>
+      <div class="nlv-flyout-messages" id="nlv-flyout-messages"></div>
+      <div class="nlv-flyout-composer">
+        <div class="nlv-flyout-input-wrap">
+          <textarea class="nlv-flyout-textarea" id="nlv-flyout-input" rows="1"
+            placeholder="Reply to this lead…"></textarea>
+          <div class="nlv-flyout-toolbar">
+            <div class="nlv-flyout-toolbar-side">
+              <input type="file" id="nlv-flyout-file" style="display:none">
+              <button class="nlv-flyout-tool-btn" type="button" id="nlv-flyout-attach">
+                <img src="assets/icons/icon-minus.svg" alt="">
+              </button>
+            </div>
+            <div class="nlv-flyout-toolbar-side">
+              <button class="nlv-flyout-tool-btn no-border" type="button">
+                <img src="assets/icons/icon-media.svg" alt="">
+              </button>
+              <button class="nlv-flyout-send-btn" id="nlv-flyout-send" type="button">
+                <img src="assets/icons/icon-send.svg" alt="">
+              </button>
+            </div>
           </div>
         </div>
-
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Chat flyout -->
-  <div class="nlv-flyout" id="nlv-flyout">
-    <div class="nlv-flyout-head">
-      <div class="nlv-flyout-avatar" id="nlv-flyout-avatar">
-        <img src="assets/icons/zotok-avatar-inner.svg" alt="">
-      </div>
-      <div class="nlv-flyout-info">
-        <div class="nlv-flyout-name" id="nlv-flyout-name"></div>
-        <div class="nlv-flyout-sub" id="nlv-flyout-sub"></div>
-      </div>
-      <div class="nlv-flyout-head-actions">
-        <button class="nlv-flyout-icon-btn" type="button" aria-label="Details">
-          <img src="assets/icons/icon-details.svg" alt="">
-        </button>
-        <button class="nlv-flyout-icon-btn" type="button" id="nlv-flyout-close" aria-label="Close">
-          <img src="assets/icons/icon-close.svg" alt="">
-        </button>
-      </div>
-    </div>
-    <div class="nlv-flyout-messages" id="nlv-flyout-messages"></div>
-    <div class="nlv-flyout-composer">
-      <div class="nlv-flyout-input-wrap">
-        <textarea class="nlv-flyout-textarea" id="nlv-flyout-input" rows="1" placeholder="Reply to this lead…"></textarea>
-        <div class="nlv-flyout-toolbar">
-          <div class="nlv-flyout-toolbar-side">
-            <input type="file" id="nlv-flyout-file" style="display:none">
-            <button class="nlv-flyout-tool-btn" type="button" id="nlv-flyout-attach">
-              <img src="assets/icons/icon-minus.svg" alt="">
-            </button>
-          </div>
-          <div class="nlv-flyout-toolbar-side">
-            <button class="nlv-flyout-tool-btn no-border" type="button">
-              <img src="assets/icons/icon-media.svg" alt="">
-            </button>
-            <button class="nlv-flyout-send-btn" id="nlv-flyout-send" type="button">
-              <img src="assets/icons/icon-send.svg" alt="">
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- Add to Campaign Modal -->
-<div class="atc-overlay" id="atc-overlay">
-  <div class="atc-modal">
-
-    <!-- View 1: Connect to Zotok -->
-    <div class="atc-view" id="atc-view-1">
-      <div class="atc-modal-head">
-        <div>
-          <div class="atc-modal-title">Connect to Zotok</div>
-          <div class="atc-modal-sub">Enable campaign management for new leads detected from WhatsApp groups. View campaigns, assign leads, and send campaign messages directly through ZoTok.</div>
-        </div>
-        <button class="atc-close-btn" id="atc-close" aria-label="Close">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="atc-connect-box">
-        <div class="atc-icons-row">
-          <div class="atc-icon-left">
-            <img src="https://www.figma.com/api/mcp/asset/9d037a1b-82fd-41e2-9163-da206899e3e4" alt="">
-          </div>
-          <img src="https://www.figma.com/api/mcp/asset/1ba346c0-0553-4dab-bb50-3a899617f652" width="20" height="20" alt="">
-          <div class="atc-icon-right">
-            <img src="https://www.figma.com/api/mcp/asset/53abfcbc-7378-4f37-a349-43e04a8cec2c" alt="Zotok">
-          </div>
-        </div>
-        <div class="atc-connect-text">
-          <div class="atc-connect-title">Continue to Setup Zotok</div>
-          <div class="atc-connect-desc">Securely connect your ZoTok account to manage campaigns and automate lead workflows.</div>
-        </div>
-      </div>
-      <div class="atc-footer">
-        <button class="atc-cancel-btn" id="atc-cancel">Cancel</button>
-        <button class="atc-continue-btn" id="atc-continue">Continue to Zotok</button>
-      </div>
-    </div>
-
-    <!-- View 2: Campaign list -->
-    <div class="atc-view" id="atc-view-2" style="display:none;">
-      <div class="atc-modal-head">
-        <div>
-          <div class="atc-modal-title">Add to Campaign</div>
-          <div class="atc-modal-sub">Enable campaign management for new leads detected from WhatsApp groups. View campaigns, assign leads, and send campaign messages directly through ZoTok.</div>
-        </div>
-        <button class="atc-close-btn" id="atc-close-2" aria-label="Close">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div class="atc-camp-header">
-          <span class="atc-camp-label">Select your preferred campaign to add customer to campaign</span>
-          <span class="atc-camp-connected">Connected to: JK Traders (+91 94434 33422)</span>
-        </div>
-        <div class="atc-search">
-          <img src="https://www.figma.com/api/mcp/asset/707cfe11-e71a-44f7-9752-af18f1821444" alt="">
-          <input class="atc-search-input" id="atc-search-input" type="search" placeholder="Search Group">
-        </div>
-        <div class="atc-camp-list" id="atc-camp-list">
-          <div class="atc-camp-item" data-campaign="Smart Lead Connect">
-            <div class="atc-camp-icon" style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
-              <img src="https://www.figma.com/api/mcp/asset/90a23bc7-da03-43f5-9257-ac4daa2dc1e7" width="20" height="20" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Smart Lead Connect</div>
-              <div class="atc-camp-meta">CTWA</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="Instant Buyer Reach">
-            <div class="atc-camp-icon" style="background:linear-gradient(135deg,#f4b42a 15%,#d99100 92%);display:flex;align-items:center;justify-content:center;">
-              <img src="https://www.figma.com/api/mcp/asset/4daf4503-b492-4164-8420-9ee7a869ebe0" width="24" height="24" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Instant Buyer Reach</div>
-              <div class="atc-camp-meta">Dynamic Segments • Scheduled: 19 Oct, 10:30 AM • 47 Members</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="New Lead Booster">
-            <div class="atc-camp-icon" style="overflow:hidden;">
-              <img src="https://www.figma.com/api/mcp/asset/ac64607c-e5fd-4233-baa7-27742a206cd2" width="36" height="36" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">New Lead Booster</div>
-              <div class="atc-camp-meta">Standard • Recurring: Customer Level • 47 Members</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="Quick Response Leads">
-            <div class="atc-camp-icon" style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
-              <img src="https://www.figma.com/api/mcp/asset/f767fd5e-8a92-4e12-94ed-e0af8867be4f" width="20" height="20" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Quick Response Leads</div>
-              <div class="atc-camp-meta">India Mart • 47 Members</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="Hot Lead Pipeline">
-            <div class="atc-camp-icon" style="overflow:hidden;">
-              <img src="https://www.figma.com/api/mcp/asset/2a0ed46b-950a-4430-82b4-70a4dd412218" width="36" height="36" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Hot Lead Pipeline</div>
-              <div class="atc-camp-meta">Events</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="Lead Magnet Pro">
-            <div class="atc-camp-icon" style="background:linear-gradient(135deg,#f4b42a 15%,#d99100 92%);display:flex;align-items:center;justify-content:center;">
-              <img src="https://www.figma.com/api/mcp/asset/4daf4503-b492-4164-8420-9ee7a869ebe0" width="24" height="24" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Lead Magnet Pro</div>
-              <div class="atc-camp-meta">Segments • Recurring: 19 Oct, 10:30 AM - 18 Nov • 47 Members</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="Customer Connect Flow">
-            <div class="atc-camp-icon" style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
-              <img src="https://www.figma.com/api/mcp/asset/90a23bc7-da03-43f5-9257-ac4daa2dc1e7" width="20" height="20" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Customer Connect Flow</div>
-              <div class="atc-camp-meta">Meta Lead Gen</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-          <div class="atc-camp-item" data-campaign="Lead Capture Drive">
-            <div class="atc-camp-icon" style="overflow:hidden;">
-              <img src="https://www.figma.com/api/mcp/asset/ac64607c-e5fd-4233-baa7-27742a206cd2" width="36" height="36" alt="">
-            </div>
-            <div class="atc-camp-info">
-              <div class="atc-camp-name">Lead Capture Drive</div>
-              <div class="atc-camp-meta">Standard • Recurring: Customer Level • 47 Members</div>
-            </div>
-            <div class="atc-camp-radio"></div>
-          </div>
-        </div>
-      </div>
-      <div class="atc-footer">
-        <button class="atc-cancel-btn" id="atc-cancel-2">Cancel</button>
-        <button class="atc-assign-btn" id="atc-assign">Assign To Campaign</button>
       </div>
     </div>
 
   </div>
-</div>
 
-<!-- Toast -->
-<div class="atc-toast" id="atc-toast"></div>
+  <!-- Add to Campaign Modal -->
+  <div class="atc-overlay" id="atc-overlay">
+    <div class="atc-modal">
 
-<script src="scripts/sidebar.js"></script>
-<script src="scripts/app.js"></script>
-<script>
-  const AVATAR_ICON = 'assets/icons/zotok-avatar-inner.svg';
-  const AVATAR_COLORS = ['#b879ff','#ffae4c','#537ff1','#b6ca00','#3cc3df','#50c796','#57b7ec','#e16540','#47d096','#328efa','#ff6b6b','#ffd93d'];
+      <!-- View 1: Connect to Zotok -->
+      <div class="atc-view" id="atc-view-1">
+        <div class="atc-modal-head">
+          <div>
+            <div class="atc-modal-title">Connect to Zotok</div>
+            <div class="atc-modal-sub">Enable campaign management for new leads detected from WhatsApp groups. View
+              campaigns, assign leads, and send campaign messages directly through ZoTok.</div>
+          </div>
+          <button class="atc-close-btn" id="atc-close" aria-label="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="atc-connect-box">
+          <div class="atc-icons-row">
+            <div class="atc-icon-left">
+              <img src="https://www.figma.com/api/mcp/asset/9d037a1b-82fd-41e2-9163-da206899e3e4" alt="">
+            </div>
+            <img src="https://www.figma.com/api/mcp/asset/1ba346c0-0553-4dab-bb50-3a899617f652" width="20" height="20"
+              alt="">
+            <div class="atc-icon-right">
+              <img src="https://www.figma.com/api/mcp/asset/53abfcbc-7378-4f37-a349-43e04a8cec2c" alt="Zotok">
+            </div>
+          </div>
+          <div class="atc-connect-text">
+            <div class="atc-connect-title">Continue to Setup Zotok</div>
+            <div class="atc-connect-desc">Securely connect your ZoTok account to manage campaigns and automate lead
+              workflows.</div>
+          </div>
+        </div>
+        <div class="atc-footer">
+          <button class="btn btn-md btn-secondary" id="atc-cancel">Cancel</button>
+          <button class="btn btn-md btn-primary" id="atc-continue">Continue to Zotok</button>
+        </div>
+      </div>
 
-  const mockLeads = [
-    // Today — 10
-    { date:'Today', name:'Rajesh Traders',       phone:'+91 77354 90194', location:'Bhopal, Madhya Pradesh',    summary:'Need 50 boxes of SKU-4421 for Friday delivery. Same billing as last time. Urgent please confirm.' },
-    { date:'Today', name:'Kumar Enterprises',    phone:'+91 84975 73535', location:'Bhubaneswar, Odisha',        summary:'Bhai 100 units SKU-2200 aur 30 units SKU-3310 chahiye. Kal subah tak de dena. Price same rahega?' },
-    { date:'Today', name:'Sundar Exports',        phone:'+91 91371 47247', location:'Coimbatore, Tamil Nadu',    summary:'Please send order confirmation for order #ORD-8821. We need it for our accounts team today.' },
-    { date:'Today', name:'Lakshmi Supplies',      phone:'+91 92000 62586', location:'Delhi, Delhi',              summary:'Can you deliver 40 cartons of product A to our Secunderabad warehouse?' },
-    { date:'Today', name:'Vijay & Sons',          phone:'+91 99930 89772', location:'Chandigarh, Punjab',        summary:'What is the current rate for SKU-1100? We plan to order 200 units next week.' },
-    { date:'Today', name:'Hariharan Associates',  phone:'+91 89277 09198', location:'Pune, Maharashtra',         summary:'Mujhe 500 kg maida chahiye aur 300 kg sugar. Kal tak pohunchao. Same address hai.' },
-    { date:'Today', name:'Nirmal Fabrics',        phone:'+91 92571 49018', location:'Dehradun, Uttarakhand',     summary:'Reorder same as last month — SKU-3310 x 150, SKU-4421 x 80. Urgent shipment required.' },
-    { date:'Today', name:'Asha Agro',             phone:'+91 75605 48603', location:'Guwahati, Assam',           summary:'Bhaiya ek baar aur 60 pieces SKU-9910 bhejo. Last wali quality achhi thi. COD rahega.' },
-    { date:'Today', name:'Shree Chemicals',       phone:'+91 98399 99824', location:'Ahmedabad, Gujarat',        summary:'Urgent order — 25 bags cement grade packing material SKU-0012. Deliver to plot 44, IDA Nacharam.' },
-    { date:'Today', name:'Ganesh Motors',         phone:'+91 88922 62591', location:'Mysuru, Karnataka',         summary:'Hamara monthly standing order process karo — same as PO-7712. Any changes call karo.' },
+      <!-- View 2: Campaign list -->
+      <div class="atc-view" id="atc-view-2" style="display:none;">
+        <div class="atc-modal-head">
+          <div>
+            <div class="atc-modal-title">Add to Campaign</div>
+            <div class="atc-modal-sub">Enable campaign management for new leads detected from WhatsApp groups. View
+              campaigns, assign leads, and send campaign messages directly through ZoTok.</div>
+          </div>
+          <button class="atc-close-btn" id="atc-close-2" aria-label="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="atc-camp-header">
+            <span class="atc-camp-label">Select your preferred campaign to add customer to campaign</span>
+            <span class="atc-camp-connected">Connected to: JK Traders (+91 94434 33422)</span>
+          </div>
+          <div class="atc-search">
+            <img src="https://www.figma.com/api/mcp/asset/707cfe11-e71a-44f7-9752-af18f1821444" alt="">
+            <input class="atc-search-input" id="atc-search-input" type="search" placeholder="Search Group">
+          </div>
+          <div class="atc-camp-list" id="atc-camp-list">
+            <div class="atc-camp-item" data-campaign="Smart Lead Connect">
+              <div class="atc-camp-icon"
+                style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
+                <img src="https://www.figma.com/api/mcp/asset/90a23bc7-da03-43f5-9257-ac4daa2dc1e7" width="20"
+                  height="20" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Smart Lead Connect</div>
+                <div class="atc-camp-meta">CTWA</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="Instant Buyer Reach">
+              <div class="atc-camp-icon"
+                style="background:linear-gradient(135deg,#f4b42a 15%,#d99100 92%);display:flex;align-items:center;justify-content:center;">
+                <img src="https://www.figma.com/api/mcp/asset/4daf4503-b492-4164-8420-9ee7a869ebe0" width="24"
+                  height="24" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Instant Buyer Reach</div>
+                <div class="atc-camp-meta">Dynamic Segments • Scheduled: 19 Oct, 10:30 AM • 47 Members</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="New Lead Booster">
+              <div class="atc-camp-icon" style="overflow:hidden;">
+                <img src="https://www.figma.com/api/mcp/asset/ac64607c-e5fd-4233-baa7-27742a206cd2" width="36"
+                  height="36" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">New Lead Booster</div>
+                <div class="atc-camp-meta">Standard • Recurring: Customer Level • 47 Members</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="Quick Response Leads">
+              <div class="atc-camp-icon"
+                style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
+                <img src="https://www.figma.com/api/mcp/asset/f767fd5e-8a92-4e12-94ed-e0af8867be4f" width="20"
+                  height="20" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Quick Response Leads</div>
+                <div class="atc-camp-meta">India Mart • 47 Members</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="Hot Lead Pipeline">
+              <div class="atc-camp-icon" style="overflow:hidden;">
+                <img src="https://www.figma.com/api/mcp/asset/2a0ed46b-950a-4430-82b4-70a4dd412218" width="36"
+                  height="36" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Hot Lead Pipeline</div>
+                <div class="atc-camp-meta">Events</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="Lead Magnet Pro">
+              <div class="atc-camp-icon"
+                style="background:linear-gradient(135deg,#f4b42a 15%,#d99100 92%);display:flex;align-items:center;justify-content:center;">
+                <img src="https://www.figma.com/api/mcp/asset/4daf4503-b492-4164-8420-9ee7a869ebe0" width="24"
+                  height="24" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Lead Magnet Pro</div>
+                <div class="atc-camp-meta">Segments • Recurring: 19 Oct, 10:30 AM - 18 Nov • 47 Members</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="Customer Connect Flow">
+              <div class="atc-camp-icon"
+                style="background:#ebebeb;border:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;">
+                <img src="https://www.figma.com/api/mcp/asset/90a23bc7-da03-43f5-9257-ac4daa2dc1e7" width="20"
+                  height="20" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Customer Connect Flow</div>
+                <div class="atc-camp-meta">Meta Lead Gen</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="atc-camp-item" data-campaign="Lead Capture Drive">
+              <div class="atc-camp-icon" style="overflow:hidden;">
+                <img src="https://www.figma.com/api/mcp/asset/ac64607c-e5fd-4233-baa7-27742a206cd2" width="36"
+                  height="36" alt="">
+              </div>
+              <div class="atc-camp-info">
+                <div class="atc-camp-name">Lead Capture Drive</div>
+                <div class="atc-camp-meta">Standard • Recurring: Customer Level • 47 Members</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+          </div>
+        </div>
+        <div class="atc-footer">
+          <button class="btn btn-md btn-secondary" id="atc-cancel-2">Cancel</button>
+          <button class="btn btn-md btn-primary" id="atc-assign">Assign To Campaign</button>
+        </div>
+      </div>
 
-    // Yesterday — 8
-    { date:'Yesterday', name:'Shreeji Logistics',    phone:'+91 99999 11111', location:'Surat, Gujarat',         summary:'Can we partner for last-mile delivery in Gujarat?' },
-    { date:'Yesterday', name:'Verma General Store',  phone:'+91 84444 66666', location:'Jaipur, Rajasthan',      summary:'Do you have stock of SKU #4421 right now?' },
-    { date:'Yesterday', name:'Rajlakshmi Traders',   phone:'+91 95678 12345', location:'Hyderabad, Telangana',   summary:'Can you deliver to Hyderabad? What are freight costs?' },
-    { date:'Yesterday', name:'Modi Retail Chain',    phone:'+91 88001 77002', location:'Mumbai, Maharashtra',    summary:'We run 12 stores. Interested in exclusive deal.' },
-    { date:'Yesterday', name:'Chandra Enterprises',  phone:'+91 98001 45678', location:'Lucknow, Uttar Pradesh', summary:'Saw your product demo. Want to set up a call.' },
-    { date:'Yesterday', name:'Delta Supplies',       phone:'+91 80000 12345', location:'Chennai, Tamil Nadu',    summary:'Need 300 units urgent for a client order.' },
-    { date:'Yesterday', name:'Apex Wholesale',       phone:'+91 92222 33444', location:'Indore, Madhya Pradesh', summary:'Do you have GST invoice facility?' },
-    { date:'Yesterday', name:'Sunrise Retailers',    phone:'+91 91234 56789', location:'Nagpur, Maharashtra',    summary:'Can I get a catalogue with current prices?' },
+    </div>
+  </div>
 
-    // 02 May 2026 — 7
-    { date:'02 May 2026', name:'Agarwal & Sons',         phone:'+91 99887 76655', location:'Patna, Bihar',           summary:'Please share your best price for 1000 units.' },
-    { date:'02 May 2026', name:'Sunrise Exports',         phone:'+91 94321 09876', location:'Kochi, Kerala',          summary:'We export FMCG. Can we discuss white-labelling?' },
-    { date:'02 May 2026', name:'Lotus General Merchants', phone:'+91 78990 11223', location:'Nashik, Maharashtra',    summary:'Do you have a minimum order for first-time buyers?' },
-    { date:'02 May 2026', name:'Yadav Brothers',          phone:'+91 83456 78901', location:'Varanasi, Uttar Pradesh',summary:'Referred by Ramesh. Looking for quarterly contract.' },
-    { date:'02 May 2026', name:'Fortune Retail',          phone:'+91 96543 21000', location:'Visakhapatnam, AP',      summary:'Can I visit your warehouse this week?' },
-    { date:'02 May 2026', name:'Patel Trading Co.',       phone:'+91 97531 86420', location:'Vadodara, Gujarat',      summary:'We need 500 units by end of month. Is that possible?' },
-    { date:'02 May 2026', name:'Mehta Bros.',             phone:'+91 90909 12345', location:'Amritsar, Punjab',       summary:"What's your MOQ for wholesale?" },
+  <!-- Toast -->
+  <div class="atc-toast" id="atc-toast"></div>
 
-    // 01 May 2026 — 6
-    { date:'01 May 2026', name:'Ratan Hardware',     phone:'+91 77001 88002', location:'Bhopal, Madhya Pradesh', summary:'Need bulk hardware fittings. Minimum 5000 units.' },
-    { date:'01 May 2026', name:'Sai Distributors',   phone:'+91 85432 10987', location:'Pune, Maharashtra',      summary:'We cover Pune and surrounding areas. Let\'s talk.' },
-    { date:'01 May 2026', name:'Apex Wholesale',     phone:'+91 92222 33444', location:'Indore, Madhya Pradesh', summary:'Do you have GST invoice facility?' },
-    { date:'01 May 2026', name:'Nirmala Enterprises',phone:'+91 99234 56780', location:'Nashik, Maharashtra',    summary:'Running a new store in Nashik. Can you supply?' },
-    { date:'01 May 2026', name:'Balaji Stores',      phone:'+91 84000 33221', location:'Vijayawada, AP',         summary:'Do you offer consignment model?' },
-    { date:'01 May 2026', name:'Triveni Wholesale',  phone:'+91 97777 44444', location:'Jodhpur, Rajasthan',     summary:'My previous supplier raised rates. Looking for better.' },
+  <script src="scripts/sidebar.js"></script>
+  <script src="scripts/app.js"></script>
+  <script>
+    const AVATAR_ICON = 'assets/icons/zotok-avatar-inner.svg';
+    const AVATAR_COLORS = ['#b879ff', '#ffae4c', '#537ff1', '#b6ca00', '#3cc3df', '#50c796', '#57b7ec', '#e16540', '#47d096', '#328efa', '#ff6b6b', '#ffd93d'];
 
-    // 30 Apr 2026 — 6
-    { date:'30 Apr 2026', name:'Prime Retailers',    phone:'+91 86789 01234', location:'Chandigarh, Punjab',     summary:"What's the shelf life of your products?" },
-    { date:'30 Apr 2026', name:'Srinivasan & Co.',   phone:'+91 79000 56789', location:'Chennai, Tamil Nadu',    summary:'We are expanding to Tamil Nadu. Need a supplier.' },
-    { date:'30 Apr 2026', name:'Balaji Reddy Stores',phone:'+91 84000 33221', location:'Hyderabad, Telangana',   summary:'Do you offer consignment model?' },
-    { date:'30 Apr 2026', name:'Triveni Wholesale',  phone:'+91 97777 44444', location:'Jaipur, Rajasthan',      summary:'My previous supplier raised rates. Looking for better.' },
-    { date:'30 Apr 2026', name:'Omkar Trading',      phone:'+91 99100 22300', location:'Kolhapur, Maharashtra',  summary:'Need samples before placing bulk order.' },
-    { date:'30 Apr 2026', name:'Anand Pharma Dist.', phone:'+91 95000 11223', location:'Ahmedabad, Gujarat',     summary:'We distribute pharma. Can we cross-sell?' },
+    const mockLeads = [
+      // Today — 10
+      { date: 'Today', name: 'Rajesh Traders', phone: '+91 77354 90194', location: 'Bhopal, Madhya Pradesh', summary: 'Need 50 boxes of SKU-4421 for Friday delivery. Same billing as last time. Urgent please confirm.' },
+      { date: 'Today', name: 'Kumar Enterprises', phone: '+91 84975 73535', location: 'Bhubaneswar, Odisha', summary: 'Bhai 100 units SKU-2200 aur 30 units SKU-3310 chahiye. Kal subah tak de dena. Price same rahega?' },
+      { date: 'Today', name: 'Sundar Exports', phone: '+91 91371 47247', location: 'Coimbatore, Tamil Nadu', summary: 'Please send order confirmation for order #ORD-8821. We need it for our accounts team today.' },
+      { date: 'Today', name: 'Lakshmi Supplies', phone: '+91 92000 62586', location: 'Delhi, Delhi', summary: 'Can you deliver 40 cartons of product A to our Secunderabad warehouse?' },
+      { date: 'Today', name: 'Vijay & Sons', phone: '+91 99930 89772', location: 'Chandigarh, Punjab', summary: 'What is the current rate for SKU-1100? We plan to order 200 units next week.' },
+      { date: 'Today', name: 'Hariharan Associates', phone: '+91 89277 09198', location: 'Pune, Maharashtra', summary: 'Mujhe 500 kg maida chahiye aur 300 kg sugar. Kal tak pohunchao. Same address hai.' },
+      { date: 'Today', name: 'Nirmal Fabrics', phone: '+91 92571 49018', location: 'Dehradun, Uttarakhand', summary: 'Reorder same as last month — SKU-3310 x 150, SKU-4421 x 80. Urgent shipment required.' },
+      { date: 'Today', name: 'Asha Agro', phone: '+91 75605 48603', location: 'Guwahati, Assam', summary: 'Bhaiya ek baar aur 60 pieces SKU-9910 bhejo. Last wali quality achhi thi. COD rahega.' },
+      { date: 'Today', name: 'Shree Chemicals', phone: '+91 98399 99824', location: 'Ahmedabad, Gujarat', summary: 'Urgent order — 25 bags cement grade packing material SKU-0012. Deliver to plot 44, IDA Nacharam.' },
+      { date: 'Today', name: 'Ganesh Motors', phone: '+91 88922 62591', location: 'Mysuru, Karnataka', summary: 'Hamara monthly standing order process karo — same as PO-7712. Any changes call karo.' },
 
-    // 29 Apr 2026 — 5
-    { date:'29 Apr 2026', name:'Anand Pharma Dist.', phone:'+91 95000 11223', location:'Ahmedabad, Gujarat',     summary:'We distribute pharma. Can we cross-sell?' },
-    { date:'29 Apr 2026', name:'Omkar Trading',      phone:'+91 99100 22300', location:'Kolhapur, Maharashtra',  summary:'Need samples before placing bulk order.' },
-    { date:'29 Apr 2026', name:'Krishna Super Market',phone:'+91 83001 45600', location:'Kolhapur, Maharashtra', summary:'Do you deliver to Kolhapur?' },
-    { date:'29 Apr 2026', name:'Supreme Distributors',phone:'+91 91500 67890', location:'Pune, Maharashtra',     summary:'Looking for a long-term supply agreement.' },
-    { date:'29 Apr 2026', name:'Kapoor Stores',      phone:'+91 82222 55555', location:'Delhi, Delhi',           summary:'Do you offer credit terms for new buyers?' },
-  ];
+      // Yesterday — 8
+      { date: 'Yesterday', name: 'Shreeji Logistics', phone: '+91 99999 11111', location: 'Surat, Gujarat', summary: 'Can we partner for last-mile delivery in Gujarat?' },
+      { date: 'Yesterday', name: 'Verma General Store', phone: '+91 84444 66666', location: 'Jaipur, Rajasthan', summary: 'Do you have stock of SKU #4421 right now?' },
+      { date: 'Yesterday', name: 'Rajlakshmi Traders', phone: '+91 95678 12345', location: 'Hyderabad, Telangana', summary: 'Can you deliver to Hyderabad? What are freight costs?' },
+      { date: 'Yesterday', name: 'Modi Retail Chain', phone: '+91 88001 77002', location: 'Mumbai, Maharashtra', summary: 'We run 12 stores. Interested in exclusive deal.' },
+      { date: 'Yesterday', name: 'Chandra Enterprises', phone: '+91 98001 45678', location: 'Lucknow, Uttar Pradesh', summary: 'Saw your product demo. Want to set up a call.' },
+      { date: 'Yesterday', name: 'Delta Supplies', phone: '+91 80000 12345', location: 'Chennai, Tamil Nadu', summary: 'Need 300 units urgent for a client order.' },
+      { date: 'Yesterday', name: 'Apex Wholesale', phone: '+91 92222 33444', location: 'Indore, Madhya Pradesh', summary: 'Do you have GST invoice facility?' },
+      { date: 'Yesterday', name: 'Sunrise Retailers', phone: '+91 91234 56789', location: 'Nagpur, Maharashtra', summary: 'Can I get a catalogue with current prices?' },
 
-  // Build date groups
-  const dateGroups = [];
-  mockLeads.forEach(lead => {
-    let g = dateGroups.find(x => x.date === lead.date);
-    if (!g) { g = { date: lead.date, leads: [] }; dateGroups.push(g); }
-    g.leads.push(lead);
-  });
+      // 02 May 2026 — 7
+      { date: '02 May 2026', name: 'Agarwal & Sons', phone: '+91 99887 76655', location: 'Patna, Bihar', summary: 'Please share your best price for 1000 units.' },
+      { date: '02 May 2026', name: 'Sunrise Exports', phone: '+91 94321 09876', location: 'Kochi, Kerala', summary: 'We export FMCG. Can we discuss white-labelling?' },
+      { date: '02 May 2026', name: 'Lotus General Merchants', phone: '+91 78990 11223', location: 'Nashik, Maharashtra', summary: 'Do you have a minimum order for first-time buyers?' },
+      { date: '02 May 2026', name: 'Yadav Brothers', phone: '+91 83456 78901', location: 'Varanasi, Uttar Pradesh', summary: 'Referred by Ramesh. Looking for quarterly contract.' },
+      { date: '02 May 2026', name: 'Fortune Retail', phone: '+91 96543 21000', location: 'Visakhapatnam, AP', summary: 'Can I visit your warehouse this week?' },
+      { date: '02 May 2026', name: 'Patel Trading Co.', phone: '+91 97531 86420', location: 'Vadodara, Gujarat', summary: 'We need 500 units by end of month. Is that possible?' },
+      { date: '02 May 2026', name: 'Mehta Bros.', phone: '+91 90909 12345', location: 'Amritsar, Punjab', summary: "What's your MOQ for wholesale?" },
 
-  // State
-  let activeLeads = dateGroups[0].leads;
-  let currentPage = 1;
-  const PAGE_SIZE = 50;
-  let selectedLeadKeys = new Set();
-  function leadKey(lead) { return lead.name + '|' + lead.phone; }
-  function updateSelectionBar() {
-    const n = selectedLeadKeys.size;
-    const bar = document.getElementById('nlv-selection-bar');
-    bar.classList.toggle('show', n > 0);
-    document.getElementById('nlv-selection-count').textContent = `${n} lead${n !== 1 ? 's' : ''} selected`;
-  }
+      // 01 May 2026 — 6
+      { date: '01 May 2026', name: 'Ratan Hardware', phone: '+91 77001 88002', location: 'Bhopal, Madhya Pradesh', summary: 'Need bulk hardware fittings. Minimum 5000 units.' },
+      { date: '01 May 2026', name: 'Sai Distributors', phone: '+91 85432 10987', location: 'Pune, Maharashtra', summary: 'We cover Pune and surrounding areas. Let\'s talk.' },
+      { date: '01 May 2026', name: 'Apex Wholesale', phone: '+91 92222 33444', location: 'Indore, Madhya Pradesh', summary: 'Do you have GST invoice facility?' },
+      { date: '01 May 2026', name: 'Nirmala Enterprises', phone: '+91 99234 56780', location: 'Nashik, Maharashtra', summary: 'Running a new store in Nashik. Can you supply?' },
+      { date: '01 May 2026', name: 'Balaji Stores', phone: '+91 84000 33221', location: 'Vijayawada, AP', summary: 'Do you offer consignment model?' },
+      { date: '01 May 2026', name: 'Triveni Wholesale', phone: '+91 97777 44444', location: 'Jodhpur, Rajasthan', summary: 'My previous supplier raised rates. Looking for better.' },
 
-  const searchInput  = document.getElementById('nlv-search');
-  const dateTitle    = document.getElementById('nlv-date-title');
-  const countSub     = document.getElementById('nlv-count-sub');
-  const tableWrap    = document.getElementById('nlv-table-wrap');
-  const pageInfo     = document.getElementById('nlv-page-info');
-  const pageNums     = document.getElementById('nlv-page-nums');
-  const prevBtn      = document.getElementById('nlv-prev');
-  const nextBtn      = document.getElementById('nlv-next');
+      // 30 Apr 2026 — 6
+      { date: '30 Apr 2026', name: 'Prime Retailers', phone: '+91 86789 01234', location: 'Chandigarh, Punjab', summary: "What's the shelf life of your products?" },
+      { date: '30 Apr 2026', name: 'Srinivasan & Co.', phone: '+91 79000 56789', location: 'Chennai, Tamil Nadu', summary: 'We are expanding to Tamil Nadu. Need a supplier.' },
+      { date: '30 Apr 2026', name: 'Balaji Reddy Stores', phone: '+91 84000 33221', location: 'Hyderabad, Telangana', summary: 'Do you offer consignment model?' },
+      { date: '30 Apr 2026', name: 'Triveni Wholesale', phone: '+91 97777 44444', location: 'Jaipur, Rajasthan', summary: 'My previous supplier raised rates. Looking for better.' },
+      { date: '30 Apr 2026', name: 'Omkar Trading', phone: '+91 99100 22300', location: 'Kolhapur, Maharashtra', summary: 'Need samples before placing bulk order.' },
+      { date: '30 Apr 2026', name: 'Anand Pharma Dist.', phone: '+91 95000 11223', location: 'Ahmedabad, Gujarat', summary: 'We distribute pharma. Can we cross-sell?' },
 
-  function avatar(idx) {
-    const color = AVATAR_COLORS[idx % AVATAR_COLORS.length];
-    return `<div class="nlv-avatar" style="background:${color}"><img src="${AVATAR_ICON}" alt=""></div>`;
-  }
+      // 29 Apr 2026 — 5
+      { date: '29 Apr 2026', name: 'Anand Pharma Dist.', phone: '+91 95000 11223', location: 'Ahmedabad, Gujarat', summary: 'We distribute pharma. Can we cross-sell?' },
+      { date: '29 Apr 2026', name: 'Omkar Trading', phone: '+91 99100 22300', location: 'Kolhapur, Maharashtra', summary: 'Need samples before placing bulk order.' },
+      { date: '29 Apr 2026', name: 'Krishna Super Market', phone: '+91 83001 45600', location: 'Kolhapur, Maharashtra', summary: 'Do you deliver to Kolhapur?' },
+      { date: '29 Apr 2026', name: 'Supreme Distributors', phone: '+91 91500 67890', location: 'Pune, Maharashtra', summary: 'Looking for a long-term supply agreement.' },
+      { date: '29 Apr 2026', name: 'Kapoor Stores', phone: '+91 82222 55555', location: 'Delhi, Delhi', summary: 'Do you offer credit terms for new buyers?' },
+    ];
 
-  function filtered() {
-    const q = searchInput.value.trim().toLowerCase();
-    if (!q) return activeLeads;
-    return activeLeads.filter(l =>
-      [l.name, l.phone, l.location, l.summary].some(v => v.toLowerCase().includes(q))
-    );
-  }
+    // Build date groups
+    const dateGroups = [];
+    mockLeads.forEach(lead => {
+      let g = dateGroups.find(x => x.date === lead.date);
+      if (!g) { g = { date: lead.date, leads: [] }; dateGroups.push(g); }
+      g.leads.push(lead);
+    });
 
-  function renderPage() {
-    const leads     = filtered();
-    const total     = leads.length;
-    const totalPages= Math.max(1, Math.ceil(total / PAGE_SIZE));
-    currentPage     = Math.min(currentPage, totalPages);
-    const start     = (currentPage - 1) * PAGE_SIZE;
-    const slice     = leads.slice(start, start + PAGE_SIZE);
+    // State
+    let activeLeads = dateGroups[0].leads;
+    let currentPage = 1;
+    const PAGE_SIZE = 50;
+    let selectedLeadKeys = new Set();
+    function leadKey(lead) { return lead.name + '|' + lead.phone; }
+    function updateSelectionBar() {
+      const n = selectedLeadKeys.size;
+      const bar = document.getElementById('nlv-selection-bar');
+      bar.classList.toggle('show', n > 0);
+      document.getElementById('nlv-selection-count').textContent = `${n} lead${n !== 1 ? 's' : ''} selected`;
+    }
 
-    let html = `<table class="nlv-table"><thead><tr>
-      <th class="nlv-cb-cell"><input type="checkbox" class="nlv-cb" id="nlv-cb-all"></th>
+    const searchInput = document.getElementById('nlv-search');
+    const dateTitle = document.getElementById('nlv-date-title');
+    const countSub = document.getElementById('nlv-count-sub');
+    const tableWrap = document.getElementById('nlv-table-wrap');
+    const pageInfo = document.getElementById('nlv-page-info');
+    const pageNums = document.getElementById('nlv-page-nums');
+    const prevBtn = document.getElementById('nlv-prev');
+    const nextBtn = document.getElementById('nlv-next');
+
+    function avatar(idx) {
+      const color = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+      return `<div class="nlv-avatar" style="background:${color}"><img src="${AVATAR_ICON}" alt=""></div>`;
+    }
+
+    function filtered() {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) return activeLeads;
+      return activeLeads.filter(l =>
+        [l.name, l.phone, l.location, l.summary].some(v => v.toLowerCase().includes(q))
+      );
+    }
+
+    function renderPage() {
+      const leads = filtered();
+      const total = leads.length;
+      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      currentPage = Math.min(currentPage, totalPages);
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const slice = leads.slice(start, start + PAGE_SIZE);
+
+      let html = `<table class="nlv-table"><thead><tr>
+      <th class="nlv-cb-cell"><input type="checkbox" class="checkbox" id="nlv-cb-all"></th>
       <th style="width:228px;">Customer Name</th>
       <th style="width:174px;">Mobile Number</th>
       <th style="width:201px;">Location</th>
@@ -423,159 +469,159 @@
       <th>Action</th>
     </tr></thead><tbody>`;
 
-    if (slice.length === 0) {
-      html += `<tr><td colspan="6"><div class="nlv-empty">No leads found</div></td></tr>`;
-    } else {
-      slice.forEach((lead, i) => {
-        const globalIdx = start + i;
-        const checked = selectedLeadKeys.has(leadKey(lead)) ? 'checked' : '';
-        html += `<tr>
-          <td class="nlv-cb-cell"><input type="checkbox" class="nlv-cb nlv-row-cb" data-idx="${i}" ${checked}></td>
+      if (slice.length === 0) {
+        html += `<tr><td colspan="6"><div class="nlv-empty">No leads found</div></td></tr>`;
+      } else {
+        slice.forEach((lead, i) => {
+          const globalIdx = start + i;
+          const checked = selectedLeadKeys.has(leadKey(lead)) ? 'checked' : '';
+          html += `<tr>
+          <td class="nlv-cb-cell"><input type="checkbox" class="checkbox nlv-row-cb" data-idx="${i}" ${checked}></td>
           <td><div class="nlv-name-cell">${avatar(globalIdx)}<span>${lead.name}</span></div></td>
           <td class="nlv-td-phone">${lead.phone}</td>
           <td class="nlv-td-location">${lead.location}</td>
           <td class="nlv-td-summary">${lead.summary}</td>
-          <td class="nlv-td-action"><div class="nlv-td-action-wrap"><button class="nlv-action-btn" type="button" data-lead-idx="${i}"><img src="assets/icons/icon-view.svg" alt="">View</button><button class="nlv-action-btn nlv-campaign-btn" type="button" data-campaign-idx="${i}"><img src="assets/icons/icon-add-campaign.svg" width="16" height="16" alt="">Add to Campaign</button></div></td>
+          <td class="nlv-td-action"><div class="nlv-td-action-wrap"><button class="btn btn-sm btn-secondary" type="button" data-lead-idx="${i}"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M1.5465 9.261C1.48399 9.09261 1.48399 8.90739 1.5465 8.739C2.15528 7.26289 3.18864 6.00078 4.51558 5.11267C5.84252 4.22457 7.40328 3.75046 9 3.75046C10.5967 3.75046 12.1575 4.22457 13.4844 5.11267C14.8114 6.00078 15.8447 7.26289 16.4535 8.739C16.516 8.90739 16.516 9.09261 16.4535 9.261C15.8447 10.7371 14.8114 11.9992 13.4844 12.8873C12.1575 13.7754 10.5967 14.2495 9 14.2495C7.40328 14.2495 5.84252 13.7754 4.51558 12.8873C3.18864 11.9992 2.15528 10.7371 1.5465 9.261Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 11.25C10.2426 11.25 11.25 10.2426 11.25 9C11.25 7.75736 10.2426 6.75 9 6.75C7.75736 6.75 6.75 7.75736 6.75 9C6.75 10.2426 7.75736 11.25 9 11.25Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>View</button><button class="btn btn-sm btn-secondary nlv-campaign-btn" type="button" data-campaign-idx="${i}"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9H12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 6V12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>Add to Campaign</button></div></td>
         </tr>`;
-      });
-    }
-    html += `</tbody></table>`;
-    tableWrap.innerHTML = html;
-
-    // Wire select-all
-    const cbAll = document.getElementById('nlv-cb-all');
-    if (cbAll) {
-      const allChecked = slice.length > 0 && slice.every(l => selectedLeadKeys.has(leadKey(l)));
-      const someChecked = slice.some(l => selectedLeadKeys.has(leadKey(l)));
-      cbAll.checked = allChecked;
-      cbAll.indeterminate = !allChecked && someChecked;
-      cbAll.addEventListener('change', () => {
-        slice.forEach(l => { cbAll.checked ? selectedLeadKeys.add(leadKey(l)) : selectedLeadKeys.delete(leadKey(l)); });
-        updateSelectionBar();
-        renderPage();
-      });
-    }
-
-    // Hide pagination when everything fits on one page
-    const paginationEl = document.getElementById('nlv-pagination');
-    if (paginationEl) paginationEl.style.display = totalPages <= 1 ? 'none' : 'flex';
-
-    // Pagination info
-    const from = total === 0 ? 0 : start + 1;
-    const to   = Math.min(start + PAGE_SIZE, total);
-    pageInfo.textContent = `${from}–${to} of ${total}`;
-
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage === totalPages;
-
-    // Page numbers
-    pageNums.innerHTML = '';
-    buildPageRange(currentPage, totalPages).forEach(p => {
-      if (p === '…') {
-        const el = document.createElement('span');
-        el.textContent = '…';
-        el.style.cssText = 'padding:0 4px;color:#858481;font-size:13px;align-self:center;';
-        pageNums.appendChild(el);
-      } else {
-        const btn = document.createElement('button');
-        btn.className = 'nlv-page-btn' + (p === currentPage ? ' active' : '');
-        btn.textContent = p;
-        btn.addEventListener('click', () => { currentPage = p; renderPage(); });
-        pageNums.appendChild(btn);
+        });
       }
-    });
-  }
+      html += `</tbody></table>`;
+      tableWrap.innerHTML = html;
 
-  function buildPageRange(cur, total) {
-    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
-    if (cur <= 4)           return [1,2,3,4,5,'…',total];
-    if (cur >= total - 3)   return [1,'…',total-4,total-3,total-2,total-1,total];
-    return [1,'…',cur-1,cur,cur+1,'…',total];
-  }
+      // Wire select-all
+      const cbAll = document.getElementById('nlv-cb-all');
+      if (cbAll) {
+        const allChecked = slice.length > 0 && slice.every(l => selectedLeadKeys.has(leadKey(l)));
+        const someChecked = slice.some(l => selectedLeadKeys.has(leadKey(l)));
+        cbAll.checked = allChecked;
+        cbAll.indeterminate = !allChecked && someChecked;
+        cbAll.addEventListener('change', () => {
+          slice.forEach(l => { cbAll.checked ? selectedLeadKeys.add(leadKey(l)) : selectedLeadKeys.delete(leadKey(l)); });
+          updateSelectionBar();
+          renderPage();
+        });
+      }
 
-  function selectGroup(group) {
-    activeLeads  = group.leads;
-    currentPage  = 1;
-    searchInput.value = '';
-    selectedLeadKeys.clear();
-    updateSelectionBar();
-    dateTitle.textContent = group.date;
-    countSub.textContent  = `${group.leads.length} New Lead${group.leads.length !== 1 ? 's' : ''}`;
-    renderPage();
-  }
+      // Hide pagination when everything fits on one page
+      const paginationEl = document.getElementById('nlv-pagination');
+      if (paginationEl) paginationEl.style.display = totalPages <= 1 ? 'none' : 'flex';
 
-  prevBtn.addEventListener('click', () => { currentPage--; renderPage(); });
-  nextBtn.addEventListener('click', () => { currentPage++; renderPage(); });
-  searchInput.addEventListener('input', () => { currentPage = 1; selectedLeadKeys.clear(); updateSelectionBar(); renderPage(); });
+      // Pagination info
+      const from = total === 0 ? 0 : start + 1;
+      const to = Math.min(start + PAGE_SIZE, total);
+      pageInfo.textContent = `${from}–${to} of ${total}`;
 
-  // Date dropdown — portaled to body to escape overflow:hidden on .nlv-card
-  const dateRow      = document.getElementById('nlv-date-row');
-  const dateTrigger  = document.getElementById('nlv-date-trigger');
-  const dateDropdown = document.getElementById('nlv-date-dropdown');
-  document.body.appendChild(dateDropdown);
-  let ddOpen = false;
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages;
 
-  function closeDateDropdown() {
-    ddOpen = false;
-    dateDropdown.classList.remove('open');
-    dateRow.classList.remove('open');
-  }
+      // Page numbers
+      pageNums.innerHTML = '';
+      buildPageRange(currentPage, totalPages).forEach(p => {
+        if (p === '…') {
+          const el = document.createElement('span');
+          el.textContent = '…';
+          el.style.cssText = 'padding:0 4px;color:#858481;font-size:13px;align-self:center;';
+          pageNums.appendChild(el);
+        } else {
+          const btn = document.createElement('button');
+          btn.className = 'nlv-page-btn' + (p === currentPage ? ' active' : '');
+          btn.textContent = p;
+          btn.addEventListener('click', () => { currentPage = p; renderPage(); });
+          pageNums.appendChild(btn);
+        }
+      });
+    }
 
-  function renderDateDropdown(activeGroup) {
-    dateDropdown.innerHTML = dateGroups.map(g => `
+    function buildPageRange(cur, total) {
+      if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+      if (cur <= 4) return [1, 2, 3, 4, 5, '…', total];
+      if (cur >= total - 3) return [1, '…', total - 4, total - 3, total - 2, total - 1, total];
+      return [1, '…', cur - 1, cur, cur + 1, '…', total];
+    }
+
+    function selectGroup(group) {
+      activeLeads = group.leads;
+      currentPage = 1;
+      searchInput.value = '';
+      selectedLeadKeys.clear();
+      updateSelectionBar();
+      dateTitle.textContent = group.date;
+      countSub.textContent = `${group.leads.length} New Lead${group.leads.length !== 1 ? 's' : ''}`;
+      renderPage();
+    }
+
+    prevBtn.addEventListener('click', () => { currentPage--; renderPage(); });
+    nextBtn.addEventListener('click', () => { currentPage++; renderPage(); });
+    searchInput.addEventListener('input', () => { currentPage = 1; selectedLeadKeys.clear(); updateSelectionBar(); renderPage(); });
+
+    // Date dropdown — portaled to body to escape overflow:hidden on .nlv-card
+    const dateRow = document.getElementById('nlv-date-row');
+    const dateTrigger = document.getElementById('nlv-date-trigger');
+    const dateDropdown = document.getElementById('nlv-date-dropdown');
+    document.body.appendChild(dateDropdown);
+    let ddOpen = false;
+
+    function closeDateDropdown() {
+      ddOpen = false;
+      dateDropdown.classList.remove('open');
+      dateRow.classList.remove('open');
+    }
+
+    function renderDateDropdown(activeGroup) {
+      dateDropdown.innerHTML = dateGroups.map(g => `
       <div class="nlv-date-opt${g === activeGroup ? ' active' : ''}" data-date="${g.date}">
         <span>${g.date}</span>
         <span class="nlv-date-badge">${g.leads.length} lead${g.leads.length !== 1 ? 's' : ''}</span>
       </div>`).join('');
-    dateDropdown.querySelectorAll('.nlv-date-opt').forEach(opt => {
-      opt.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const group = dateGroups.find(g => g.date === opt.dataset.date);
-        if (group) selectGroup(group);
-        closeDateDropdown();
+      dateDropdown.querySelectorAll('.nlv-date-opt').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const group = dateGroups.find(g => g.date === opt.dataset.date);
+          if (group) selectGroup(group);
+          closeDateDropdown();
+        });
       });
+    }
+
+    dateTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (ddOpen) { closeDateDropdown(); return; }
+      renderDateDropdown(dateGroups.find(g => g.date === dateTitle.textContent));
+      const rect = dateTrigger.getBoundingClientRect();
+      dateDropdown.style.top = (rect.bottom - 4 + 6) + 'px';
+      dateDropdown.style.left = (rect.left + 6) + 'px';
+      dateDropdown.classList.add('open');
+      dateRow.classList.add('open');
+      ddOpen = true;
     });
-  }
 
-  dateTrigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (ddOpen) { closeDateDropdown(); return; }
-    renderDateDropdown(dateGroups.find(g => g.date === dateTitle.textContent));
-    const rect = dateTrigger.getBoundingClientRect();
-    dateDropdown.style.top  = (rect.bottom - 4 + 6) + 'px';
-    dateDropdown.style.left = (rect.left + 6) + 'px';
-    dateDropdown.classList.add('open');
-    dateRow.classList.add('open');
-    ddOpen = true;
-  });
+    document.addEventListener('click', () => { if (ddOpen) closeDateDropdown(); });
 
-  document.addEventListener('click', () => { if (ddOpen) closeDateDropdown(); });
+    // Init with Today
+    selectGroup(dateGroups[0]);
 
-  // Init with Today
-  selectGroup(dateGroups[0]);
+    // ── Chat flyout ──
+    const nlvFlyout = document.getElementById('nlv-flyout');
+    const nlvFlyoutName = document.getElementById('nlv-flyout-name');
+    const nlvFlyoutSub = document.getElementById('nlv-flyout-sub');
+    const nlvFlyoutMsgs = document.getElementById('nlv-flyout-messages');
+    const nlvFlyoutInput = document.getElementById('nlv-flyout-input');
+    const nlvFlyoutSend = document.getElementById('nlv-flyout-send');
+    const nlvFlyoutAvatar = document.getElementById('nlv-flyout-avatar');
 
-  // ── Chat flyout ──
-  const nlvFlyout      = document.getElementById('nlv-flyout');
-  const nlvFlyoutName  = document.getElementById('nlv-flyout-name');
-  const nlvFlyoutSub   = document.getElementById('nlv-flyout-sub');
-  const nlvFlyoutMsgs  = document.getElementById('nlv-flyout-messages');
-  const nlvFlyoutInput = document.getElementById('nlv-flyout-input');
-  const nlvFlyoutSend  = document.getElementById('nlv-flyout-send');
-  const nlvFlyoutAvatar= document.getElementById('nlv-flyout-avatar');
-
-  function openLeadFlyout(lead, avatarColor) {
-    nlvFlyoutName.textContent = lead.name;
-    nlvFlyoutSub.textContent  = lead.phone;
-    nlvFlyoutAvatar.style.background = avatarColor;
-    nlvFlyoutInput.value = '';
-    nlvFlyoutInput.style.height = '';
-    const replies = [
-      "Thanks for reaching out! We'll review your request and get back to you shortly.",
-      "Thank you for your interest! Our team will contact you soon with more details.",
-      "Noted! We'll have someone from our sales team reach out to you today.",
-    ];
-    const reply = replies[lead.name.length % replies.length];
-    nlvFlyoutMsgs.innerHTML = `
+    function openLeadFlyout(lead, avatarColor) {
+      nlvFlyoutName.textContent = lead.name;
+      nlvFlyoutSub.textContent = lead.phone;
+      nlvFlyoutAvatar.style.background = avatarColor;
+      nlvFlyoutInput.value = '';
+      nlvFlyoutInput.style.height = '';
+      const replies = [
+        "Thanks for reaching out! We'll review your request and get back to you shortly.",
+        "Thank you for your interest! Our team will contact you soon with more details.",
+        "Noted! We'll have someone from our sales team reach out to you today.",
+      ];
+      const reply = replies[lead.name.length % replies.length];
+      nlvFlyoutMsgs.innerHTML = `
       <div class="nlv-flyout-msg-in">
         <div class="nlv-flyout-msg-meta">
           <span class="nlv-flyout-msg-sender">${lead.name}</span>
@@ -587,170 +633,189 @@
       <div class="nlv-flyout-msg-out">
         <div class="nlv-flyout-msg-bubble">${reply}</div>
       </div>`;
-    nlvFlyout.classList.add('open');
-    nlvFlyoutMsgs.scrollTop = nlvFlyoutMsgs.scrollHeight;
-    nlvFlyoutInput.focus();
-  }
-
-  function sendLeadMsg() {
-    const text = nlvFlyoutInput.value.trim();
-    if (!text) return;
-    const out = document.createElement('div');
-    out.className = 'nlv-flyout-msg-out';
-    out.innerHTML = `<div class="nlv-flyout-msg-bubble">${text}</div>`;
-    nlvFlyoutMsgs.appendChild(out);
-    nlvFlyoutMsgs.scrollTop = nlvFlyoutMsgs.scrollHeight;
-    nlvFlyoutInput.value = '';
-    nlvFlyoutInput.style.height = '';
-    nlvFlyoutSend.classList.remove('active');
-  }
-
-  nlvFlyoutSend.addEventListener('click', sendLeadMsg);
-  nlvFlyoutInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendLeadMsg(); }
-  });
-  nlvFlyoutInput.addEventListener('input', () => {
-    nlvFlyoutInput.style.height = '';
-    nlvFlyoutInput.style.height = Math.min(nlvFlyoutInput.scrollHeight, 120) + 'px';
-    nlvFlyoutSend.classList.toggle('active', nlvFlyoutInput.value.trim().length > 0);
-  });
-
-  tableWrap.addEventListener('change', e => {
-    const cb = e.target.closest('.nlv-row-cb');
-    if (!cb) return;
-    const i = parseInt(cb.dataset.idx);
-    const leads = filtered();
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const lead = leads[start + i];
-    if (!lead) return;
-    cb.checked ? selectedLeadKeys.add(leadKey(lead)) : selectedLeadKeys.delete(leadKey(lead));
-    updateSelectionBar();
-    // update select-all state
-    const slice = leads.slice(start, start + PAGE_SIZE);
-    const cbAll = document.getElementById('nlv-cb-all');
-    if (cbAll) {
-      const allChecked = slice.every(l => selectedLeadKeys.has(leadKey(l)));
-      cbAll.checked = allChecked;
-      cbAll.indeterminate = !allChecked && slice.some(l => selectedLeadKeys.has(leadKey(l)));
+      nlvFlyout.classList.add('open');
+      nlvFlyoutMsgs.scrollTop = nlvFlyoutMsgs.scrollHeight;
+      nlvFlyoutInput.focus();
     }
-  });
 
-  document.getElementById('nlv-bulk-atc').addEventListener('click', () => {
-    atcCurrentLead = `${selectedLeadKeys.size} lead${selectedLeadKeys.size !== 1 ? 's' : ''}`;
-    openAtcModal();
-  });
-
-  function openAtcModal() {
-    if (localStorage.getItem('zotok_atc_connected') === 'true') {
-      document.getElementById('atc-view-1').style.display = 'none';
-      document.getElementById('atc-view-2').style.display = 'flex';
-      document.querySelector('.atc-modal').classList.add('wide');
-    } else {
-      document.getElementById('atc-view-1').style.display = 'flex';
-      document.getElementById('atc-view-2').style.display = 'none';
-      document.querySelector('.atc-modal').classList.remove('wide');
+    function sendLeadMsg() {
+      const text = nlvFlyoutInput.value.trim();
+      if (!text) return;
+      const out = document.createElement('div');
+      out.className = 'nlv-flyout-msg-out';
+      out.innerHTML = `<div class="nlv-flyout-msg-bubble">${text}</div>`;
+      nlvFlyoutMsgs.appendChild(out);
+      nlvFlyoutMsgs.scrollTop = nlvFlyoutMsgs.scrollHeight;
+      nlvFlyoutInput.value = '';
+      nlvFlyoutInput.style.height = '';
+      nlvFlyoutSend.classList.remove('active');
     }
-    document.getElementById('atc-overlay').classList.add('open');
-  }
 
-  tableWrap.addEventListener('click', e => {
-    const campaignBtn = e.target.closest('.nlv-campaign-btn');
-    if (campaignBtn) {
-      const i = parseInt(campaignBtn.dataset.campaignIdx);
+    nlvFlyoutSend.addEventListener('click', sendLeadMsg);
+    nlvFlyoutInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendLeadMsg(); }
+    });
+    nlvFlyoutInput.addEventListener('input', () => {
+      nlvFlyoutInput.style.height = '';
+      nlvFlyoutInput.style.height = Math.min(nlvFlyoutInput.scrollHeight, 120) + 'px';
+      nlvFlyoutSend.classList.toggle('active', nlvFlyoutInput.value.trim().length > 0);
+    });
+
+    tableWrap.addEventListener('change', e => {
+      const cb = e.target.closest('.nlv-row-cb');
+      if (!cb) return;
+      const i = parseInt(cb.dataset.idx);
       const leads = filtered();
       const start = (currentPage - 1) * PAGE_SIZE;
       const lead = leads[start + i];
-      atcCurrentLead = lead ? lead.name : '';
-      openAtcModal();
-      return;
-    }
-    const btn = e.target.closest('.nlv-action-btn');
-    if (!btn) return;
-    const i    = parseInt(btn.dataset.leadIdx);
-    const leads = filtered();
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const lead  = leads[start + i];
-    if (!lead) return;
-    const color = AVATAR_COLORS[(start + i) % AVATAR_COLORS.length];
-    openLeadFlyout(lead, color);
-  });
-
-  document.getElementById('nlv-flyout-close').addEventListener('click', () => nlvFlyout.classList.remove('open'));
-  document.getElementById('nlv-flyout-attach').addEventListener('click', () => document.getElementById('nlv-flyout-file').click());
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      nlvFlyout.classList.remove('open');
-      closeAtcModal();
-    }
-  });
-
-  let atcSelectedCampaign = null;
-  let atcCurrentLead = '';
-
-  function closeAtcModal() {
-    document.getElementById('atc-overlay').classList.remove('open');
-    // Reset view 1
-    const continueBtn = document.getElementById('atc-continue');
-    continueBtn.disabled = false;
-    continueBtn.textContent = 'Continue to Zotok';
-    // Reset view 2
-    document.getElementById('atc-view-1').style.display = 'flex';
-    document.getElementById('atc-view-2').style.display = 'none';
-    document.querySelector('.atc-modal').classList.remove('wide');
-    document.getElementById('atc-search-input').value = '';
-    filterCampaigns('');
-    document.querySelectorAll('.atc-camp-item').forEach(el => el.classList.remove('selected'));
-    atcSelectedCampaign = null;
-  }
-
-  function filterCampaigns(q) {
-    document.querySelectorAll('.atc-camp-item').forEach(item => {
-      const name = item.dataset.campaign.toLowerCase();
-      item.style.display = !q || name.includes(q.toLowerCase()) ? 'flex' : 'none';
+      if (!lead) return;
+      cb.checked ? selectedLeadKeys.add(leadKey(lead)) : selectedLeadKeys.delete(leadKey(lead));
+      updateSelectionBar();
+      // update select-all state
+      const slice = leads.slice(start, start + PAGE_SIZE);
+      const cbAll = document.getElementById('nlv-cb-all');
+      if (cbAll) {
+        const allChecked = slice.every(l => selectedLeadKeys.has(leadKey(l)));
+        cbAll.checked = allChecked;
+        cbAll.indeterminate = !allChecked && slice.some(l => selectedLeadKeys.has(leadKey(l)));
+      }
     });
-  }
 
-  function showToast(msg) {
-    const toast = document.getElementById('atc-toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
+    document.getElementById('nlv-bulk-cancel').addEventListener('click', () => {
+      selectedLeadKeys.clear();
+      document.querySelectorAll('.nlv-row-cb').forEach(cb => { cb.checked = false; });
+      const cbAll = document.getElementById('nlv-cb-all');
+      if (cbAll) { cbAll.checked = false; cbAll.indeterminate = false; }
+      updateSelectionBar();
+    });
 
-  document.getElementById('atc-close').addEventListener('click', closeAtcModal);
-  document.getElementById('atc-cancel').addEventListener('click', closeAtcModal);
-  document.getElementById('atc-close-2').addEventListener('click', closeAtcModal);
-  document.getElementById('atc-cancel-2').addEventListener('click', closeAtcModal);
-  document.getElementById('atc-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeAtcModal(); });
+    document.getElementById('nlv-bulk-atc').addEventListener('click', () => {
+      atcCurrentLead = `${selectedLeadKeys.size} lead${selectedLeadKeys.size !== 1 ? 's' : ''}`;
+      openAtcModal();
+    });
 
-  document.getElementById('atc-search-input').addEventListener('input', e => filterCampaigns(e.target.value.trim()));
+    function openAtcModal() {
+      if (localStorage.getItem('zotok_atc_connected') === 'true') {
+        document.getElementById('atc-view-1').style.display = 'none';
+        document.getElementById('atc-view-2').style.display = 'flex';
+        document.querySelector('.atc-modal').classList.add('wide');
+      } else {
+        document.getElementById('atc-view-1').style.display = 'flex';
+        document.getElementById('atc-view-2').style.display = 'none';
+        document.querySelector('.atc-modal').classList.remove('wide');
+      }
+      document.getElementById('atc-overlay').classList.add('open');
+    }
 
-  document.getElementById('atc-camp-list').addEventListener('click', e => {
-    const item = e.target.closest('.atc-camp-item');
-    if (!item) return;
-    document.querySelectorAll('.atc-camp-item').forEach(el => el.classList.remove('selected'));
-    item.classList.add('selected');
-    atcSelectedCampaign = item.dataset.campaign;
-  });
+    tableWrap.addEventListener('click', e => {
+      const campaignBtn = e.target.closest('.nlv-campaign-btn');
+      if (campaignBtn) {
+        const i = parseInt(campaignBtn.dataset.campaignIdx);
+        const leads = filtered();
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const lead = leads[start + i];
+        atcCurrentLead = lead ? lead.name : '';
+        openAtcModal();
+        return;
+      }
+      const btn = e.target.closest('[data-lead-idx]');
+      if (!btn) return;
+      const i = parseInt(btn.dataset.leadIdx);
+      const leads = filtered();
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const lead = leads[start + i];
+      if (!lead) return;
+      const color = AVATAR_COLORS[(start + i) % AVATAR_COLORS.length];
+      openLeadFlyout(lead, color);
+    });
 
-  document.getElementById('atc-continue').addEventListener('click', function() {
-    this.disabled = true;
-    this.innerHTML = '<img src="assets/icons/icon-spinner.svg" width="20" height="20" alt="" class="atc-spin">';
-    setTimeout(() => {
-      document.getElementById('atc-view-1').style.display = 'none';
-      document.getElementById('atc-view-2').style.display = 'flex';
-      document.querySelector('.atc-modal').classList.add('wide');
-      localStorage.setItem('zotok_atc_connected', 'true');
-    }, 2000);
-  });
+    document.getElementById('nlv-flyout-close').addEventListener('click', () => nlvFlyout.classList.remove('open'));
+    document.getElementById('nlv-flyout-attach').addEventListener('click', () => document.getElementById('nlv-flyout-file').click());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        nlvFlyout.classList.remove('open');
+        closeAtcModal();
+      }
+    });
 
-  document.getElementById('atc-assign').addEventListener('click', () => {
-    if (!atcSelectedCampaign) return;
-    const name = atcCurrentLead || 'Customer';
-    const campaign = atcSelectedCampaign;
-    closeAtcModal();
-    showToast(`${name} assigned to ${campaign}`);
-  });
-</script>
+    let atcSelectedCampaign = null;
+    let atcCurrentLead = '';
+
+    function closeAtcModal() {
+      document.getElementById('atc-overlay').classList.remove('open');
+      // Reset view 1
+      const continueBtn = document.getElementById('atc-continue');
+      continueBtn.disabled = false;
+      continueBtn.textContent = 'Continue to Zotok';
+      // Reset view 2
+      document.getElementById('atc-view-1').style.display = 'flex';
+      document.getElementById('atc-view-2').style.display = 'none';
+      document.querySelector('.atc-modal').classList.remove('wide');
+      document.getElementById('atc-search-input').value = '';
+      filterCampaigns('');
+      document.querySelectorAll('.atc-camp-item').forEach(el => {
+        el.classList.remove('selected');
+        const radio = el.querySelector('.radio');
+        if (radio) radio.classList.remove('selected');
+      });
+      atcSelectedCampaign = null;
+    }
+
+    function filterCampaigns(q) {
+      document.querySelectorAll('.atc-camp-item').forEach(item => {
+        const name = item.dataset.campaign.toLowerCase();
+        item.style.display = !q || name.includes(q.toLowerCase()) ? 'flex' : 'none';
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('atc-toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    document.getElementById('atc-close').addEventListener('click', closeAtcModal);
+    document.getElementById('atc-cancel').addEventListener('click', closeAtcModal);
+    document.getElementById('atc-close-2').addEventListener('click', closeAtcModal);
+    document.getElementById('atc-cancel-2').addEventListener('click', closeAtcModal);
+    document.getElementById('atc-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeAtcModal(); });
+
+    document.getElementById('atc-search-input').addEventListener('input', e => filterCampaigns(e.target.value.trim()));
+
+    document.getElementById('atc-camp-list').addEventListener('click', e => {
+      const item = e.target.closest('.atc-camp-item');
+      if (!item) return;
+      document.querySelectorAll('.atc-camp-item').forEach(el => {
+        el.classList.remove('selected');
+        const radio = el.querySelector('.radio');
+        if (radio) radio.classList.remove('selected');
+      });
+      item.classList.add('selected');
+      const radio = item.querySelector('.radio');
+      if (radio) radio.classList.add('selected');
+      atcSelectedCampaign = item.dataset.campaign;
+    });
+
+    document.getElementById('atc-continue').addEventListener('click', function () {
+      this.disabled = true;
+      this.innerHTML = '<img src="assets/icons/icon-spinner.svg" width="20" height="20" alt="" class="atc-spin">';
+      setTimeout(() => {
+        document.getElementById('atc-view-1').style.display = 'none';
+        document.getElementById('atc-view-2').style.display = 'flex';
+        document.querySelector('.atc-modal').classList.add('wide');
+        localStorage.setItem('zotok_atc_connected', 'true');
+      }, 2000);
+    });
+
+    document.getElementById('atc-assign').addEventListener('click', () => {
+      if (!atcSelectedCampaign) return;
+      const name = atcCurrentLead || 'Customer';
+      const campaign = atcSelectedCampaign;
+      closeAtcModal();
+      showToast(`${name} assigned to ${campaign}`);
+    });
+  </script>
 </body>
+
 </html>

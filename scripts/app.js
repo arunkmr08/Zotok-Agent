@@ -194,9 +194,17 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
     if (!optionList) return;
 
     // Reset to default (Last 7 Days)
-    optionList.querySelectorAll('.history-option-row').forEach(r => r.classList.remove('selected'));
+    optionList.querySelectorAll('.history-option-row').forEach(r => {
+      r.classList.remove('selected');
+      const radio = r.querySelector('.radio');
+      if (radio) radio.classList.remove('selected');
+    });
     const defaultRow = optionList.querySelector('[data-days="7"]');
-    if (defaultRow) defaultRow.classList.add('selected');
+    if (defaultRow) {
+      defaultRow.classList.add('selected');
+      const radio = defaultRow.querySelector('.radio');
+      if (radio) radio.classList.add('selected');
+    }
     if (customRange) customRange.style.display = 'none';
 
     const today = new Date();
@@ -209,8 +217,14 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
 
     optionList.querySelectorAll('.history-option-row').forEach(row => {
       row.onclick = () => {
-        optionList.querySelectorAll('.history-option-row').forEach(r => r.classList.remove('selected'));
+        optionList.querySelectorAll('.history-option-row').forEach(r => {
+          r.classList.remove('selected');
+          const radio = r.querySelector('.radio');
+          if (radio) radio.classList.remove('selected');
+        });
         row.classList.add('selected');
+        const radio = row.querySelector('.radio');
+        if (radio) radio.classList.add('selected');
         const days = row.dataset.days;
         if (days === 'custom') {
           activeDays = 'custom';
@@ -268,6 +282,8 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
         const cnt = groupList.querySelectorAll('.group-row.selected').length;
         if (!sel && cnt >= LIMIT) return;
         row.classList.toggle('selected');
+        const cb = row.querySelector('.checkbox');
+        if (cb) cb.checked = !sel;
         update();
       });
     });

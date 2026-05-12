@@ -5,7 +5,7 @@
 
   // Figma icon assets (expires 7 days from fetch)
   const IC = {
-    brand: 'assets/icons/zotok-logo.svg',
+    brand: 'assets/icons/zotok-logo-36.svg',
     toggle: 'assets/icons/nav-toggle.svg',
     newChat: 'assets/icons/nav-new-chat.svg',
     category: 'assets/icons/nav-category.svg',
@@ -29,7 +29,7 @@
       <a href="chat.html" class="brand">
         <div class="brand-mark">${img(IC.brand, 'Group Sense')}</div>
         <div class="brand-text-wrap">
-          <span class="brand-text">Group Sense</span>
+          <span class="brand-text">Zotok</span>
         </div>
       </a>
       <button class="icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar">

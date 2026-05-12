@@ -1,64 +1,74 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sign in — Group Sense</title>
-<link rel="stylesheet" href="styles/main.css">
-<link rel="stylesheet" href="styles/dark.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — Group Sense</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/dark.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body class="login-page" data-page="login">
 
-<main class="login-card">
-  <div class="login-brand">
-    <div class="brand-mark"><img src="assets/icons/zotok-logo.svg" alt="Group Sense" class="nav-img-icon"></div>
-    <div class="login-brand-text">Group Sense</div>
-  </div>
+  <main class="login-card">
+    <div class="login-brand">
+      <div class="brand-mark"><img src="assets/icons/zotok-logo-20.svg" alt="Group Sense" class="nav-img-icon"></div>
+      <div class="login-brand-text">Zotok</div>
+    </div>
 
-  <!-- Step 1: phone -->
-  <section id="phone-step">
-    <h1>Sign in</h1>
-    <p class="lede">Use your WhatsApp number. We'll send a one-time code.</p>
+    <!-- Step 1: phone -->
+    <section id="phone-step">
+      <h1>Sign in</h1>
+      <p class="lede">Use your WhatsApp number. We'll send a one-time code.</p>
 
-    <div class="field">
-      <label class="field-label" for="phone-input">Mobile number</label>
-      <div class="input-prefix">
-        <span class="prefix">+91</span>
-        <input id="phone-input" class="input" type="tel" inputmode="numeric" autocomplete="tel" placeholder="98765 43210" maxlength="11" value="9876543210">
+      <div class="field">
+        <label class="field-label" for="phone-input">Mobile number</label>
+        <div class="input-prefix">
+          <span class="prefix">+91</span>
+          <input id="phone-input" class="input" type="tel" inputmode="numeric" autocomplete="tel"
+            placeholder="98765 43210" maxlength="11" value="9876543210">
+        </div>
       </div>
-    </div>
 
-    <button id="phone-next" class="btn btn-primary btn-block">
-      Send OTP
-      <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-    </button>
+      <button id="phone-next" class="btn btn-md btn-primary btn-block">
+        Send OTP
+        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </button>
 
-    <p class="login-foot">By continuing you agree to the Terms and Privacy notice.</p>
-  </section>
+      <p class="login-foot">By continuing you agree to the Terms and Privacy notice.</p>
+    </section>
 
-  <!-- Step 2: OTP -->
-  <section id="otp-step" style="display:none">
-    <h1>Enter the code</h1>
-    <p class="lede">We sent a 4-digit code to <strong id="phone-echo">+91 …</strong> <button id="otp-back" class="tiny-link" type="button">Change</button></p>
+    <!-- Step 2: OTP -->
+    <section id="otp-step" style="display:none">
+      <h1>Enter the code</h1>
+      <p class="lede">We sent a 4-digit code to <strong id="phone-echo">+91 …</strong> <button id="otp-back"
+          class="tiny-link" type="button">Change</button></p>
 
-    <div class="otp-row" style="margin-bottom:24px">
-      <input class="otp-cell" inputmode="numeric" maxlength="1" autocomplete="one-time-code" value="1">
-      <input class="otp-cell" inputmode="numeric" maxlength="1" value="2">
-      <input class="otp-cell" inputmode="numeric" maxlength="1" value="3">
-      <input class="otp-cell" inputmode="numeric" maxlength="1" value="4">
-    </div>
+      <div class="otp-row" style="margin-bottom:24px">
+        <input class="otp-cell" inputmode="numeric" maxlength="1" autocomplete="one-time-code" value="1">
+        <input class="otp-cell" inputmode="numeric" maxlength="1" value="2">
+        <input class="otp-cell" inputmode="numeric" maxlength="1" value="3">
+        <input class="otp-cell" inputmode="numeric" maxlength="1" value="4">
+      </div>
 
-    <button id="otp-verify" class="btn btn-primary btn-block">Verify and continue</button>
+      <button id="otp-verify" class="btn btn-md btn-primary btn-block">Verify and continue</button>
 
-    <p class="login-foot">
-      Didn't get it? <button class="tiny-link" type="button">Resend in 30s</button>
-    </p>
-  </section>
-</main>
+      <p class="login-foot">
+        Didn't get it? <button class="tiny-link" type="button">Resend in 30s</button>
+      </p>
+    </section>
+  </main>
 
-<script src="scripts/app.js"></script>
+  <script src="scripts/app.js"></script>
 </body>
+
 </html>
